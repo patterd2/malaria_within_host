@@ -35,7 +35,7 @@ for n = 1:nx-1 % evolving on the time since infection time scale
     % BC for IG
     IG(n+1,1) = P.c*P.p*B(n)*M(n);
     % evolve IG
-    IG(n+1,2:end) = ((1/h)*IG(n,1:end-1))./(1/h + P.muG + gamma_G(h*x(2:end))' );
+    IG(n+1,2:end) = ((1/h)*IG(n,1:end-1))./(1/h + P.mu + gamma_G(h*x(2:end))' );
     % evolve ODEs for gametocytes and the immune activation level
     G(n+1) = ((1/h)*G(n) + h*sum(gamma_G(h*x).*IG(n,:)'))./(1/h + P.muG);
     A(n+1) = A(n) + h*(phi( h*sum(I(n,:)), P.IT, P.s));

@@ -4,8 +4,13 @@ format long
 global P
 tic
 
+set(0,'defaultaxesfontsize', 20);
+set(0,'defaultLegendInterpreter','latex');
+set(0,'defaultAxesTickLabelInterpreter','none')
+set(0,'defaulttextinterpreter','latex');
+
 %% numerical configuration
-T_max = 5*24; % max time in days
+T_max = 8*24; % max time in days
 P.T = T_max;
 h = 0.05; % time/age since infection, etc. step size in hours;
 x = (0:h:T_max)';
@@ -16,7 +21,7 @@ baseline_parameter_set;
 
 %% solve the within-host model
 % initially there are no merozoites or (developing/mature) gametocytes
-B0 = 50; % scalar, nonzero
+B0 = P.Bstar; % scalar, nonzero
 M0 = 0; % scalar, zero
 I0 = h*ones(1,nx); % I(0,tau), should be nonzero, preserve integral (total number of infected)
 IG0 = zeros(1,nx); % IG(0,tau)
@@ -55,6 +60,14 @@ plot(x/24,I(:,floor(length(x))));
 title('Infection dynamics (asexual stage): $I(x,\tau)$');
 xlabel('Time since infection (days)');
 legend('$I(x,0)$','$I(x,0.5)$','$I(x,1)$','$I(x,2)$','$I(x,3)$');
+axis tight;
+grid on;
+
+%% 
+figure;
+plot(x/24,sum(I,2)); % I(x,tau)
+title('Infection dynamics (asexual stage): $\int I(x,\tau) \, d\tau$');
+xlabel('Time since infection (days)');
 axis tight;
 grid on;
 

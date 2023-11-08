@@ -2,13 +2,15 @@ global P
 % values from Greischar et al., need to check units
 %% within-host model parameters
 P.c = 0.2; % parasite investment fraction
+P.Bstar = 5*10^6;
 P.lambda = (2*10^(5));
-P.K = 20; % ?
+P.K = P.lambda*P.Bstar/(P.lambda - P.mu*P.Bstar); % ?
 P.p = (8.35*10^(-6));
 P.beta = 16;
 P.mu = (1/120)/24;
 P.muM = 200/24; 
 P.muG = 0.5/24;
+
 % immune activation function parameters
 P.sigma = 0; % sigma = 0 turns off immune system
 P.IT = 0.25; % immune activation sigmoid threshold (phi)
