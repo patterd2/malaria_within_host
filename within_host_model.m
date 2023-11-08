@@ -16,8 +16,8 @@ A = NaN(1,nx); % A(x)
 % assisgn initial conditions
 B(1) = B0;
 M(1) = M0;
-I(1,:) = I0;
-IG(1,:) = IG0;
+I(1,:) = I0; % x = 0, I(0,tau)
+IG(1,:) = IG0; % x = 0, IG(x,tau)
 G(1) = G0;
 A(1) = A0;
 I(1,1) = (1-P.c)*P.p*B0*M0;
@@ -29,11 +29,11 @@ for n = 1:nx-1 % evolving on the time since infection time scale
     B(n+1) = (B(n)/h + P.lambda)./(1/h + P.lambda/P.K + P.p*M(n) + P.mu);
     M(n+1) = (M(n)/h + h*P.beta*sum(gamma_fun(h*x).*I(n,:)'))./( 1/h + P.muM +P.p*B(n));
     % BC for I
-    I(n+1,1) = (1-P.c)*P.p*B(n+1)*M(n+1);
+    I(n+1,1) = (1-P.c)*P.p*B(n)*M(n);
     % evolve I
     I(n+1,2:end) = (I(n,1:end-1)/h)./(1/h + P.mu + gamma_fun(h*x(2:end)') + P.sigma.*(1-exp(-P.theta*A(n))) );
     % BC for IG
-    IG(n+1,1) = P.c*P.p*B(n+1)*M(n+1);
+    IG(n+1,1) = P.c*P.p*B(n)*M(n);
     % evolve IG
     IG(n+1,2:end) = ((1/h)*IG(n,1:end-1))./(1/h + P.muG + gamma_G(h*x(2:end))' );
     % evolve ODEs for gametocytes and the immune activation level

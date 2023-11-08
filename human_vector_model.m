@@ -12,12 +12,12 @@ VI = NaN(nx,nx); % VI(t,tauV)
 
 % assisgn initial conditions
 HS(1) = HS0;
-HI(1,:) = HI0;
+HI(1,:) = HI0; % HI(0,x)
 VS(1) = VS0;
-VI(1,:) = VI0;
+VI(1,:) = VI0; % VI(0,tauV)
 
 %% time evolution
-for m = 1:nx-1 
+for m = 1:nx-1 % time stepping
     %fprintf('%i \n',m);
     %keyboard;
     VS(m+1) = (VS(m)/h + RA(m*h))./(1/h + (P.b*h/P.N)*sum( G.*HI(m,:) ));

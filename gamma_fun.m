@@ -1,4 +1,7 @@
 function y = gamma_fun(x)
-% delay function for bursting of red blood cells
-   y = 0.1*exp(-x); % functional form taken from REF? need to update
+    % delay function for bursting of red blood cells
+    a1 = 5; % shape parameter
+    b1 = 1/4.47; % scale parameter
+    % mean = a1*b1
+    y = gampdf(x,a1,b1);
 end
