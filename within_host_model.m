@@ -6,12 +6,12 @@ x = (t0:h:tfinal)';
 nx = length(x); % all discretization parameters chosen equal
 
 % allocation of memory
-B = NaN(1,nx); % B(x)
-M = NaN(1,nx); % M(x)
+B = NaN(nx,1); % B(x)
+M = NaN(nx,1); % M(x)
 I = NaN(nx,nx); % I(x,tau)
 IG = NaN(nx,nx); % IG(x,tau)
-G = NaN(1,nx); % G(x)
-A = NaN(1,nx); % A(x)
+G = NaN(nx,1); % G(x)
+A = NaN(nx,1); % A(x)
 
 % assisgn initial conditions
 B(1) = B0;

@@ -3,10 +3,16 @@ clc
 format long
 global P
 tic
+
+set(0,'defaultaxesfontsize', 20);
+set(0,'defaultLegendInterpreter','latex');
+set(0,'defaultAxesTickLabelInterpreter','none')
+set(0,'defaulttextinterpreter','latex');
+
 %% numerical configuration
-T_max = 3*24; % max time in days
+T_max = 8*24; % max time in days
 P.T = T_max;
-h = 0.1; % time/age since infection, etc. step size in hours;
+h = 0.01; % time/age since infection, etc. step size in hours;
 x = (0:h:T_max)';
 nx = length(x);
 
@@ -15,10 +21,10 @@ baseline_parameter_set;
 
 %% solve the within-host model
 % initially there are no merozoites or (developing/mature) gametocytes
-B0 = 50; % scalar, nonzero
+B0 = P.Bstar; % scalar, nonzero
 M0 = 0; % scalar, zero
-I0 = h*ones(1,nx); % vector, should be nonzero, preserve integral (total number of infected)
-IG0 = zeros(1,nx); % vector, zero, should be for x=0
+I0 = h*ones(1,nx); % I(0,tau), should be nonzero, preserve integral (total number of infected)
+IG0 = zeros(1,nx); % IG(0,tau)
 G0 = 0; % scalar, zero
 A0 = 0; % scalar, zero
 
@@ -34,12 +40,12 @@ A0 = 0; % scalar, zero
 % [HS, HI, VS, VI] = human_vector_model(h, 0, T_max, HS0, HI0, VS0, VI0, G);
 %% plot within-host dynamics
 figure;
-plot(x/24,B,'LineWidth',3);
+subplot(1,3,1), plot(x/24,B,'LineWidth',3);
 hold on;
-plot(x/24,M,'LineWidth',3);
-plot(x/24,G,'LineWidth',3);
+subplot(1,3,2), plot(x/24,M,'LineWidth',3);
+subplot(1,3,3), plot(x/24,G,'LineWidth',3);
 %plot(x/24,A,'LineWidth',2);
-xlabel('Time since infection (days)');
+xlabel('Age of infection (days)');
 legend('$B(x)$ uninfected red blood cells','$M(x)$ merozoites','$G(x)$ gametocytes');
 grid on;
 
@@ -57,6 +63,14 @@ legend('$I(x,0)$','$I(x,0.5)$','$I(x,1)$','$I(x,2)$','$I(x,3)$');
 axis tight;
 grid on;
 
+%% 
+figure;
+plot(x/24,sum(I,2)); % I(x,tau)
+title('Infection dynamics (asexual stage): $\int I(x,\tau) \, d\tau$');
+xlabel('Time since infection (days)');
+axis tight;
+grid on;
+
 %%
 
 figure;
@@ -68,20 +82,21 @@ plot(x/24,IG(:,floor(2*length(x)/3)));
 plot(x/24,IG(:,floor(length(x))));
 title('Infection dynamics (sexual stage): $I_G(x,\tau)$');
 xlabel('Time since infection (days)');
-legend('$I_G(t,0)$','$I_G(t,0.5)$','$I_G(t,1)$','$I_G(t,2)$','$I_G(t,3)$');
+legend('$I_G(x,0)$','$I_G(x,0.5)$','$I_G(x,1)$','$I_G(x,2)$','$I_G(x,3)$');
 axis tight;
 grid on;
 
 %%
-figure;
-plot(x/24,A,'LineWidth',3);
-hold on
-plot(x/24,P.sigma*(1-exp(-P.theta*A)),'LineWidth',3);
-hold on;
-xlabel('Time since infection (days)');
-legend('$A(x)$ immune activation level','$\sigma(1 - \exp(\theta A(x)))$ infection removal rate');
-grid on;
+% figure;
+% plot(x/24,A,'LineWidth',3);
+% hold on
+% plot(x/24,P.sigma*(1-exp(-P.theta*A)),'LineWidth',3);
+% hold on;
+% xlabel('Time since infection (days)');
+% legend('$A(x)$ immune activation level','$\sigma(1 - \exp(\theta A(x)))$ infection removal rate');
+% grid on;
 
+%%
 % figure;
 % imagesc(x/24,x/24,I);
 % title('$I(x,\tau)$');

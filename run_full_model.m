@@ -7,12 +7,14 @@ tic
 set(0,'defaultaxesfontsize', 20);
 set(0,'defaultLegendInterpreter','latex');
 set(0,'defaultAxesTickLabelInterpreter','none')
-set(0,'defaulttextinterpreter','latex');
+set(0,'defaulttextinterpreter','none');
+set(0,'defaultAxesXGrid','on')
+set(0,'defaultAxesYGrid','on')
 
 %% numerical configuration
-T_max = 8*24; % max time in days
+T_max = 300*24; % max time in days
 P.T = T_max;
-h = 0.05; % time/age since infection, etc. step size in hours;
+h = 1; % time/age since infection, etc. step size in hours;
 x = (0:h:T_max)';
 nx = length(x);
 
@@ -24,6 +26,7 @@ baseline_parameter_set;
 B0 = P.Bstar; % scalar, nonzero
 M0 = 0; % scalar, zero
 I0 = h*ones(1,nx); % I(0,tau), should be nonzero, preserve integral (total number of infected)
+I0(11:end) = 0;
 IG0 = zeros(1,nx); % IG(0,tau)
 G0 = 0; % scalar, zero
 A0 = 0; % scalar, zero
@@ -33,58 +36,63 @@ A0 = 0; % scalar, zero
 [B, M, I, IG, G, A] = within_host_model(h, 0, T_max, B0, M0, I0, IG0, G0, A0);
 %% solve the between-host/vector model
 HS0 = 100; % scalar
-HI0 = ones(1,nx); % vector
+HI0 = I0; %zeros(1,nx); % vector
 VS0 = 100; % scalar
 VI0 = zeros(1,nx); % vector
 
 [HS, HI, VS, VI] = human_vector_model(h, 0, T_max, HS0, HI0, VS0, VI0, G);
 %% plot within-host dynamics
 figure;
-plot(x/24,B,'LineWidth',3);
+subplot(1,3,1), plot(x/24,B,'LineWidth',3);
+title('B(x)');
+xlabel('Age of infection (x) [days]');
 hold on;
-plot(x/24,M,'LineWidth',3);
-plot(x/24,G,'LineWidth',3);
-%plot(x/24,A,'LineWidth',2);
-xlabel('Time since infection (days)');
-legend('$B(x)$ uninfected red blood cells','$M(x)$ merozoites','$G(x)$ gametocytes');
-grid on;
+subplot(1,3,2), plot(x/24,M,'LineWidth',3);
+title('M(x)');
+xlabel('Age of infection (x) [days]');
+subplot(1,3,3), plot(x/24,G,'LineWidth',3);
+title('G(x)');
+xlabel('Age of infection (x) [days]');
+%legend('$B(x)$ uninfected red blood cells','$M(x)$ merozoites','$G(x)$ gametocytes');
 
 %%
-figure;
-plot(x/24,I(:,1)); % I(x,tau)
-hold on;
-plot(x/24,I(:,floor(length(x)/6)));
-plot(x/24,I(:,floor(length(x)/3)));
-plot(x/24,I(:,floor(2*length(x)/3)));
-plot(x/24,I(:,floor(length(x))));
-title('Infection dynamics (asexual stage): $I(x,\tau)$');
-xlabel('Time since infection (days)');
-legend('$I(x,0)$','$I(x,0.5)$','$I(x,1)$','$I(x,2)$','$I(x,3)$');
+% figure;
+% plot(x/24,I(:,1)); % I(x,tau)
+% hold on;
+% plot(x/24,I(:,floor(length(x)/6)));
+% plot(x/24,I(:,floor(length(x)/3)));
+% plot(x/24,I(:,floor(2*length(x)/3)));
+% plot(x/24,I(:,floor(length(x))));
+% title('Infection dynamics (asexual stage): $I(x,\tau)$','Interpreter','latex');
+% xlabel('Time since infection (days)');
+% legend('$I(x,0)$','$I(x,0.5)$','$I(x,1)$','$I(x,2)$','$I(x,3)$');
 axis tight;
-grid on;
 
 %% 
 figure;
-plot(x/24,sum(I,2)); % I(x,tau)
-title('Infection dynamics (asexual stage): $\int I(x,\tau) \, d\tau$');
+plot(x/24,sum(I,2),'LineWidth',2); % I(x,tau)
+title('Infection dynamics (asexual stage): $\int I(x,\tau) \, d\tau$','Interpreter','latex');
 xlabel('Time since infection (days)');
 axis tight;
-grid on;
+
+%%
+figure;
+plot(x/24,sum(HI,2))
 
 %%
 
-figure;
-plot(x/24,IG(:,1)); % I(x,tau)
-hold on;
-plot(x/24,IG(:,floor(length(x)/6)));
-plot(x/24,IG(:,floor(length(x)/3)));
-plot(x/24,IG(:,floor(2*length(x)/3)));
-plot(x/24,IG(:,floor(length(x))));
-title('Infection dynamics (sexual stage): $I_G(x,\tau)$');
-xlabel('Time since infection (days)');
-legend('$I_G(x,0)$','$I_G(x,0.5)$','$I_G(x,1)$','$I_G(x,2)$','$I_G(x,3)$');
-axis tight;
-grid on;
+% figure;
+% plot(x/24,IG(:,1)); % I(x,tau)
+% hold on;
+% plot(x/24,IG(:,floor(length(x)/6)));
+% plot(x/24,IG(:,floor(length(x)/3)));
+% plot(x/24,IG(:,floor(2*length(x)/3)));
+% plot(x/24,IG(:,floor(length(x))));
+% title('Infection dynamics (sexual stage): $I_G(x,\tau)$');
+% xlabel('Time since infection (days)');
+% legend('$I_G(x,0)$','$I_G(x,0.5)$','$I_G(x,1)$','$I_G(x,2)$','$I_G(x,3)$');
+% axis tight;
+% grid on;
 
 %%
 % figure;
@@ -125,7 +133,7 @@ grid on;
 % xlabel('Time (days)');
 % legend('$H_S(t)$ susceptible humans','$V_S(t)$ susceptible vectors');
 % grid on;
-
+% 
 % figure;
 % imagesc(x/24,x/24,HI);
 % title('$H_I(t,x)$');
@@ -135,7 +143,7 @@ grid on;
 % xlabel('$t$');
 % ylabel('$x$');
 % grid on;
-
+% 
 % figure;
 % imagesc(x/24,x/24,VI);
 % title('$V_I(t,\tau_V)$');

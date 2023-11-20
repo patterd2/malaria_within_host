@@ -1,13 +1,13 @@
 global P
 % values from Greischar et al., need to check units
 %% within-host model parameters
-P.c = 0.2; % parasite investment fraction
+P.c = 0.05; % parasite investment fraction
+P.mu = (1/120)/24;
 P.lambda = (2*10^(5))/24;
 P.Bstar = 5*10^6;
 P.K = P.lambda*(P.Bstar)/(P.lambda - P.mu*P.Bstar); % ?
 P.p = (8.35*10^(-6))/24;
 P.beta = 16;
-P.mu = (1/120)/24;
 P.muM = 200/24; 
 P.muG = 0.5/24;
 
@@ -19,7 +19,7 @@ P.theta = 1;
 % need to tune these parameters...
 
 %% Human and vector parameters
-P.b = 0.35;
+P.b = 0.35/24;
 P.N = 2000;
 P.betaVH = 0.05;
-P.deltaA = 0.093;
+P.deltaA = 0.093/24;
