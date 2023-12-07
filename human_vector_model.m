@@ -21,9 +21,9 @@ for m = 1:nx-1 % time stepping
     %fprintf('%i \n',m);
     %keyboard;
     VS(m+1) = (VS(m)/h + RA(m*h))./(1/h + (P.b*h/P.N)*sum( G.*(HI(m,:)') ));
-    HS(m+1) = (HS(m)/h)./(1/h + h*P.betaVH*(P.b/P.N)*sum( gammaV(h*x).*VI(m,:)' ));
+    HS(m+1) = (HS(m)/h)./(1/h + h*P.betaVH*(P.b/P.N)*sum( gammaV(x,h).*VI(m,:)' ));
     HI(m+1,2:end) = HI(m,1:end-1);
-    HI(m+1,1) = P.betaVH*(P.b/P.N)*HS(m+1)*h*sum( gammaV(h*x).*VI(m,:)' );
+    HI(m+1,1) = P.betaVH*(P.b/P.N)*HS(m+1)*h*sum( gammaV(x,h).*VI(m,:)' );
     VI(m+1,2:end) = (VI(m,1:end-1)/h)./(1/h + P.deltaA);
     %keyboard;
     VI(m+1,1) = (P.b/P.N)*VS(m)*h*sum( betaHV(G).*(HI(m,:)') );

@@ -27,17 +27,17 @@ for n = 1:nx-1 % evolving on the time since infection time scale
     % evolve ODEs for red blood cells and merozoites
     %fprintf('%i \n',n);
     B(n+1) = (B(n)/h + P.lambda)./(1/h + P.lambda/P.K + P.p*M(n) + P.mu);
-    M(n+1) = (M(n)/h + h*P.beta*sum(gamma_fun(h*x).*I(n,:)'))./( 1/h + P.muM +P.p*B(n));
+    M(n+1) = (M(n)/h + h*P.beta*sum(gamma_fun(x,h).*I(n,:)'))./( 1/h + P.muM +P.p*B(n));
     % BC for I
     I(n+1,1) = (1-P.c)*P.p*B(n)*M(n);
     % evolve I
-    I(n+1,2:end) = (I(n,1:end-1)/h)./(1/h + P.mu + gamma_fun(h*x(2:end)') + P.sigma.*(1-exp(-P.theta*A(n))) );
+    I(n+1,2:end) = (I(n,1:end-1)/h)./(1/h + P.mu + gamma_fun(x(2:end)',h) + P.sigma.*(1-exp(-P.theta*A(n))) );
     % BC for IG
     IG(n+1,1) = P.c*P.p*B(n)*M(n);
     % evolve IG
-    IG(n+1,2:end) = ((1/h)*IG(n,1:end-1))./(1/h + P.mu + gamma_G(h*x(2:end))' );
+    IG(n+1,2:end) = ((1/h)*IG(n,1:end-1))./(1/h + P.mu + gamma_G(x(2:end),h)' );
     % evolve ODEs for gametocytes and the immune activation level
-    G(n+1) = ((1/h)*G(n) + h*sum(gamma_G(h*x).*IG(n,:)'))./(1/h + P.muG);
+    G(n+1) = ((1/h)*G(n) + h*sum(gamma_G(x,h).*IG(n,:)'))./(1/h + P.muG);
     A(n+1) = A(n) + h*(phi( h*sum(I(n,:)), P.IT, P.s));
 end
 end
