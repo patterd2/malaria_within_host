@@ -1,10 +1,9 @@
-%% Main file to run the full model (both within-host and human-vector systems)
-clc
-format long
-global P
-tic
+%% Main file to run the full model 
+% (both within-host and human-vector systems)
 
-set(0,'defaultaxesfontsize', 20);
+tic
+global P
+set(0,'defaultaxesfontsize', 25);
 set(0,'defaultLegendInterpreter','latex');
 set(0,'defaultAxesTickLabelInterpreter','none')
 set(0,'defaulttextinterpreter','none');
@@ -12,11 +11,20 @@ set(0,'defaultAxesXGrid','on')
 set(0,'defaultAxesYGrid','on')
 
 %% numerical configuration
-T_max = 300*24; % max time in days
-P.T = T_max;
-h = 1; % time/age since infection, etc. step size in hours;
-x = (0:h:T_max)';
+X_max = 300*24; % max time in days, max 200 days?
+tau_max = 20*24; % max 20 days?
+T_max = 200*24;
+xV_max = 20*24;
+h = 0.25; % time/age step size in hours, same across all timescales
+
+x = (0:h:X_max)';
 nx = length(x);
+tau = (0:h:tau_max)';
+ntau = length(tau);
+t = (0:h:T_max)';
+nt = length(t);
+xV = (0:h:xV_max)';
+nxV = length(xV);
 
 % set model parameters via the baseline file (contains global variables)
 baseline_parameter_set;
@@ -25,34 +33,35 @@ baseline_parameter_set;
 % initially there are no merozoites or (developing/mature) gametocytes
 B0 = P.Bstar; % scalar, nonzero
 M0 = 0; % scalar, zero
-I0 = h*ones(1,nx); % I(0,tau), should be nonzero, preserve integral (total number of infected)
-I0(11:end) = 0;
-IG0 = zeros(1,nx); % IG(0,tau)
+I0 = ones(1,ntau); % I(0,tau), should be nonzero
+I0(floor(48/h)+1:end) = 0; % I0 should be zero after 48 hours
+initial_innoc = 0.06;
+I0 = initial_innoc*I0/sum(I0);
+% I0 uniform from zero to 48 hours approx.
+IG0 = zeros(1,ntau); % IG(0,tau)
 G0 = 0; % scalar, zero
 A0 = 0; % scalar, zero
 
 % NB: ordering of independent variables is I(x,tau), IG(x,tau)
 
-[B, M, I, IG, G, A] = within_host_model(h, 0, T_max, B0, M0, I0, IG0, G0, A0);
+[B, M, I, IG, G, A] = within_host_model(h, 0, X_max, tau_max, B0, M0, I0, IG0, G0, A0);
 %% solve the between-host/vector model
 HS0 = 100; % scalar
-HI0 = I0; %zeros(1,nx); % vector
+HI0 = h*ones(1,nx); % HI(0,x), vector
 VS0 = 100; % scalar
-VI0 = zeros(1,nx); % vector
+VI0 = zeros(1,nxV); % VI(t,xV) @ t = 0 (vector)
 
-[HS, HI, VS, VI] = human_vector_model(h, 0, T_max, HS0, HI0, VS0, VI0, G);
+[HS, HI, VS, VI] = human_vector_model(h, 0, X_max, T_max, xV_max, HS0, HI0, VS0, VI0, G);
 %% plot within-host dynamics
-figure;
-subplot(1,3,1), plot(x/24,B,'LineWidth',3);
-title('B(x)');
-xlabel('Age of infection (x) [days]');
+figure(1);
+subplot(1,3,1), plot(x/24,B,'LineWidth',3); hold on;
+title('$B(x)$','Interpreter','latex');
 hold on;
-subplot(1,3,2), plot(x/24,M,'LineWidth',3);
-title('M(x)');
+subplot(1,3,2), plot(x/24,M,'LineWidth',3); hold on;
+title('$M(x)$','Interpreter','latex');
 xlabel('Age of infection (x) [days]');
-subplot(1,3,3), plot(x/24,G,'LineWidth',3);
-title('G(x)');
-xlabel('Age of infection (x) [days]');
+subplot(1,3,3), plot(x/24,G,'LineWidth',3); hold on;
+title('$G(x)$','Interpreter','latex');
 %legend('$B(x)$ uninfected red blood cells','$M(x)$ merozoites','$G(x)$ gametocytes');
 
 %%
@@ -66,19 +75,22 @@ xlabel('Age of infection (x) [days]');
 % title('Infection dynamics (asexual stage): $I(x,\tau)$','Interpreter','latex');
 % xlabel('Time since infection (days)');
 % legend('$I(x,0)$','$I(x,0.5)$','$I(x,1)$','$I(x,2)$','$I(x,3)$');
-axis tight;
+%axis tight;
 
 %% 
-figure;
-plot(x/24,sum(I,2),'LineWidth',2); % I(x,tau)
+figure(2);
+plot(x/24,h*sum(I,2),'LineWidth',3); % I(x,tau)
+hold on;
 title('Infection dynamics (asexual stage): $\int I(x,\tau) \, d\tau$','Interpreter','latex');
 xlabel('Time since infection (days)');
 axis tight;
+% legend('$h = 2$','$h = 1$','$h = 0.5$','$h = 0.25$','FontSize',35);
 
-%%
-figure;
-plot(x/24,sum(HI,2))
-
+%% Host infection plotting
+% figure;
+% plot(t/24,sum(HI,2),'LineWidth',3);
+% title('$\int H_I(t,x) \, dx$','Interpreter','latex');
+% xlabel('Time (days)');
 %%
 
 % figure;
@@ -174,4 +186,4 @@ plot(x/24,sum(HI,2))
 % xlabel('$\tau_G$');
 
 %%
-toc;
+toc
