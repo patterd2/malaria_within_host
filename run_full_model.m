@@ -15,7 +15,7 @@ X_max = 300*24; % max time in days, max 200 days?
 tau_max = 20*24; % max 20 days?
 T_max = 200*24;
 xV_max = 20*24;
-h = 0.25; % time/age step size in hours, same across all timescales
+h = 0.5; % time/age step size in hours, same across all timescales
 
 x = (0:h:X_max)';
 nx = length(x);
@@ -85,6 +85,31 @@ title('Infection dynamics (asexual stage): $\int I(x,\tau) \, d\tau$','Interpret
 xlabel('Time since infection (days)');
 axis tight;
 % legend('$h = 2$','$h = 1$','$h = 0.5$','$h = 0.25$','FontSize',35);
+% legend('$c = 0.05$','$c = 0.4$','FontSize',35);
+
+%% Infectiousness plotting
+figure(3);
+plot(x/24,betaHV(G),'LineWidth',3); % Beta_HV(G(x))
+hold on;
+title('Infectiousness (\%)','Interpreter','latex');
+xlabel('Time since infection (days)');
+ylim([0 1]);
+
+%% Combined plotting
+figure(4);
+subplot(2,2,1), plot(x/24,h*sum(I,2),'LineWidth',3); hold on;
+axis tight;
+title('$\int I(x,\tau) \, d\tau$ (asexual stage)','Interpreter','latex');
+hold on;
+subplot(2,2,2), plot(x/24,G,'LineWidth',3); hold on;
+title('$G(x)$','Interpreter','latex');
+subplot(2,2,3), plot(x/24,betaHV(G),'LineWidth',3); hold on;
+title('Infectiousness (\%)','Interpreter','latex');
+xlabel('Age of infection (x) [days]');
+subplot(2,2,4), plot(x/24,B,'LineWidth',3); hold on;
+title('$B(x)$','Interpreter','latex');
+xlabel('Age of infection (x) [days]');
+% legend('$c = 0.05$','$c = 0.4$','FontSize',35);
 
 %% Host infection plotting
 % figure;
