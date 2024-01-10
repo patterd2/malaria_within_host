@@ -50,7 +50,7 @@ end
 
 %% Infectiousness plotting
 figure;
-imagesc(x/24,100*(0:0.01:0.65),betaHV(G_save)'); % Beta_HV(G(x)) heatmap
+imagesc(x/24,100*(0:0.005:0.65),betaHV(G_save)'); % Beta_HV(G(x)) heatmap
 title('Infectiousness (\%)','Interpreter','latex');
 xlabel('Time since infection (days)');
 colormap jet;
@@ -61,5 +61,42 @@ xticks([0 70 140 210 280]);
 ytickformat('percentage');
 set(gca,'YDir','normal');
 %ylim([0 0.65]);
+%% Optimal strategy plotting
+ac = floor(280*24/h)+1;
+cum_inf1 = h*sum(betaHV(G_save(1:ac,:)),1)/24;
+figure;
+invest = 100*(0:0.005:0.65);
+plot(invest,cum_inf1,'LineWidth',4);
+hold on;
+psi = 1/105;
+int_range = (0:h:(ac-1)*h)/24;
+cum_inf2 = h*sum(betaHV(G_save(1:ac,:)).*repmat(exp(-psi*int_range'),1,131),1)/24;
+plot(invest,cum_inf2,'LineWidth',4);
+psi = 1/70;
+cum_inf3 = h*sum(betaHV(G_save(1:ac,:)).*repmat(exp(-psi*int_range'),1,131),1)/24;
+plot(invest,cum_inf3,'LineWidth',4);
+psi = 1/35;
+cum_inf4 = h*sum(betaHV(G_save(1:ac,:)).*repmat(exp(-psi*int_range'),1,131),1)/24;
+plot(invest,cum_inf4,'LineWidth',4);
+xlim([0 65]);
+xticks([0 10 20 30 40 50 60]);
+xtickformat('percentage');
+legend('$\psi = 0$','$\psi = 1/105$','$\psi = 1/70$','$\psi = 1/35$',...
+    'Interpreter','latex','FontSize',35);
+% find the maxima for different values of psi (recovery rate)
+[~, B] = max(cum_inf1);
+scatter(invest(B),cum_inf1(B),200,'filled','k');
+[~, B] = max(cum_inf2);
+scatter(invest(B),cum_inf2(B),200,'filled','k');
+[~, B] = max(cum_inf3);
+scatter(invest(B),cum_inf3(B),200,'filled','k');
+[~, B] = max(cum_inf4);
+scatter(invest(B),cum_inf4(B),200,'filled','k');
+ylabel('cumulative infectiousness ($f_1$)','Interpreter','latex');
+xlabel('Transmission investment (\%)','Interpreter','latex');
+set(gca,'FontSize',35);
+
+
+
 %%
 toc
