@@ -5,17 +5,17 @@ tic
 global P
 set(0,'defaultaxesfontsize', 25);
 set(0,'defaultLegendInterpreter','latex');
-set(0,'defaultAxesTickLabelInterpreter','none')
+set(0,'defaultAxesTickLabelInterpreter','none');
 set(0,'defaulttextinterpreter','none');
-set(0,'defaultAxesXGrid','on')
-set(0,'defaultAxesYGrid','on')
+set(0,'defaultAxesXGrid','on');
+set(0,'defaultAxesYGrid','on');
 
 %% numerical configuration
 X_max = 300*24; % max time in days, max 200 days?
 tau_max = 20*24; % max 20 days?
 T_max = 200*24;
 xV_max = 20*24;
-h = 0.5; % time/age step size in hours, same across all timescales
+h = 1; % time/age step size in hours, same across all timescales
 
 x = (0:h:X_max)';
 nx = length(x);
@@ -54,13 +54,13 @@ VI0 = zeros(1,nxV); % VI(t,xV) @ t = 0 (vector)
 [HS, HI, VS, VI] = human_vector_model(h, 0, X_max, T_max, xV_max, HS0, HI0, VS0, VI0, G);
 %% plot within-host dynamics
 figure(1);
-subplot(1,3,1), plot(x/24,B,'LineWidth',3); hold on;
+subplot(1,3,1), plot(x/24,B,'--','LineWidth',3); hold on;
 title('$B(x)$','Interpreter','latex');
 hold on;
-subplot(1,3,2), plot(x/24,M,'LineWidth',3); hold on;
+subplot(1,3,2), plot(x/24,M,'--','LineWidth',3); hold on;
 title('$M(x)$','Interpreter','latex');
 xlabel('Age of infection (x) [days]');
-subplot(1,3,3), plot(x/24,G,'LineWidth',3); hold on;
+subplot(1,3,3), plot(x/24,G,'--','LineWidth',3); hold on;
 title('$G(x)$','Interpreter','latex');
 %legend('$B(x)$ uninfected red blood cells','$M(x)$ merozoites','$G(x)$ gametocytes');
 
@@ -78,39 +78,52 @@ title('$G(x)$','Interpreter','latex');
 %axis tight;
 
 %% 
-figure(2);
-plot(x/24,h*sum(I,2),'LineWidth',3); % I(x,tau)
-hold on;
-title('Infection dynamics (asexual stage): $\int I(x,\tau) \, d\tau$','Interpreter','latex');
-xlabel('Time since infection (days)');
-axis tight;
+% figure(2);
+% plot(x/24,h*sum(I,2),'LineWidth',3); % I(x,tau)
+% hold on;
+% title('Infection dynamics (asexual stage): $\int I(x,\tau) \, d\tau$','Interpreter','latex');
+% xlabel('Time since infection (days)');
+% axis tight;
 % legend('$h = 2$','$h = 1$','$h = 0.5$','$h = 0.25$','FontSize',35);
 % legend('$c = 0.05$','$c = 0.4$','FontSize',35);
 
 %% Infectiousness plotting
-figure(3);
-plot(x/24,betaHV(G),'LineWidth',3); % Beta_HV(G(x))
-hold on;
-title('Infectiousness (\%)','Interpreter','latex');
-xlabel('Time since infection (days)');
-ylim([0 1]);
+% figure(3);
+% plot(x/24,betaHV(G),'LineWidth',3); % Beta_HV(G(x))
+% hold on;
+% title('Infectiousness (\%)','Interpreter','latex');
+% xlabel('Time since infection (days)');
+% ylim([0 1]);
 
 %% Combined plotting
 figure(4);
-subplot(2,2,1), plot(x/24,h*sum(I,2),'LineWidth',3); hold on;
+subplot(2,2,1), plot(x/24,h*sum(I,2),'--','LineWidth',3); hold on;
 axis tight;
 title('$\int I(x,\tau) \, d\tau$ (asexual stage)','Interpreter','latex');
 hold on;
-subplot(2,2,2), plot(x/24,G,'LineWidth',3); hold on;
+subplot(2,2,2), plot(x/24,G,'--','LineWidth',3); hold on;
 title('$G(x)$','Interpreter','latex');
-subplot(2,2,3), plot(x/24,betaHV(G),'LineWidth',3); hold on;
+subplot(2,2,3), plot(x/24,A,'--','LineWidth',3); hold on;
+xlabel('Age of infection (x) [days]');
+title('$A(x)$','Interpreter','latex');
+subplot(2,2,4), plot(x/24,betaHV(G),'--','LineWidth',3); hold on;
 title('Infectiousness (\%)','Interpreter','latex');
 xlabel('Age of infection (x) [days]');
-subplot(2,2,4), plot(x/24,B,'LineWidth',3); hold on;
-title('$B(x)$','Interpreter','latex');
-xlabel('Age of infection (x) [days]');
 % legend('$c = 0.05$','$c = 0.4$','FontSize',35);
-
+%legend('$\mu_A = 0$','$\mu_A = 0.01/24$','$\mu_A = 0.1/24$','FontSize',35);
+%% Immune dynamics plotting
+%figure(5);
+% subplot(2,1,1), plot(x/24,phi(h*sum(I,2),P.IT,P.s),'LineWidth',3); hold on;
+% axis tight;
+% xlabel('Age of infection (x) [days]');
+% title('$\phi(\int I(x,\tau) \, d\tau)$','Interpreter','latex');
+% hold on;
+% subplot(2,1,2), 
+%plot(x/24,A,'LineWidth',3); hold on;
+%title('$A(x)$','Interpreter','latex');
+%xlabel('Age of infection (x) [days]');
+%legend('$\sigma = 0$','$\sigma = 0.1$',...
+%    '$\sigma = 0.25$','$\sigma = 0.5$','FontSize',35);
 %% Host infection plotting
 % figure;
 % plot(t/24,sum(HI,2),'LineWidth',3);

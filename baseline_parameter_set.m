@@ -12,10 +12,11 @@ P.muM = 200/24;
 P.muG = 0.5/24;
 
 % immune activation function parameters
-P.sigma = 0; % sigma = 0 turns off immune system
-P.IT = 10^7; % immune activation sigmoid threshold (phi)
-P.s = 1; % immune activation sigmoid slope (phi)
-P.theta = 1; 
+P.sigma = 0.25/24; % sigma = 0 turns off immune system
+P.IT = 10^6; % immune activation sigmoid threshold (phi)
+P.s = 0.1; % immune activation sigmoid slope (phi), Heaviside at zero
+P.theta = 1; % 20 days approx. 
+P.muA = 0.0/24; % set to zero to turn off immune relaxation, need to "tune"
 % need to tune these parameters...
 
 %% Human and vector parameters
