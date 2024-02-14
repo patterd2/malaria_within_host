@@ -11,7 +11,7 @@ set(0,'defaultAxesXGrid','on');
 set(0,'defaultAxesYGrid','on');
 
 %% numerical configuration
-X_max = 300*24; % max time in days, max 200 days?
+X_max = 600*24; % max time in days, max 300 days?
 tau_max = 20*24; % max 20 days?
 T_max = 200*24;
 xV_max = 20*24;
@@ -54,13 +54,13 @@ VI0 = zeros(1,nxV); % VI(t,xV) @ t = 0 (vector)
 [HS, HI, VS, VI] = human_vector_model(h, 0, X_max, T_max, xV_max, HS0, HI0, VS0, VI0, G);
 %% plot within-host dynamics
 figure(1);
-subplot(1,3,1), plot(x/24,B,'--','LineWidth',3); hold on;
+subplot(1,3,1), plot(x/24,B,'-','LineWidth',3); hold on;
 title('$B(x)$','Interpreter','latex');
 hold on;
-subplot(1,3,2), plot(x/24,M,'--','LineWidth',3); hold on;
+subplot(1,3,2), plot(x/24,M,'-','LineWidth',3); hold on;
 title('$M(x)$','Interpreter','latex');
 xlabel('Age of infection (x) [days]');
-subplot(1,3,3), plot(x/24,G,'--','LineWidth',3); hold on;
+subplot(1,3,3), plot(x/24,G,'-','LineWidth',3); hold on;
 title('$G(x)$','Interpreter','latex');
 %legend('$B(x)$ uninfected red blood cells','$M(x)$ merozoites','$G(x)$ gametocytes');
 
@@ -97,20 +97,25 @@ title('$G(x)$','Interpreter','latex');
 
 %% Combined plotting
 figure(4);
-subplot(2,2,1), plot(x/24,h*sum(I,2),'--','LineWidth',3); hold on;
+infection_level = h*sum(I,2);
+subplot(2,2,1), plot(x/24,infection_level,'-','LineWidth',3); hold on;
 axis tight;
-title('$\int I(x,\tau) \, d\tau$ (asexual stage)','Interpreter','latex');
+title('$\int I(x,\tau) \, d\tau$','Interpreter','latex');
 hold on;
-subplot(2,2,2), plot(x/24,G,'--','LineWidth',3); hold on;
-title('$G(x)$','Interpreter','latex');
-subplot(2,2,3), plot(x/24,A,'--','LineWidth',3); hold on;
+subplot(2,2,2), plot(x/24,infection_level*(5*10^6),'-','LineWidth',3); hold on;
+subplot(2,2,2), yline(10^7,'--k','LineWidth',3)
+title('Immune threshold','Interpreter','latex');
+subplot(2,2,3), plot(x/24,A,'-','LineWidth',3); hold on;
 xlabel('Age of infection (x) [days]');
 title('$A(x)$','Interpreter','latex');
-subplot(2,2,4), plot(x/24,betaHV(G),'--','LineWidth',3); hold on;
-title('Infectiousness (\%)','Interpreter','latex');
+subplot(2,2,4), plot(x/24,1-exp(-P.theta*A),'-','LineWidth',3); hold on;
+%subplot(2,2,4), plot(x/24,betaHV(G),'-','LineWidth',3); hold on;
+title('$1 - \exp(-\theta A(x))$','Interpreter','latex');
+%title('Infectiousness (\%)','Interpreter','latex');
 xlabel('Age of infection (x) [days]');
+% disp(infection_level(end))
 % legend('$c = 0.05$','$c = 0.4$','FontSize',35);
-%legend('$\mu_A = 0$','$\mu_A = 0.01/24$','$\mu_A = 0.1/24$','FontSize',35);
+% legend('$\mu_A = 0$','$\mu_A = 0.01/24$','$\mu_A = 0.1/24$','FontSize',35);
 %% Immune dynamics plotting
 %figure(5);
 % subplot(2,1,1), plot(x/24,phi(h*sum(I,2),P.IT,P.s),'LineWidth',3); hold on;
@@ -122,8 +127,12 @@ xlabel('Age of infection (x) [days]');
 %plot(x/24,A,'LineWidth',3); hold on;
 %title('$A(x)$','Interpreter','latex');
 %xlabel('Age of infection (x) [days]');
-%legend('$\sigma = 0$','$\sigma = 0.1$',...
+% legend('$\sigma = 0$','$\sigma = 0.1$',...
 %    '$\sigma = 0.25$','$\sigma = 0.5$','FontSize',35);
+% legend('$\theta = 0.001$','$\theta = 0.0005$',...
+%    '$\theta = 0.00025$','$\theta = 0.0001$','FontSize',35);
+% legend('$s = 0.01$','$s = 0.1$',...
+%    '$s = 0.2$','$s = 0.5$','$s = 1$','FontSize',35);
 %% Host infection plotting
 % figure;
 % plot(t/24,sum(HI,2),'LineWidth',3);

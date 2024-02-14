@@ -15,7 +15,7 @@ X_max = 300*24; % max time in days, max 200 days?
 tau_max = 20*24; % max 20 days?
 T_max = 200*24;
 xV_max = 20*24;
-h = 1; % time/age step size in hours, same across all timescales
+h = 5; % time/age step size in hours, same across all timescales
 
 x = (0:h:X_max)';
 nx = length(x);
@@ -44,7 +44,7 @@ G_save = zeros(nx,131);
 %% solve the within-host model for each value of P.c
 for ii = 0:130
     P.c = 0.005*ii;
-    [B, M, I, IG, G, A] = within_host_model(h, 0, X_max, tau_max, B0, M0, I0, IG0, G0, A0);
+    [~, M, I, IG, G, A] = within_host_model(h, 0, X_max, tau_max, B0, M0, I0, IG0, G0, A0);
     G_save(:,ii+1) = G;
 end
 
@@ -81,8 +81,6 @@ plot(invest,cum_inf4,'LineWidth',4);
 xlim([0 65]);
 xticks([0 10 20 30 40 50 60]);
 xtickformat('percentage');
-legend('$\psi = 0$','$\psi = 1/105$','$\psi = 1/70$','$\psi = 1/35$',...
-    'Interpreter','latex','FontSize',35);
 % find the maxima for different values of psi (recovery rate)
 [~, B] = max(cum_inf1);
 scatter(invest(B),cum_inf1(B),200,'filled','k');
@@ -96,7 +94,8 @@ ylabel('cumulative infectiousness ($f_1$)','Interpreter','latex');
 xlabel('Transmission investment (\%)','Interpreter','latex');
 set(gca,'FontSize',35);
 
-
+legend('$\psi = 0$','$\psi = 1/105$','$\psi = 1/70$','$\psi = 1/35$',...
+    'Interpreter','latex','FontSize',35);
 
 %%
 toc
