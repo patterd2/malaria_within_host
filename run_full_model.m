@@ -11,7 +11,7 @@ set(0,'defaultAxesXGrid','on');
 set(0,'defaultAxesYGrid','on');
 
 %% numerical configuration
-X_max = 600*24; % max time in days, max 300 days?
+X_max = 300*24; % max time in days, max 300 days?
 tau_max = 20*24; % max 20 days?
 T_max = 200*24;
 xV_max = 20*24;
@@ -133,6 +133,7 @@ xlabel('Age of infection (x) [days]');
 %    '$\theta = 0.00025$','$\theta = 0.0001$','FontSize',35);
 % legend('$s = 0.01$','$s = 0.1$',...
 %    '$s = 0.2$','$s = 0.5$','$s = 1$','FontSize',35);
+% legend('c = 5%','c = 20%','c = 40%','c = 60%','FontSize',35);
 %% Host infection plotting
 % figure;
 % plot(t/24,sum(HI,2),'LineWidth',3);

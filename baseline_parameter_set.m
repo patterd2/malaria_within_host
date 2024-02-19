@@ -1,7 +1,7 @@
 global P
 % values from Greischar et al., need to check units
 %% within-host model parameters
-P.c = 0.05; % parasite investment fraction
+P.c = 0.6; % parasite investment fraction
 P.mu = (1/120)/24;
 P.lambda = (2*10^(5))/24;
 P.Bstar = 5*10^6;
