@@ -1,7 +1,6 @@
-%% Main file to run the full model
-% (both within-host and human-vector systems)
-
+%% Compute the infectiousness profile for range of investment levels
 tic
+
 global P
 set(0,'defaultaxesfontsize', 25);
 set(0,'defaultLegendInterpreter','latex');
@@ -11,11 +10,11 @@ set(0,'defaultAxesXGrid','on')
 set(0,'defaultAxesYGrid','on')
 
 %% numerical configuration
-X_max = 300*24; % max time in days, max 200 days?
+X_max = 700*24; % max time in days, max 200 days?
 tau_max = 20*24; % max 20 days?
 T_max = 200*24;
 xV_max = 20*24;
-h = 5; % time/age step size in hours, same across all timescales
+h = 1; % time/age step size in hours, same across all timescales
 
 x = (0:h:X_max)';
 nx = length(x);
@@ -56,46 +55,88 @@ xlabel('Time since infection (days)');
 colormap jet;
 colorbar;
 clim([0 1]);
-xlim([0 280]);
-xticks([0 70 140 210 280]);
+xlim([0 350]);
+xticks([0 70 140 210 280 350]);
 ytickformat('percentage');
 set(gca,'YDir','normal');
 %ylim([0 0.65]);
+%% Gametocyte plotting heatmaps
+figure;
+imagesc(x/24,100*(0:0.005:0.65),(G_save<1)');
+title('Gametocytes above threshold?','Interpreter','latex');
+xlabel('Time since infection (days)');
+colormap gray;
+%colorbar;
+xlim([0 770]);
+%xticks([0 70 140 210 280 350]);
+ytickformat('percentage');
+ylabel('Transmission investment (\%)','Interpreter','latex');
+set(gca,'YDir','normal');
+
+figure;
+imagesc(x/24,100*(0:0.005:0.65),(G_save)');
+title('Gametocyte Count','Interpreter','latex');
+xlabel('Time since infection (days)','Interpreter','latex');
+colormap jet;
+colorbar;
+xlim([0 210]);
+%xticks([0 70 140 210 280 350]);
+ytickformat('percentage');
+set(gca,'YDir','normal');
+ylabel('Transmission investment (\%)','Interpreter','latex');
+
 %% Optimal strategy plotting
-ac = floor(280*24/h)+1;
+ac = floor(350*24/h)+1;
 cum_inf1 = h*sum(betaHV(G_save(1:ac,:)),1)/24;
 figure;
 invest = 100*(0:0.005:0.65);
 plot(invest,cum_inf1,'LineWidth',4);
 hold on;
-psi = 1/105;
-int_range = (0:h:(ac-1)*h)/24;
-cum_inf2 = h*sum(betaHV(G_save(1:ac,:)).*repmat(exp(-psi*int_range'),1,131),1)/24;
-plot(invest,cum_inf2,'LineWidth',4);
-psi = 1/70;
-cum_inf3 = h*sum(betaHV(G_save(1:ac,:)).*repmat(exp(-psi*int_range'),1,131),1)/24;
-plot(invest,cum_inf3,'LineWidth',4);
-psi = 1/35;
-cum_inf4 = h*sum(betaHV(G_save(1:ac,:)).*repmat(exp(-psi*int_range'),1,131),1)/24;
-plot(invest,cum_inf4,'LineWidth',4);
+% psi = 1/105;
+% int_range = (0:h:(ac-1)*h)/24;
+% cum_inf2 = h*sum(betaHV(G_save(1:ac,:)).*repmat(exp(-psi*int_range'),1,131),1)/24;
+% plot(invest,cum_inf2,'LineWidth',4);
+% psi = 1/70;
+% cum_inf3 = h*sum(betaHV(G_save(1:ac,:)).*repmat(exp(-psi*int_range'),1,131),1)/24;
+% plot(invest,cum_inf3,'LineWidth',4);
+% psi = 1/35;
+% cum_inf4 = h*sum(betaHV(G_save(1:ac,:)).*repmat(exp(-psi*int_range'),1,131),1)/24;
+% plot(invest,cum_inf4,'LineWidth',4);
 xlim([0 65]);
 xticks([0 10 20 30 40 50 60]);
 xtickformat('percentage');
 % find the maxima for different values of psi (recovery rate)
 [~, B] = max(cum_inf1);
 scatter(invest(B),cum_inf1(B),200,'filled','k');
-[~, B] = max(cum_inf2);
-scatter(invest(B),cum_inf2(B),200,'filled','k');
-[~, B] = max(cum_inf3);
-scatter(invest(B),cum_inf3(B),200,'filled','k');
-[~, B] = max(cum_inf4);
-scatter(invest(B),cum_inf4(B),200,'filled','k');
+% [~, B] = max(cum_inf2);
+% scatter(invest(B),cum_inf2(B),200,'filled','k');
+% [~, B] = max(cum_inf3);
+% scatter(invest(B),cum_inf3(B),200,'filled','k');
+% [~, B] = max(cum_inf4);
+% scatter(invest(B),cum_inf4(B),200,'filled','k');
 ylabel('cumulative infectiousness ($f_1$)','Interpreter','latex');
 xlabel('Transmission investment (\%)','Interpreter','latex');
 set(gca,'FontSize',35);
 
-legend('$\psi = 0$','$\psi = 1/105$','$\psi = 1/70$','$\psi = 1/35$',...
-    'Interpreter','latex','FontSize',35);
-
+% legend('$\psi = 0$','$\psi = 1/105$','$\psi = 1/70$','$\psi = 1/35$',...
+%     'Interpreter','latex','FontSize',35);
+%% Recovery time/Length of Infection plotting
+% This plot is based on defining recovery as the last timet that there was
+% > 1 gametocyte present in the host
+temp_rec = zeros(1,length(invest));
+for jj = 1:length(invest)
+    rec_time = find(G_save(:,jj)>1,1,'last');
+    if isempty(rec_time)
+        temp_rec(jj) = X_max;
+    else
+        temp_rec(jj) = rec_time;
+    end
+end
+figure;
+plot(invest,temp_rec/24,'LineWidth',3);
+ylabel('Length of Infection (days)','Interpreter','latex');
+xlabel('Transmission investment (\%)','Interpreter','latex');
+xlim([0 max(invest)]);
+ylim([0 X_max*1.1/24]);
 %%
 toc
