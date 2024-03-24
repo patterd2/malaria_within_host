@@ -11,11 +11,11 @@ set(0,'defaultAxesXGrid','on');
 set(0,'defaultAxesYGrid','on');
 
 %% numerical configuration
-X_max = 1000*24; % max time in days, max 300 days?
+X_max = 650*24; % max time in days, max 300 days?
 tau_max = 20*24; % max 20 days?
 T_max = 200*24;
 xV_max = 20*24;
-h = 0.5; % time/age step size in hours, same across all timescales
+h = 1; % time/age step size in hours, same across all timescales
 
 x = (0:h:X_max)';
 nx = length(x);
@@ -36,7 +36,7 @@ M0 = 0; % scalar, zero
 I0 = ones(1,ntau); % I(0,tau), should be nonzero
 I0(floor(48/h)+1:end) = 0; % I0 should be zero after 48 hours
 initial_innoc = 0.06;
-I0 = initial_innoc*I0/sum(I0);
+I0 = initial_innoc*I0/(h*trapz(I0));
 % I0 uniform from zero to 48 hours approx.
 IG0 = zeros(1,ntau); % IG(0,tau)
 G0 = 0; % scalar, zero
@@ -44,7 +44,9 @@ A0 = 0; % scalar, zero
 
 % NB: ordering of independent variables is I(x,tau), IG(x,tau)
 
-[B, M, I, IG, G, A] = within_host_model(h, 0, X_max, tau_max, B0, M0, I0, IG0, G0, A0);
+CC = P.c*ones(1,nx); % set the investment strategy
+[B, M, I, IG, G, A] = within_host_model(h, 0, X_max, tau_max, B0, M0, I0, IG0, G0, A0, CC);
+
 %% solve the between-host/vector model
 HS0 = 100; % scalar
 HI0 = h*ones(1,nx); % HI(0,x), vector
