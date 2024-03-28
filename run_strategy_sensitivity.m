@@ -10,11 +10,11 @@ set(0,'defaultAxesXGrid','on');
 set(0,'defaultAxesYGrid','on');
 
 %% numerical configuration
-X_max = 500*24; % max time in days, max 300 days?
+X_max = 700*24; % max time in days, max 300 days?
 tau_max = 20*24; % max 20 days?
 T_max = 200*24;
 xV_max = 20*24;
-h = 0.5; % time/age step size in hours, same across all timescales
+h = 0.25; % time/age step size in hours, same across all timescales
 
 x = (0:h:X_max)';
 nx = length(x);
@@ -69,23 +69,25 @@ for ii = 1:sim_days % changing strategy every two days
 end
 %%
 figure;
-plot(2*h*(1:sim_days),cum_inf1_dec,'LineWidth',3);
+plot(2*(1:sim_days),cum_inf1_dec-cum_inf1_baseline,'LineWidth',3);
 hold on;
-plot(2*h*(1:sim_days),cum_inf1_inc,'LineWidth',3);
-plot(2*h*(1:sim_days),cum_inf1_baseline*ones(1,length(1:sim_days)),':','LineWidth',3);
+plot(2*(1:sim_days),cum_inf1_inc-cum_inf1_baseline,'LineWidth',3);
+%plot(2*(1:sim_days),cum_inf1_baseline*ones(1,length(1:sim_days)),':','LineWidth',3);
+xlim([0 700]);
 hold on;
 xlabel('Day','Interpreter','latex');
 ylabel('Cumulative Infectiousness ($f_1$)','Interpreter','latex');
-legend('50\% decrease','50\% increase','baseline');
+legend('50\% decrease','50\% increase');
 %%
 figure;
-plot(2*h*(1:sim_days),x(length_infection_dec)/24,'LineWidth',3);
+plot(2*(1:sim_days),x(length_infection_dec)/24 - length_infection_baseline,'LineWidth',3);
 hold on;
-plot(2*h*(1:sim_days),x(length_infection_inc)/24,'LineWidth',3);
-plot(2*h*(1:sim_days),length_infection_baseline*ones(1,length(1:sim_days)),'--','LineWidth',3);
+plot(2*(1:sim_days),x(length_infection_inc)/24 - length_infection_baseline,'LineWidth',3);
+%plot(2*(1:sim_days),length_infection_baseline*ones(1,length(1:sim_days)),'--','LineWidth',3);
+xlim([0 700]);
 xlabel('Day','Interpreter','latex');
 ylabel('Length of infection (days)','Interpreter','latex');
-legend('50\% decrease','50\% increase','baseline','Location','northwest');
+legend('50\% decrease','50\% increase','Location','northwest');
 %%
 % figure;
 % plot(h*(1:sim_days),length_infection_inc,'LineWidth',3);
