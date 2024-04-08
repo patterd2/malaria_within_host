@@ -14,7 +14,7 @@ X_max = 700*24; % max time in days, max 300 days?
 tau_max = 20*24; % max 20 days?
 T_max = 200*24;
 xV_max = 20*24;
-h = 0.25; % time/age step size in hours, same across all timescales
+h = 0.5; % time/age step size in hours, same across all timescales
 
 x = (0:h:X_max)';
 nx = length(x);

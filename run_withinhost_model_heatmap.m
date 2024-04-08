@@ -10,7 +10,7 @@ set(0,'defaultAxesXGrid','on')
 set(0,'defaultAxesYGrid','on')
 
 %% numerical configuration
-X_max = 1000*24; % max time in days, max 200 days?
+X_max = 800*24; % max time in days, max 200 days?
 tau_max = 20*24; % max 20 days?
 T_max = 200*24;
 xV_max = 20*24;
@@ -32,7 +32,7 @@ B0 = P.Bstar; % scalar, nonzero
 M0 = 0; % scalar, zero
 I0 = ones(1,ntau); % I(0,tau), should be nonzero
 I0(floor(48/h)+1:end) = 0; % I0 should be zero after 48 hours
-initial_innoc = 10;
+initial_innoc = 0.06;
 I0 = initial_innoc*I0/(h*trapz(I0));
 % I0 uniform from zero to 48 hours approx.
 IG0 = zeros(1,ntau); % IG(0,tau)
@@ -53,36 +53,41 @@ end
 %% Infectiousness plotting
 % figure;
 % imagesc(x/24,100*invest_vec,betaHV(G_save)'); % Beta_HV(G(x)) heatmap
-% title('Infectiousness (\%)','Interpreter','latex');
-% xlabel('Time since infection (days)');
+% title('Infection Probability','Interpreter','latex');
+% xlabel('Time since infection (days)','Interpreter','latex');
 % colormap jet;
 % colorbar;
 % clim([0 1]);
-% xlim([0 600]);
+% xlim([0 500]);
+% set(gca,'ColorScale','linear')
+% %xlim([0 600]);
 % %xticks([0 70 140 210 280 350]);
 % ytickformat('percentage');
 % set(gca,'YDir','normal');
+% ylabel('Transmission investment (\%)','Interpreter','latex');
 %ylim([0 0.65]);
 %% Gametocyte plotting heatmaps
-% figure;
-% imagesc(x/24,100*invest_vec,(G_save<1)');
-% title('Gametocytes above threshold?','Interpreter','latex');
-% xlabel('Time since infection (days)');
-% colormap gray;
-% %colorbar;
-% xlim([0 700]);
-% %xticks([0 70 140 210 280 350]);
-% ytickformat('percentage');
-% ylabel('Transmission investment (\%)','Interpreter','latex');
-% set(gca,'YDir','normal');
-% 
+figure;
+imagesc(x/24,100*invest_vec,(G_save<1)');
+title('Gametocytes above threshold?','Interpreter','latex');
+xlabel('Time since infection (days)');
+colormap gray;
+%colorbar;
+xlim([0 700]);
+%xticks([0 70 140 210 280 350]);
+ytickformat('percentage');
+ylabel('Transmission investment (\%)','Interpreter','latex');
+set(gca,'YDir','normal');
+
 % figure;
 % imagesc(x/24,100*invest_vec,(G_save)');
 % title('Gametocyte Count','Interpreter','latex');
 % xlabel('Time since infection (days)','Interpreter','latex');
-% colormap jet;
+% colormap jetwhite;
 % colorbar;
-% xlim([0 210]);
+% xlim([0 500]);
+% set(gca,'ColorScale','log')
+% clim([1 10*10^4]);
 % %xticks([0 70 140 210 280 350]);
 % ytickformat('percentage');
 % set(gca,'YDir','normal');
@@ -91,10 +96,10 @@ end
 %% Optimal strategy plotting
 %ac = floor(350*24/h)+1;
 cum_inf1 = h*trapz(betaHV(G_save),1)/24;
-figure(1);
+figure(4);
+hold on;
 invest = 100*invest_vec;
 plot(invest,cum_inf1,'LineWidth',4);
-hold on;
 % psi = 1/105;
 % int_range = (0:h:(ac-1)*h)/24;
 % cum_inf2 = h*sum(betaHV(G_save(1:ac,:)).*repmat(exp(-psi*int_range'),1,131),1)/24;
@@ -119,11 +124,43 @@ scatter(invest(B),cum_inf1(B),200,'filled','k');
 % scatter(invest(B),cum_inf3(B),200,'filled','k');
 % [~, B] = max(cum_inf4);
 % scatter(invest(B),cum_inf4(B),200,'filled','k');
-ylabel('cumulative infectiousness ($f_1$)','Interpreter','latex');
+ylabel('Cumulative Infectiousness ($f_1$)','Interpreter','latex');
 xlabel('Transmission investment (\%)','Interpreter','latex');
 %set(gca,'FontSize',35);
 % legend('$\psi = 0$','$\psi = 1/105$','$\psi = 1/70$','$\psi = 1/35$',...
 %     'Interpreter','latex','FontSize',35);
+%% Optimal strategy versus time
+%ac = floor(350*24/h)+1;
+cum_inf1_time = h*cumtrapz(betaHV(G_save),1)/24;
+figure(6);
+hold on;
+invest = 100*invest_vec;
+%plot(x/24,cum_inf1_time(:,11),'LineWidth',3);
+plot(x/24,cum_inf1_time(:,B),'LineWidth',3);
+plot(x/24,cum_inf1_time(:,101),'LineWidth',3);
+plot(x/24,cum_inf1_time(:,181),'LineWidth',3);
+plot(x/24,cum_inf1_time(:,end),'LineWidth',3);
+
+%colormap jet;
+%colorbar;
+xlim([0 X_max/24]);
+ylabel('Cumulative Infectiousness ($f_1$)','Interpreter','latex');
+xlabel('Time since infection (days)','Interpreter','latex');
+legend('$c = 4.4\%$','$c = 25\%$','$c = 45\%$','$c = 60\%$','Interpreter','latex','FontSize',25);
+% psi = 1/105;
+% int_range = (0:h:(ac-1)*h)/24;
+% cum_inf2 = h*sum(betaHV(G_save(1:ac,:)).*repmat(exp(-psi*int_range'),1,131),1)/24;
+% plot(invest,cum_inf2,'LineWidth',4);
+% psi = 1/70;
+% cum_inf3 = h*sum(betaHV(G_save(1:ac,:)).*repmat(exp(-psi*int_range'),1,131),1)/24;
+% plot(invest,cum_inf3,'LineWidth',4);
+% psi = 1/35;
+% cum_inf4 = h*sum(betaHV(G_save(1:ac,:)).*repmat(exp(-psi*int_range'),1,131),1)/24;
+% plot(invest,cum_inf4,'LineWidth',4);
+%xlim([0 max(invest)]);
+%xticks([0 10 20 30 40 50 60]);
+%xtickformat('percentage');
+%xtickangle(0);
 %% Recovery time/Length of Infection plotting
 % This plot is based on defining recovery as the last timet that there was
 % > 1 gametocyte present in the host
@@ -136,7 +173,7 @@ for jj = 1:length(invest)
         temp_rec(jj) = rec_time;
     end
 end
-figure(2);
+figure(5);
 hold on;
 plot(invest,x(temp_rec)/24,'LineWidth',3);
 temp_duration = x(temp_rec)/24;
@@ -150,6 +187,8 @@ xtickformat('percentage');
 xtickangle(0);
 % legend('$\sigma = 0.75$','$\sigma = 0.7$','$\sigma = 0.65$','$\sigma = 0.6$',...
 %     '$\sigma = 0.55$','$\sigma = 0.5$','Interpreter','latex','FontSize',25);
+% legend('$\sigma \downarrow 20\%$','$\sigma (baseline)$','$\sigma \uparrow 10\%$','$\sigma \uparrow 20\%$',...
+%     '$\sigma \uparrow 50\%$','$\sigma \uparrow 100\%$','Interpreter','latex','FontSize',25);
 % legend('$\theta = 0.0000625$','$\theta = 0.000125$','$\theta = 0.0001875$','$\theta = 0.00025$',...
 %     '$\theta = 0.0003125$','$\theta = 0.000375$','Interpreter','latex','FontSize',25);
 %%

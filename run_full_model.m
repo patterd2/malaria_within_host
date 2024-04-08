@@ -11,11 +11,11 @@ set(0,'defaultAxesXGrid','on');
 set(0,'defaultAxesYGrid','on');
 
 %% numerical configuration
-X_max = 650*24; % max time in days, max 300 days?
+X_max = 700*24; % max time in days, max 300 days?
 tau_max = 20*24; % max 20 days?
 T_max = 200*24;
 xV_max = 20*24;
-h = 0.25; % time/age step size in hours, same across all timescales
+h = 0.5; % time/age step size in hours, same across all timescales
 
 x = (0:h:X_max)';
 nx = length(x);
@@ -45,6 +45,9 @@ A0 = 0; % scalar, zero
 % NB: ordering of independent variables is I(x,tau), IG(x,tau)
 
 CC = P.c*ones(1,nx); % set the investment strategy
+%sens_day = 250;
+%CC(1,1+(sens_day-1)*2*24/h:sens_day*2*24/h) = 1.5*CC(1,1+(sens_day-1)*2*24/h:sens_day*2*24/h); % sensitivity checks
+
 [B, M, I, IG, G, A] = within_host_model(h, 0, X_max, tau_max, B0, M0, I0, IG0, G0, A0, CC);
 
 %% solve the between-host/vector model
@@ -56,14 +59,42 @@ VI0 = zeros(1,nxV); % VI(t,xV) @ t = 0 (vector)
 [HS, HI, VS, VI] = human_vector_model(h, 0, X_max, T_max, xV_max, HS0, HI0, VS0, VI0, G);
 %% plot within-host dynamics
 figure(1);
-subplot(1,3,1), plot(x/24,B,'-','LineWidth',3); hold on;
-title('$B(x)$','Interpreter','latex');
+% subplot(1,3,1), plot(x/24,B,'-','LineWidth',3); hold on;
+% title('$B(x)$','Interpreter','latex');
+% hold on;
+% subplot(1,3,2), plot(x/24,M,'-','LineWidth',3); hold on;
+% title('$M(x)$','Interpreter','latex');
+% xlabel('Age of infection (x) [days]');
+%subplot(1,3,3), 
 hold on;
-subplot(1,3,2), plot(x/24,M,'-','LineWidth',3); hold on;
-title('$M(x)$','Interpreter','latex');
-xlabel('Age of infection (x) [days]');
-subplot(1,3,3), plot(x/24,G,'-','LineWidth',3); hold on;
+plot(x/24,G,':','LineWidth',3); 
+xlim([0 600]);
 title('$G(x)$','Interpreter','latex');
+xlabel('Time since infection (days)','Interpreter','latex');
+
+
+figure(2);
+hold on;
+infection_level = h*sum(I,2);
+plot(x/24,infection_level,':','LineWidth',3); 
+xlabel('Time since infection (days)','Interpreter','latex');
+xlim([0 600]);
+title('$\int I(x,\tau) \, d\tau$','Interpreter','latex');
+
+figure(3);
+hold on;
+plot(x/24,M,':','LineWidth',3); 
+xlabel('Time since infection (days)','Interpreter','latex');
+xlim([0 600]);
+title('$M(x)$','Interpreter','latex');
+
+figure(4);
+hold on;
+plot(x/24,B,':','LineWidth',3); 
+xlabel('Time since infection (days)','Interpreter','latex');
+xlim([0 600]);
+title('$B(x)$','Interpreter','latex');
+
 %legend('$B(x)$ uninfected red blood cells','$M(x)$ merozoites','$G(x)$ gametocytes');
 
 %%
@@ -98,23 +129,24 @@ title('$G(x)$','Interpreter','latex');
 % ylim([0 1]);
 
 %% Combined plotting
-figure(4);
-infection_level = h*sum(I,2);
-subplot(2,2,1), plot(x/24,infection_level,'-','LineWidth',3); hold on;
-axis tight;
-title('$\int I(x,\tau) \, d\tau$','Interpreter','latex');
-hold on;
-subplot(2,2,2), plot(x/24,infection_level*(5*10^6),'-','LineWidth',3); hold on;
-subplot(2,2,2), yline(10^7,'--k','LineWidth',3)
-title('Immune threshold','Interpreter','latex');
-subplot(2,2,3), plot(x/24,A,'-','LineWidth',3); hold on;
-xlabel('Age of infection (x) [days]');
-title('$A(x)$','Interpreter','latex');
-subplot(2,2,4), plot(x/24,1-exp(-P.theta*A),'-','LineWidth',3); hold on;
+% figure(4);
+% infection_level = h*sum(I,2);
+% subplot(2,2,1), plot(x/24,infection_level,'-','LineWidth',3); hold on;
+% axis tight;
+% title('$\int I(x,\tau) \, d\tau$','Interpreter','latex');
+% hold on;
+% subplot(2,2,2), plot(x/24,infection_level*(5*10^6),'-','LineWidth',3); hold on;
+% subplot(2,2,2), yline(10^7,'--k','LineWidth',3)
+% title('Immune threshold','Interpreter','latex');
+% subplot(2,2,3), plot(x/24,A,'-','LineWidth',3); hold on;
+% xlabel('Age of infection (x) [days]');
+% title('$A(x)$','Interpreter','latex');
+% subplot(2,2,4), plot(x/24,1-exp(-P.theta*A),'-','LineWidth',3); hold on;
 %subplot(2,2,4), plot(x/24,betaHV(G),'-','LineWidth',3); hold on;
-title('$1 - \exp(-\theta A(x))$','Interpreter','latex');
+%title('$1 - \exp(-\theta A(x))$','Interpreter','latex');
 %title('Infectiousness (\%)','Interpreter','latex');
-xlabel('Age of infection (x) [days]');
+%xlabel('Age of infection (x) [days]');
+
 % disp(infection_level(end))
 % legend('$c = 0.05$','$c = 0.4$','FontSize',35);
 % legend('$\mu_A = 0$','$\mu_A = 0.01/24$','$\mu_A = 0.1/24$','FontSize',35);
