@@ -3,7 +3,7 @@ X_max = 600*24; % max time in days, max 300 days?
 tau_max = 20*24; % max 20 days?
 T_max = 200*24;
 xV_max = 20*24;
-h = 0.25; % time/age step size in hours, same across all timescales
+h = 0.03125; % time/age step size in hours, same across all timescales
 
 x = (0:h:X_max)';
 nx = length(x);
@@ -31,10 +31,9 @@ G0 = 0; % scalar, zero
 A0 = 0; % scalar, zero
 
 % NB: ordering of independent variables is I(x,tau), IG(x,tau)
+CC = P.c*ones(1,nx); % set the investment strategy
 
 %% Calculate cumulative infectiousness baseline
 tic
-CC = P.c*ones(1,nx); % set the investment strategy, 10% is optimal
 [~, ~, ~, ~, G, ~] = within_host_model(h, 0, X_max, tau_max, B0, M0, I0, IG0, G0, A0, CC);
-cum_inf1_baseline = h*trapz(betaHV(G),1)/24;
 toc

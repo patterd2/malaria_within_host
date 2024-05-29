@@ -28,7 +28,7 @@ A(1) = A0;
 % precalculate some vectors to avoid many calls to gamcdf
 Gamma1 = gamma_fun(tau,h);
 Gamma2 = gamma_fun(tau(2:end)',h);
-Gamma3 = gamma_G(tau(2:end),h)';
+Gamma3 = h*gamma_G(tau(2:end),h)';
 Gamma4 = gamma_G(tau,h);
 for n = 1:nx-1 % evolving on the time since infection time scale
     % evolve ODEs for red blood cells and merozoites
@@ -42,9 +42,10 @@ for n = 1:nx-1 % evolving on the time since infection time scale
     % BC for IG
     IG(n+1,1) = CC(n+1)*P.p*B(n+1)*M(n+1);
     % evolve IG
-    IG(n+1,2:end) = ((1/h)*IG(n,1:end-1))./(1/h + P.mu + Gamma3);
+    IG(n+1,2:end) = IG(n,1:end-1)./(1 + h*P.mu + Gamma3);
     % evolve ODEs for gametocytes and the immune activation level
     G(n+1) = ((1/h)*G(n) + h*sum(Gamma4.*IG(n,:)'))./(1/h + P.muG);
-    A(n+1) = (A(n) + h*(phi( h*sum(I(n,:),2), P.IT, P.s)))/(1 + h*P.muA); 
+    %A(n+1) = (A(n) + h*(phi( h*sum(I(n,:),2), P.IT, P.s)))/(1 + h*P.muA); 
+    A(n+1) = (A(n) + h*(0.5*(1 + tanh((h*sum(I(n,:),2)-P.IT)/P.s))))/(1 + h*P.muA);
 end
 end

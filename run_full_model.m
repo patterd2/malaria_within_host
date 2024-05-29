@@ -15,7 +15,8 @@ X_max = 700*24; % max time in days, max 300 days?
 tau_max = 20*24; % max 20 days?
 T_max = 200*24;
 xV_max = 20*24;
-h = 0.5; % time/age step size in hours, same across all timescales
+G_threshold = 1; % gametocyte threshold to end infection
+h = 0.25; % time/age step size in hours, same across all timescales
 
 x = (0:h:X_max)';
 nx = length(x);
@@ -45,227 +46,37 @@ A0 = 0; % scalar, zero
 % NB: ordering of independent variables is I(x,tau), IG(x,tau)
 
 CC = P.c*ones(1,nx); % set the investment strategy
-%sens_day = 250;
-%CC(1,1+(sens_day-1)*2*24/h:sens_day*2*24/h) = 1.5*CC(1,1+(sens_day-1)*2*24/h:sens_day*2*24/h); % sensitivity checks
+
+sens_day = 2; % 125 -> day 250 due to 48 hour adjustment period, etc.
+CC(1,1+(sens_day-1)*2*24/h:sens_day*2*24/h) = 10*CC(1,1+(sens_day-1)*2*24/h:sens_day*2*24/h);
+% sensitivity checks: increase constant strat by 50% in chosen 48 hours
 
 [B, M, I, IG, G, A] = within_host_model(h, 0, X_max, tau_max, B0, M0, I0, IG0, G0, A0, CC);
 
 %% solve the between-host/vector model
-HS0 = 100; % scalar
-HI0 = h*ones(1,nx); % HI(0,x), vector
-VS0 = 100; % scalar
-VI0 = zeros(1,nxV); % VI(t,xV) @ t = 0 (vector)
-
-[HS, HI, VS, VI] = human_vector_model(h, 0, X_max, T_max, xV_max, HS0, HI0, VS0, VI0, G);
-%% plot within-host dynamics
-figure(1);
-% subplot(1,3,1), plot(x/24,B,'-','LineWidth',3); hold on;
-% title('$B(x)$','Interpreter','latex');
-% hold on;
-% subplot(1,3,2), plot(x/24,M,'-','LineWidth',3); hold on;
-% title('$M(x)$','Interpreter','latex');
-% xlabel('Age of infection (x) [days]');
-%subplot(1,3,3), 
-hold on;
-plot(x/24,G,':','LineWidth',3); 
-xlim([0 600]);
-title('$G(x)$','Interpreter','latex');
-xlabel('Time since infection (days)','Interpreter','latex');
-
-
-figure(2);
-hold on;
-infection_level = h*sum(I,2);
-plot(x/24,infection_level,':','LineWidth',3); 
-xlabel('Time since infection (days)','Interpreter','latex');
-xlim([0 600]);
-title('$\int I(x,\tau) \, d\tau$','Interpreter','latex');
-
-figure(3);
-hold on;
-plot(x/24,M,':','LineWidth',3); 
-xlabel('Time since infection (days)','Interpreter','latex');
-xlim([0 600]);
-title('$M(x)$','Interpreter','latex');
-
-figure(4);
-hold on;
-plot(x/24,B,':','LineWidth',3); 
-xlabel('Time since infection (days)','Interpreter','latex');
-xlim([0 600]);
-title('$B(x)$','Interpreter','latex');
-
-%legend('$B(x)$ uninfected red blood cells','$M(x)$ merozoites','$G(x)$ gametocytes');
-
-%%
-% figure;
-% plot(x/24,I(:,1)); % I(x,tau)
-% hold on;
-% plot(x/24,I(:,floor(length(x)/6)));
-% plot(x/24,I(:,floor(length(x)/3)));
-% plot(x/24,I(:,floor(2*length(x)/3)));
-% plot(x/24,I(:,floor(length(x))));
-% title('Infection dynamics (asexual stage): $I(x,\tau)$','Interpreter','latex');
-% xlabel('Time since infection (days)');
-% legend('$I(x,0)$','$I(x,0.5)$','$I(x,1)$','$I(x,2)$','$I(x,3)$');
-%axis tight;
-
-%% 
-% figure(2);
-% plot(x/24,h*sum(I,2),'LineWidth',3); % I(x,tau)
-% hold on;
-% title('Infection dynamics (asexual stage): $\int I(x,\tau) \, d\tau$','Interpreter','latex');
-% xlabel('Time since infection (days)');
-% axis tight;
-% legend('$h = 2$','$h = 1$','$h = 0.5$','$h = 0.25$','FontSize',35);
-% legend('$c = 0.05$','$c = 0.4$','FontSize',35);
-
-%% Infectiousness plotting
-% figure(3);
-% plot(x/24,betaHV(G),'LineWidth',3); % Beta_HV(G(x))
-% hold on;
-% title('Infectiousness (\%)','Interpreter','latex');
-% xlabel('Time since infection (days)');
-% ylim([0 1]);
-
-%% Combined plotting
-% figure(4);
-% infection_level = h*sum(I,2);
-% subplot(2,2,1), plot(x/24,infection_level,'-','LineWidth',3); hold on;
-% axis tight;
-% title('$\int I(x,\tau) \, d\tau$','Interpreter','latex');
-% hold on;
-% subplot(2,2,2), plot(x/24,infection_level*(5*10^6),'-','LineWidth',3); hold on;
-% subplot(2,2,2), yline(10^7,'--k','LineWidth',3)
-% title('Immune threshold','Interpreter','latex');
-% subplot(2,2,3), plot(x/24,A,'-','LineWidth',3); hold on;
-% xlabel('Age of infection (x) [days]');
-% title('$A(x)$','Interpreter','latex');
-% subplot(2,2,4), plot(x/24,1-exp(-P.theta*A),'-','LineWidth',3); hold on;
-%subplot(2,2,4), plot(x/24,betaHV(G),'-','LineWidth',3); hold on;
-%title('$1 - \exp(-\theta A(x))$','Interpreter','latex');
-%title('Infectiousness (\%)','Interpreter','latex');
-%xlabel('Age of infection (x) [days]');
-
-% disp(infection_level(end))
-% legend('$c = 0.05$','$c = 0.4$','FontSize',35);
-% legend('$\mu_A = 0$','$\mu_A = 0.01/24$','$\mu_A = 0.1/24$','FontSize',35);
-%% Immune dynamics plotting
-%figure(5);
-% subplot(2,1,1), plot(x/24,phi(h*sum(I,2),P.IT,P.s),'LineWidth',3); hold on;
-% axis tight;
-% xlabel('Age of infection (x) [days]');
-% title('$\phi(\int I(x,\tau) \, d\tau)$','Interpreter','latex');
-% hold on;
-% subplot(2,1,2), 
-%plot(x/24,A,'LineWidth',3); hold on;
-%title('$A(x)$','Interpreter','latex');
-%xlabel('Age of infection (x) [days]');
-% legend('$\sigma = 0$','$\sigma = 0.1$',...
-%    '$\sigma = 0.25$','$\sigma = 0.5$','FontSize',35);
-% legend('$\theta = 0.001$','$\theta = 0.0005$',...
-%    '$\theta = 0.00025$','$\theta = 0.0001$','FontSize',35);
-% legend('$s = 0.01$','$s = 0.1$',...
-%    '$s = 0.2$','$s = 0.5$','$s = 1$','FontSize',35);
-% legend('c = 5%','c = 20%','c = 40%','c = 60%','FontSize',35);
-%% Host infection plotting
-% figure;
-% plot(t/24,sum(HI,2),'LineWidth',3);
-% title('$\int H_I(t,x) \, dx$','Interpreter','latex');
-% xlabel('Time (days)');
-%%
-
-% figure;
-% plot(x/24,IG(:,1)); % I(x,tau)
-% hold on;
-% plot(x/24,IG(:,floor(length(x)/6)));
-% plot(x/24,IG(:,floor(length(x)/3)));
-% plot(x/24,IG(:,floor(2*length(x)/3)));
-% plot(x/24,IG(:,floor(length(x))));
-% title('Infection dynamics (sexual stage): $I_G(x,\tau)$');
-% xlabel('Time since infection (days)');
-% legend('$I_G(x,0)$','$I_G(x,0.5)$','$I_G(x,1)$','$I_G(x,2)$','$I_G(x,3)$');
-% axis tight;
-% grid on;
-
-%%
-% figure;
-% plot(x/24,A,'LineWidth',3);
-% hold on
-% plot(x/24,P.sigma*(1-exp(-P.theta*A)),'LineWidth',3);
-% hold on;
-% xlabel('Time since infection (days)');
-% legend('$A(x)$ immune activation level','$\sigma(1 - \exp(\theta A(x)))$ infection removal rate');
-% grid on;
-
-%%
-% figure;
-% imagesc(x/24,x/24,I);
-% title('$I(x,\tau)$');
-% set(gca,'YDir','normal');
-% colorbar;
-% clim([min(min(I)) max(max(I))+1]);
-% xlabel('$x$');
-% ylabel('$\tau$');
-% grid on;
-
-% figure;
-% imagesc(x/24,x/24,IG);
-% title('$I_G(x,\tau_G)$');
-% set(gca,'YDir','normal');
-% colorbar;
-% clim([min(min(IG)) max(max(IG))+1]);
-% xlabel('$x$');
-% ylabel('$\tau_G$');
-% grid on;
-
-%% plot human-vector dynamics
-% figure_setups;
-% plot(x/24,HS,'LineWidth',2);
-% hold on;
-% plot(x/24,VS,'LineWidth',2);
-% xlabel('Time (days)');
-% legend('$H_S(t)$ susceptible humans','$V_S(t)$ susceptible vectors');
-% grid on;
+% HS0 = 100; % scalar
+% HI0 = h*ones(1,nx); % HI(0,x), vector
+% VS0 = 100; % scalar
+% VI0 = zeros(1,nxV); % VI(t,xV) @ t = 0 (vector)
 % 
-% figure;
-% imagesc(x/24,x/24,HI);
-% title('$H_I(t,x)$');
-% set(gca,'YDir','normal');
-% colorbar;
-% clim([min(min(HI)) max(max(HI))+1]);
-% xlabel('$t$');
-% ylabel('$x$');
-% grid on;
-% 
-% figure;
-% imagesc(x/24,x/24,VI);
-% title('$V_I(t,\tau_V)$');
-% set(gca,'YDir','normal');
-% colorbar;
-% clim([min(min(VI)) max(max(VI))+1]);
-% xlabel('$t$');
-% ylabel('$\tau_V$');
-% grid on;
+% [HS, HI, VS, VI] = human_vector_model(h, 0, X_max, T_max, xV_max, HS0, HI0, VS0, VI0, G);
 
 %%
-% figure;
-% plot(x/24,HI(:,1)); % HI(t,x)
-% hold on;
-% plot(x/24,HI(:,floor(length(x)/3)));
-% plot(x/24,HI(:,floor(2*length(x)/3)));
-% plot(x/24,HI(:,floor(length(x))));
-% legend('$H_I(t,0)$','$H_I(t,1)$','$H_I(t,2)$','$H_I(t,3)$');
-% xlabel('$t$');
-% 
-% figure;
-% plot(x/24,VI(:,1)); % HI(t,x)
-% hold on;
-% plot(x/24,VI(:,floor(length(x)/3)));
-% plot(x/24,VI(:,floor(2*length(x)/3)));
-% plot(x/24,VI(:,floor(length(x))));
-% legend('$V_I(t,0)$','$V_I(t,1)$','$V_I(t,2)$','$V_I(t,3)$');
-% xlabel('$\tau_G$');
+standard_plotting;
+
+%%
+figure(7);
+hold on;
+title('$I(x,0)$','Interpreter','latex');
+plot(x/24,I(:,1),lineStyle,'LineWidth',3); 
+xlim([0 10]);
+
+%%
+figure(8);
+hold on;
+title('$IG(x,0)$','Interpreter','latex');
+plot(x/24,IG(:,1),lineStyle,'LineWidth',3); 
+xlim([0 10]);
 
 %%
 toc
