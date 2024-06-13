@@ -45,10 +45,12 @@ A0 = 0; % scalar, zero
 
 % NB: ordering of independent variables is I(x,tau), IG(x,tau)
 
-CC = P.c*ones(1,nx); % set the investment strategy
+CC = P.c*ones(1,nx); % set the baseline constant investment strategy
 
-sens_day = 2; % 125 -> day 250 due to 48 hour adjustment period, etc.
-CC(1,1+(sens_day-1)*2*24/h:sens_day*2*24/h) = 10*CC(1,1+(sens_day-1)*2*24/h:sens_day*2*24/h);
+sens_day = 2; % start day of the modification to strategy
+sens_length = 3; % number of days for which strategy is modified
+CC(1,1+(sens_day-1)*sens_length*24/h:sens_day*sens_length*24/h)...
+    = 2*CC(1, 1+(sens_day-1)*sens_length*24/h:sens_day*sens_length*24/h );
 % sensitivity checks: increase constant strat by 50% in chosen 48 hours
 
 [B, M, I, IG, G, A] = within_host_model(h, 0, X_max, tau_max, B0, M0, I0, IG0, G0, A0, CC);
