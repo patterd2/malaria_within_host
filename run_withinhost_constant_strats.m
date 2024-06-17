@@ -14,7 +14,7 @@ X_max = 700*24; % max time in days (default around 700)
 tau_max = 20*24; %  (default 20 days)
 T_max = 200*24;
 xV_max = 20*24;
-h = 0.25; % time/age step size in hours, same across all timescales
+h = 0.25; % time/age step size in hours, same across all timescales, 0.25 default
 G_threshold = 1; % threshold for ending infection, 0.16341545 ~ 1% trans. prob.
 
 x = (0:h:X_max)';
@@ -71,17 +71,15 @@ ylabel('Transmission investment (\%)','Interpreter','latex');
 ylim([0 60]);
 grid off;
 %% Gametocyte plotting heatmaps
-figure;
-imagesc(x/24,100*invest_vec,(G_save<G_threshold)');
-title('Presence of infection','Interpreter','latex');
-xlabel('Time since infection (days)','Interpreter','latex');
-colormap gray;
-%colorbar;
-xlim([0 650]);
-%xticks([0 70 140 210 280 350]);
-ytickformat('percentage');
-ylabel('Transmission investment (\%)','Interpreter','latex');
-set(gca,'YDir','normal');
+% figure;
+% imagesc(x/24,100*invest_vec,(G_save<G_threshold)');
+% title('Presence of infection','Interpreter','latex');
+% xlabel('Time since infection (days)','Interpreter','latex');
+% colormap gray;
+% xlim([0 650]);
+% ytickformat('percentage');
+% ylabel('Transmission investment (\%)','Interpreter','latex');
+% set(gca,'YDir','normal');
 
 % figure;
 % imagesc(x/24,100*invest_vec,(G_save)');
@@ -98,19 +96,20 @@ set(gca,'YDir','normal');
 % ylabel('Transmission investment (\%)','Interpreter','latex');
 
 %% Optimal strategy plotting
-%ac = floor(350*24/h)+1;
-cum_inf1 = h*trapz(betaHV(G_save),1)/24;
+ac = floor(280*24/h)+1; % when we only want to integrate up to day ac
+%cum_inf1 = h*trapz(betaHV(G_save),1)/24;
+cum_inf1 = h*trapz(betaHV(G_save(1:ac,:)),1)/24;
 figure(4);
 hold on;
 invest = 100*invest_vec;
-plot(invest,cum_inf1,'--','Color',[0 0.4470 0.7410],'LineWidth',4);
-%psi = 1/105;
-%cum_inf2 = h*trapz(betaHV(G_save).*repmat(exp(-psi*x/24),1,length(invest_vec)),1)/24;
-%plot(invest,cum_inf2,':','Color',[0 0.4470 0.7410],'LineWidth',4);
+%plot(invest,cum_inf1,'--','Color',[0 0.4470 0.7410],'LineWidth',4);
+psi = 1/105;
+cum_inf2 = h*trapz(betaHV(G_save(1:ac,:)).*repmat(exp(-psi*x(1:ac)/24),1,length(invest_vec)),1)/24;
+plot(invest,cum_inf2,':','Color',[0 0.4470 0.7410],'LineWidth',4);
 % psi = 1/70;
 % psi = 1/35;
 xlim([0 max(invest)]);
-ylim([0 600]);
+ylim([0 400]);
 xticks([0 10 20 30 40 50 60]);
 xtickformat('percentage');
 xtickangle(0);
@@ -118,8 +117,8 @@ xtickangle(0);
 % find the maxima for different values of psi (recovery rate)
 [~, B] = max(cum_inf1);
 scatter(invest(B),cum_inf1(B),200,'filled','k');
-%[~, B] = max(cum_inf2);
-%scatter(invest(B),cum_inf2(B),200,'filled','k');
+[~, B] = max(cum_inf2);
+scatter(invest(B),cum_inf2(B),200,'filled','k');
 % [~, B] = max(cum_inf3);
 % scatter(invest(B),cum_inf3(B),200,'filled','k');
 % [~, B] = max(cum_inf4);
@@ -177,6 +176,7 @@ end
 figure(5);
 hold on;
 plot(invest,x(temp_rec)/24,'LineWidth',4);
+%yline(280,'--','Color',[0 0.4470 0.7410],'LineWidth',4);
 temp_duration = x(temp_rec)/24;
 scatter(invest(B),temp_duration(B),200,'filled','k');
 ylabel('Length of Infection (days)','Interpreter','latex');

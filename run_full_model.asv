@@ -16,7 +16,7 @@ tau_max = 20*24; % max 20 days?
 T_max = 200*24;
 xV_max = 20*24;
 G_threshold = 1; % gametocyte threshold to end infection (doesn't impact dynamics)
-h = 0.1; % time/age step size in hours, same across all timescales
+h = 0.25; % time/age step size in hours, same across all timescales
 
 x = (0:h:X_max)';
 nx = length(x);
@@ -47,11 +47,12 @@ A0 = 0; % scalar, zero
 
 CC = P.c*ones(1,nx); % set the baseline constant investment strategy
 
-sens_day = 200; % start time (in days) of the modification to strategy
-sens_length = 10; % number of days for which strategy is modified
-start_index = max(1,floor(sens_day*24/h));
-CC(1,start_index:(start_index+floor(sens_length*24/h)) )...
-    = 2*CC(1, start_index:(start_index+floor(sens_length*24/h)) );
+sens_day = 2; % start day of the modification to strategy
+sens_length = 3; % number of days for which strategy is modified
+start_index = max(1,sens_day*24/h);
+CC(1,1+(sens_day-1)*sens_length*24/h:sens_day*sens_length*24/h)...
+    = 2*CC(1, s:sens_day*sens_length*24/h );
+% sensitivity checks: increase constant strat by 50% in chosen 48 hours
 
 [B, M, I, IG, G, A] = within_host_model(h, 0, X_max, tau_max, B0, M0, I0, IG0, G0, A0, CC);
 

@@ -49,15 +49,15 @@ title('iRBC abundance','Interpreter','latex');
 
 %legend('$B(x)$ uninfected red blood cells','$M(x)$ merozoites','$G(x)$ gametocytes');
 %% Plot gametocytes and merozoite recruitment
-lineStyle2 = ':';
+lineStyle2 = '-';
 figure(5);
 hold on;
 plot(x/24,G,lineStyle2,'Color',[0 0.4470 0.7410],'LineWidth',3);
 plot(x/24,h*P.beta*sum(gamma_fun(tau,h).*I'),lineStyle2,'Color',[0.8500 0.3250 0.0980],'LineWidth',3);
-%yline(10^2.4265,'--k','LineWidth',3); % sigmoid half maximum
-%yline(10^6,'--k','LineWidth',3);
+yline(10^2.4265,'--k','LineWidth',3); % sigmoid half maximum
+yline(10^6,'--k','LineWidth',3);
 ylim([0.01 1000000]);
-xline(immune_activation,lineStyle2,'Color','k','LineWidth',3);
+%xline(immune_activation,lineStyle2,'Color','k','LineWidth',3);
 yscale log;
 xlim([0 100]);
 legend('Gametocyte abundance','Merozoite recruitment','Interpreter','latex','Location','southeast');
