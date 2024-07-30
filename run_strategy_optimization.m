@@ -7,7 +7,7 @@ x = (0:h:X_max)';
 N = 100;
 max_cum_inf = zeros(N,1);
 save_strats = zeros(N,4); % matrix to save optimal weights
-save_init = zeros(N,4); % 
+save_init = zeros(N,4); %
 
 
 tic;

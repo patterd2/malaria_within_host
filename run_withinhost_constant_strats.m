@@ -10,7 +10,7 @@ set(0,'defaultAxesXGrid','on');
 set(0,'defaultAxesYGrid','on');
 
 %% numerical configuration
-X_max = 700*24; % max time in days (default around 700)
+X_max = 800*24; % max time in days (default around 700)
 tau_max = 20*24; %  (default 20 days)
 T_max = 200*24;
 xV_max = 20*24;
@@ -33,14 +33,14 @@ B0 = P.Bstar; % scalar, nonzero
 M0 = 0; % scalar, zero
 I0 = ones(1,ntau); % I(0,tau), should be nonzero
 I0(floor(48/h)+1:end) = 0; % I0 should be zero after 48 hours
-initial_innoc = 0.06;
+initial_innoc = 0.01; % baseline: 0.06
 I0 = initial_innoc*I0/(h*trapz(I0));
 % I0 uniform from zero to 48 hours approx.
 IG0 = zeros(1,ntau); % IG(0,tau)
 G0 = 0; % scalar, zero
 A0 = 0; % scalar, zero
 
-invest_vec = 0:0.001:0.6; % vector of constant strategy percentages
+invest_vec = 0:0.005:0.6; % vector of constant strategy percentages
 %invest_vec = 0:0.0005:0.12; 
 G_save = zeros(nx,length(invest_vec));
 %% solve the within-host model for each value of P.c
@@ -97,12 +97,12 @@ grid off;
 
 %% Optimal strategy plotting
 ac = floor(280*24/h)+1; % when we only want to integrate up to day ac
-%cum_inf1 = h*trapz(betaHV(G_save),1)/24;
-cum_inf1 = h*trapz(betaHV(G_save(1:ac,:)),1)/24;
+cum_inf1 = h*trapz(betaHV(G_save),1)/24;
+%cum_inf1 = h*trapz(betaHV(G_save(1:ac,:)),1)/24;
 figure(4);
 hold on;
 invest = 100*invest_vec;
-%plot(invest,cum_inf1,'--','Color',[0 0.4470 0.7410],'LineWidth',4);
+plot(invest,cum_inf1,'-','Color',[0 0.4470 0.7410],'LineWidth',4);
 psi = 1/105;
 cum_inf2 = h*trapz(betaHV(G_save(1:ac,:)).*repmat(exp(-psi*x(1:ac)/24),1,length(invest_vec)),1)/24;
 plot(invest,cum_inf2,':','Color',[0 0.4470 0.7410],'LineWidth',4);

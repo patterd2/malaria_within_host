@@ -16,7 +16,7 @@ tau_max = 20*24; % max 20 days?
 T_max = 200*24;
 xV_max = 20*24;
 G_threshold = 1; % gametocyte threshold to end infection (doesn't impact dynamics)
-h = 0.5; % time/age step size in hours, same across all timescales
+h = 0.125; % time/age step size in hours, same across all timescales
 
 x = (0:h:X_max)';
 nx = length(x);
@@ -36,7 +36,7 @@ B0 = P.Bstar; % scalar, nonzero
 M0 = 0; % scalar, zero
 I0 = ones(1,ntau); % I(0,tau), should be nonzero
 I0(floor(48/h)+1:end) = 0; % I0 should be zero after 48 hours
-initial_innoc = 0.06;
+initial_innoc = 0.06; % baseline: 0.06
 I0 = initial_innoc*I0/(h*trapz(I0));
 % I0 uniform from zero to 48 hours approx.
 IG0 = zeros(1,ntau); % IG(0,tau)
@@ -49,19 +49,19 @@ A0 = 0; % scalar, zero
 %% Set the parasite investment strategy and run the within-host model
 
 % vector CC stores the strategy (proportion investmented in onward transmission)
-%CC = P.c*ones(1,nx); % set the baseline constant investment strategy
+CC = P.c*ones(1,nx); % set the baseline constant investment strategy
 
 % Generate the strategy via a combination of cubic splines
-temp1 = importdata('basisMatrixNoKnots.txt'); % choose from spline files
-CC1 = temp1.data(:,1);
-CC2 = temp1.data(:,2);
-CC3 = temp1.data(:,3);
-CC4 = temp1.data(:,4);
-w1 = 0.199944393818933; 
-w2 = 0.197075562766502; 
-w3 = -0.453310918950100; 
-w4 = 0.714969288272976; % weights for basis splines
-CC = max(0,w1*CC1 + w2*CC2 + w3*CC3 + w4*CC4); 
+% temp1 = importdata('basisMatrixNoKnots.txt'); % choose from spline files
+% CC1 = temp1.data(:,1);
+% CC2 = temp1.data(:,2);
+% CC3 = temp1.data(:,3);
+% CC4 = temp1.data(:,4);
+% w1 = 0.199944393818933; 
+% w2 = 0.197075562766502; 
+% w3 = -0.453310918950100; 
+% w4 = 0.714969288272976; % weights for basis splines
+% CC = max(0,w1*CC1 + w2*CC2 + w3*CC3 + w4*CC4); 
 
 
 % uncomment the following lines of code to perturb the constant strategy
