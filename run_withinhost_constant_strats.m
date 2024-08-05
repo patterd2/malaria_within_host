@@ -14,7 +14,7 @@ X_max = 800*24; % max time in days (default around 700)
 tau_max = 20*24; %  (default 20 days)
 T_max = 200*24;
 xV_max = 20*24;
-h = 0.25; % time/age step size in hours, same across all timescales, 0.25 default
+h = 0.125; % time/age step size in hours, same across all timescales, 0.25 default
 G_threshold = 1; % threshold for ending infection, 0.16341545 ~ 1% trans. prob.
 
 x = (0:h:X_max)';
@@ -33,7 +33,7 @@ B0 = P.Bstar; % scalar, nonzero
 M0 = 0; % scalar, zero
 I0 = ones(1,ntau); % I(0,tau), should be nonzero
 I0(floor(48/h)+1:end) = 0; % I0 should be zero after 48 hours
-initial_innoc = 0.01; % baseline: 0.06
+initial_innoc = 0.06; % baseline: 0.06
 I0 = initial_innoc*I0/(h*trapz(I0));
 % I0 uniform from zero to 48 hours approx.
 IG0 = zeros(1,ntau); % IG(0,tau)

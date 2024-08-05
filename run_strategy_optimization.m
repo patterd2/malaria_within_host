@@ -4,7 +4,7 @@ baseline_parameter_set;
 X_max = 800*24; % max time in days
 h = 0.5; % time/age step size in hours, same across all timescales
 x = (0:h:X_max)';
-N = 100;
+N = 10;
 max_cum_inf = zeros(N,1);
 save_strats = zeros(N,4); % matrix to save optimal weights
 save_init = zeros(N,4); %
@@ -13,8 +13,8 @@ save_init = zeros(N,4); %
 tic;
 for i = 1:N
     %tic
-    %v = [-0.223 0.506 -0.282 0.153 0.067]; % initial weights for cubic splines
-    v = [2*(rand()-0.5) 2*(rand()-0.5) 2*(rand()-0.5) 2*(rand()-0.5)];
+    %v = [-0.223 0.506 -0.282 0.153]; % initial weights for cubic splines
+    v = [(rand()-0.5) (rand()-0.5) (rand()-0.5) (rand()-0.5)];
     %options = optimset('Display','iter','MaxIter',500);
     options = optimset('MaxIter',400);
     [a, funmax] = fminsearch(@withinhost_model_optimization,v,options);
@@ -32,6 +32,7 @@ toc;
 % July 9th optimal plot on Overleaf:
 % w1 = 0.199944393818933; w2 = 0.197075562766502; w3 = -0.453310918950100;
 % w4 = 0.714969288272976;
+% Strategy cumulative infectiousness within-host: 297.9466
 
 % generate the strategy
 temp1 = importdata('basisMatrixNoKnots.txt'); % choose from spline files
