@@ -11,7 +11,7 @@ set(0,'defaultAxesXGrid','on');
 set(0,'defaultAxesYGrid','on');
 
 %% numerical configuration
-X_max = 800*24; % max time in days
+X_max = 1000*24; % max time in days
 tau_max = 20*24; % max 20 days?
 T_max = 200*24;
 xV_max = 20*24;
@@ -52,16 +52,30 @@ A0 = 0; % scalar, zero
 %CC = P.c*ones(1,nx); % set the baseline constant investment strategy
 
 % Generate the strategy via a combination of cubic splines
-temp1 = importdata('basisMatrixNoKnots.txt'); % choose from spline files
+% * Note that grid must match the splines grid *
+temp1 = importdata('basisMatrixNoKnots_1000_0.5.txt'); % choose from spline files
 CC1 = temp1.data(:,1);
 CC2 = temp1.data(:,2);
 CC3 = temp1.data(:,3);
 CC4 = temp1.data(:,4);
-w1 = 0.199944393818933; 
-w2 = 0.197075562766502; 
-w3 = -0.453310918950100; 
-w4 = 0.714969288272976; % weights for basis splines
-CC = max(0,w1*CC1 + w2*CC2 + w3*CC3 + w4*CC4); 
+
+% w1 = 0.199944393818933; 
+% w2 = 0.197075562766502; 
+% w3 = -0.453310918950100; 
+% w4 = 0.714969288272976;
+
+% beta = 12 optimal weights
+% w1 = -0.0947225580423; 
+% w2 = 3.0996502357769; 
+% w3 = -21.0071355096429; 
+% w4 = 112.8119867596252;
+
+% beta = 17 optimal weights
+w1 = 0.274112296878810; 
+w2 = -0.037541099832533; 
+w3 = -0.017600836219813; 
+w4 = 0.060262196076839;
+CC = min(1,max(0,w1*CC1 + w2*CC2 + w3*CC3 + w4*CC4)); 
 
 
 % uncomment the following lines of code to perturb the constant strategy
@@ -85,18 +99,18 @@ CC = max(0,w1*CC1 + w2*CC2 + w3*CC3 + w4*CC4);
 standard_plotting;
 
 %%
-figure(7);
-hold on;
-title('$I(x,0)$','Interpreter','latex');
-plot(x/24,I(:,1),lineStyle,'LineWidth',3); 
-xlim([0 10]);
+% figure(7);
+% hold on;
+% title('$I(x,0)$','Interpreter','latex');
+% plot(x/24,I(:,1),lineStyle,'LineWidth',3); 
+% xlim([0 10]);
 
 %%
-figure(8);
-hold on;
-title('$IG(x,0)$','Interpreter','latex');
-plot(x/24,IG(:,1),lineStyle,'LineWidth',3); 
-xlim([0 10]);
+% figure(8);
+% hold on;
+% title('$IG(x,0)$','Interpreter','latex');
+% plot(x/24,IG(:,1),lineStyle,'LineWidth',3); 
+% xlim([0 10]);
 
 %%
 toc

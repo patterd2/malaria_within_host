@@ -1,7 +1,7 @@
 function b = withinhost_model_optimization(spline_weights)
 
 %% numerical configuration
-X_max = 800*24; % max time in days
+X_max = 1000*24; % max time in days
 tau_max = 20*24; % max 20 days?
 h = 0.5; % time/age step size in hours, same across all timescales
 
@@ -17,15 +17,14 @@ B0 = P.Bstar; % scalar, nonzero
 M0 = 0; % scalar, zero
 I0 = ones(1,ntau); % I(0,tau), should be nonzero
 I0(floor(48/h)+1:end) = 0; % I0 should be zero after 48 hours
-initial_innoc = 0.01;
+initial_innoc = 0.06;
 I0 = initial_innoc*I0/(h*trapz(I0));
 % I0 uniform from zero to 48 hours approx.
 IG0 = zeros(1,ntau); % IG(0,tau)
 G0 = 0; % scalar, zero
 A0 = 0; % scalar, zero
 %% Set the strategy based on the spline weights
-temp1 = importdata('basisMatrixNoKnots.txt'); % choose from spline files
-%temp1 = importdata('basisMatrixKnot.txt'); % choose from spline files
+temp1 = importdata('basisMatrixNoKnots_1000_0.5.txt'); % choose from spline files
 CC1 = temp1.data(:,1);
 CC2 = temp1.data(:,2);
 CC3 = temp1.data(:,3);

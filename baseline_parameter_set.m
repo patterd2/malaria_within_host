@@ -5,11 +5,11 @@ P.c = 0.044; % parasite investment fraction
 P.mu = (1/120)/24;
 P.lambda = (2*10^(5))/24;
 P.Bstar = 5*10^6;
-P.K = P.lambda*(P.Bstar)/(P.lambda - P.mu*P.Bstar); % ?
+P.K = P.lambda*(P.Bstar)/(P.lambda - P.mu*P.Bstar);
 P.p = (8.35*10^(-6))/24; % (8.35*10^(-6))/24 baseline
 P.beta = 16; % 16 baseline
-P.muM = 200/24;
-P.muG = 0.5/24;
+P.muM = 200/24; % 200 baseline
+P.muG = 0.5/24; % 0.5 baseline
 P.Bbar = P.lambda/(P.mu + P.lambda/P.K);
 P.R0 = ((P.beta*(1-P.c))*P.p/(P.muM + P.p*P.Bbar));
 
