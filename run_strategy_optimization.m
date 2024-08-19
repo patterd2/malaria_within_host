@@ -4,7 +4,7 @@ baseline_parameter_set;
 X_max = 1000*24; % max time in days
 h = 0.5; % time/age step size in hours, same across all timescales
 x = (0:h:X_max)';
-N = 3;
+N = 1;
 max_cum_inf = zeros(N,1);
 save_strats = zeros(N,4); % matrix to save optimal weights
 save_init = zeros(N,4); %
