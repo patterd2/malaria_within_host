@@ -14,12 +14,12 @@ RUN_constant = 1;
 RUN_nonconstant = 0;
 
 %% numerical configuration
-X_max = 800*24; % max time in days
+X_max = 1000*24; % max time in days
 tau_max = 20*24; % max 20 days
 T_max = 200*24;
 xV_max = 20*24;
 G_threshold = 1; % gametocyte threshold to end infection (doesn't impact dynamics)
-h = 0.25; % time/age step size in hours, same across all timescales
+h = 0.125; % time/age step size in hours, same across all timescales
 
 x = (0:h:X_max)';
 nx = length(x);
@@ -57,15 +57,14 @@ if RUN_constant
 else
     % Generate the strategy via a combination of cubic splines
     % * Note that grid must match the splines grid *
-    % NB weights calculated on [0,1000] with h = 0.5
+    
     temp1 = importdata('basisMatrixNoKnots_1000_0.5.txt'); % choose from spline files
     CC1 = temp1.data(:,1);
     CC2 = temp1.data(:,2);
     CC3 = temp1.data(:,3);
     CC4 = temp1.data(:,4);
 
-    % beta = 10 optimal weights
-
+    % NB these weights calculated on [0,1000] with h = 0.5
     % beta = 12 optimal weights
     % w1 = -0.0947225580423;
     % w2 = 3.0996502357769;
@@ -78,17 +77,23 @@ else
     % w3 = -6.650902767084378;
     % w4 = 28.585817571349580;
 
-    % beta = 16 optimal weights
-    w1 = 0.199952113448875;
-    w2 = 0.196344830982411;
-    w3 = -0.818954166334971;
-    w4 = 1.970686551134877;
+    % % beta = 16 optimal weights
+    % w1 = 0.199952113448875;
+    % w2 = 0.196344830982411;
+    % w3 = -0.818954166334971;
+    % w4 = 1.970686551134877;
 
     % beta = 17 optimal weights
     % w1 = 0.274112296878810;
     % w2 = -0.037541099832533;
     % w3 = -0.017600836219813;
     % w4 = 0.060262196076839;
+
+    % % beta = 16 with no immunity optimal weights
+    % w1 = 0.199952113448875;
+    % w2 = 0.196344830982411;
+    % w3 = -0.818954166334971;
+    % w4 = 1.970686551134877;
 
     CC = min(1,max(0,w1*CC1 + w2*CC2 + w3*CC3 + w4*CC4));
 end
@@ -125,17 +130,19 @@ if RUN_nonconstant
     %legend('$\beta = 12$','$\beta = 14$','$\beta = 16$','$\beta = 17$','Interpreter','latex');
 end
 %% Merozoite reproduction plotting
-M_dot = (M(2:end)- M(1:end-1))/h;
-
-R_M = (1-P.c).*P.beta*(P.p*M(2:end)./(P.p*M(2:end)+P.muM));%...
-    %.*(gamma_fun(48,h)./(gamma_fun(48,h)+P.mu+P.sigma*(1-exp(-P.theta*A(2:end)))));
+P1 = h*trapz(I(1:length_infection_out,:).*repmat(gamma_fun(tau,h),1,length_infection_out)',2);
+P2 = h*trapz(I(1:length_infection_out,:),2)*P.mu;
+P3 = h*trapz(I(1:length_infection_out,:),2).*P.sigma.*(1-exp(-P.theta*A(1:length_infection_out)));
+ 
+R_M = (1-P.c).*P.beta*(P.p*B(1:length_infection_out,:)./(P.p*B(1:length_infection_out,:)+P.muM))...
+    .*(P1./(P1 + P2 + P3));
 
 figure(11);
 hold on;
-%plot(x(2:end)/24,M_dot,'LineWidth',3);
-%plot(x(2:end)/24,M_dot./M(2:end),'.-','LineWidth',3);
-plot(x(2:end)/24,R_M,'.-','LineWidth',3);
+plot(x(1:length_infection_out)/24,R_M,'.-','LineWidth',3);
 xlabel('Time since infection (days)','Interpreter','latex');
+title('Effective Merozoite Number','Interpreter','latex');
+axis tight;
 
 %%
 toc

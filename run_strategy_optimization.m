@@ -1,8 +1,8 @@
 %% Script to perform strategy optimization for nonconstant parasite investment
 
 baseline_parameter_set;
-X_max = 1000*24; % max time in days
-h = 0.5; % time/age step size in hours, same across all timescales
+X_max = 280*24; % max time in days
+h = 0.25; % time/age step size in hours, same across all timescales
 x = (0:h:X_max)';
 N = 1;
 max_cum_inf = zeros(N,1);

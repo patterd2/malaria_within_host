@@ -1,9 +1,9 @@
 function b = withinhost_model_optimization(spline_weights)
 
 %% numerical configuration
-X_max = 1000*24; % max time in days
-tau_max = 20*24; % max 20 days?
-h = 0.5; % time/age step size in hours, same across all timescales
+X_max = 280*24; % max time in days
+tau_max = 20*24; % max 20 days
+h = 0.25; % time/age step size in hours, same across all timescales
 
 tau = (0:h:tau_max)';
 ntau = length(tau);
