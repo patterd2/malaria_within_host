@@ -1,5 +1,6 @@
 function b = withinhost_model_optimization(spline_weights)
 
+
 %% numerical configuration
 X_max = 280*24; % max time in days
 tau_max = 20*24; % max 20 days

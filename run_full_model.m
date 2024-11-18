@@ -3,12 +3,14 @@
 
 tic
 global P
-set(0,'defaultaxesfontsize', 25);
-set(0,'defaultLegendInterpreter','latex');
+set(0,'defaultTextFontName', 'Arial')
+set(0,'defaultaxesfontsize', 25); % 25 for 1X3, 20 for 1X2? 
+%set(0,'defaultLegendInterpreter','latex');
 set(0,'defaultAxesTickLabelInterpreter','none');
 set(0,'defaulttextinterpreter','none');
-set(0,'defaultAxesXGrid','on');
-set(0,'defaultAxesYGrid','on');
+set(0,'defaultAxesXGrid','off');
+set(0,'defaultAxesYGrid','off');
+set(0,'defaultAxesTickDir','out');
 
 RUN_constant = 1;
 RUN_nonconstant = 0;
@@ -19,7 +21,7 @@ tau_max = 20*24; % max 20 days
 T_max = 200*24;
 xV_max = 20*24;
 G_threshold = 1; % gametocyte threshold to end infection (doesn't impact dynamics)
-h = 0.125; % time/age step size in hours, same across all timescales
+h = 0.0625*2; % time/age step size in hours, same across all timescales
 
 x = (0:h:X_max)';
 nx = length(x);
@@ -57,7 +59,7 @@ if RUN_constant
 else
     % Generate the strategy via a combination of cubic splines
     % * Note that grid must match the splines grid *
-    
+
     temp1 = importdata('basisMatrixNoKnots_1000_0.5.txt'); % choose from spline files
     CC1 = temp1.data(:,1);
     CC2 = temp1.data(:,2);
@@ -78,10 +80,10 @@ else
     % w4 = 28.585817571349580;
 
     % % beta = 16 optimal weights
-    % w1 = 0.199952113448875;
-    % w2 = 0.196344830982411;
-    % w3 = -0.818954166334971;
-    % w4 = 1.970686551134877;
+    w1 = 0.199952113448875;
+    w2 = 0.196344830982411;
+    w3 = -0.818954166334971;
+    w4 = 1.970686551134877;
 
     % beta = 17 optimal weights
     % w1 = 0.274112296878810;
@@ -95,15 +97,15 @@ else
     % w3 = -0.818954166334971;
     % w4 = 1.970686551134877;
 
-    CC = min(1,max(0,w1*CC1 + w2*CC2 + w3*CC3 + w4*CC4));
+    CC = min(1,max(0,w1*CC1 + w2*CC2 + w3*CC3 + w4*CC4))';
 end
 
-% uncomment the following lines of code to perturb the constant strategy
-% sens_day = 3; % start time (in days) of the modification to strategy
-% sens_length = 2; % number of days for which strategy is modified
+% uncomment the following lines of code to perturb the given strategy
+% sens_day = 580; % start time (in days) of the modification to strategy
+% sens_length = 20; % number of days for which strategy is modified
 % start_index = max(1,floor(sens_day*24/h));
 % CC(1,start_index:(start_index+floor(sens_length*24/h)) )...
-%     = 2*CC(1, start_index:(start_index+floor(sens_length*24/h)) );
+%     = 0.5*CC(1, start_index:(start_index+floor(sens_length*24/h)) );
 
 [B, M, I, IG, G, A] = within_host_model(h, 0, X_max, tau_max, B0, M0, I0, IG0, G0, A0, CC);
 
@@ -118,31 +120,22 @@ end
 %%
 standard_plotting;
 
-%% Strategy plotting
-if RUN_nonconstant
-    figure(10);
-    hold on;
-    plot(x(1:length_infection_out)/24, 100*CC(1:length_infection_out),'LineWidth',3);
-    axis tight;
-    xlabel('Time since infection (days)','Interpreter','latex');
-    ylabel('Transmission investment (\%)','Interpreter','latex');
-    ytickformat('percentage');
-    %legend('$\beta = 12$','$\beta = 14$','$\beta = 16$','$\beta = 17$','Interpreter','latex');
-end
-%% Merozoite reproduction plotting
-P1 = h*trapz(I(1:length_infection_out,:).*repmat(gamma_fun(tau,h),1,length_infection_out)',2);
-P2 = h*trapz(I(1:length_infection_out,:),2)*P.mu;
-P3 = h*trapz(I(1:length_infection_out,:),2).*P.sigma.*(1-exp(-P.theta*A(1:length_infection_out)));
- 
-R_M = (1-P.c).*P.beta*(P.p*B(1:length_infection_out,:)./(P.p*B(1:length_infection_out,:)+P.muM))...
-    .*(P1./(P1 + P2 + P3));
+%legend('$\beta = 12$','$\beta = 14$','$\beta = 16$','$\beta = 17$','Interpreter','latex');
 
-figure(11);
-hold on;
-plot(x(1:length_infection_out)/24,R_M,'.-','LineWidth',3);
-xlabel('Time since infection (days)','Interpreter','latex');
-title('Effective Merozoite Number','Interpreter','latex');
-axis tight;
+%% Merozoite reproduction plotting
+% P1 = h*trapz(I(1:length_infection_out,:).*repmat(gamma_fun(tau,h),1,length_infection_out)',2);
+% P2 = h*trapz(I(1:length_infection_out,:),2)*P.mu;
+% P3 = h*trapz(I(1:length_infection_out,:),2).*P.sigma.*(1-exp(-P.theta*A(1:length_infection_out)));
+%
+% R_M = (1-P.c).*P.beta*(P.p*B(1:length_infection_out,:)./(P.p*B(1:length_infection_out,:)+P.muM))...
+%     .*(P1./(P1 + P2 + P3));
+
+% figure(11);
+% hold on;
+% plot(x(1:length_infection_out)/24,R_M,'.-','LineWidth',3);
+% xlabel('Time since infection (days)','Interpreter','latex');
+% title('Effective Merozoite Number','Interpreter','latex');
+% axis tight;
 
 %%
 toc

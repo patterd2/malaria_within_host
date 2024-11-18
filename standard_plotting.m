@@ -9,29 +9,27 @@ figure(1);
 % xlabel('Age of infection (x) [days]');
 %subplot(1,3,3), 
 hold on;
-plot(x/24,G,lineStyle,'LineWidth',3); 
-xlim([0 600]);
-ylim([1 (10.5)^5]);
-title('Gametocyte abundance','Interpreter','latex');
-xlabel('Time since infection (days)','Interpreter','latex');
-yscale log;
-length_infection_out = find(G>G_threshold,1,'last');
-disp(['Length of infection within-host: ',num2str(h*length_infection_out/24),' days']);
-
-figure(2);
-hold on;
 infection_level = h*sum(I,2);
 plot(x/24,infection_level,lineStyle,'LineWidth',3); 
-xlabel('Time since infection (days)','Interpreter','latex');
+xlabel('Time since infection (days)');
 immune_activation = h*find(infection_level>P.IT,1,'first')/24;
 if isempty(immune_activation)
     immune_activation = X_max;
 end
 xlim([0 600]);
 ylim([1 (10.5)^6]);
+ylabel('abundance');
 yscale log;
-title('iRBC abundance','Interpreter','latex');
-%title('$\int I(x,\tau) \, d\tau$','Interpreter','latex');
+%title('iRBC abundance','FontWeight','normal');
+set(gca,'TickDir','out');
+
+plot(x/24,G,lineStyle,'LineWidth',3); 
+length_infection_out = find(G>G_threshold,1,'last');
+disp(['Length of infection within-host: ',num2str(h*length_infection_out/24),' days']);
+set(gca,'TickDir','out');
+title('parasite dynamics','FontWeight','normal');
+legend('iRBC','gametocyte');
+legend('boxoff');
 
 % figure(3);
 % hold on;
@@ -50,32 +48,34 @@ title('iRBC abundance','Interpreter','latex');
 %legend('$B(x)$ uninfected red blood cells','$M(x)$ merozoites','$G(x)$ gametocytes');
 %% Plot gametocytes and merozoite recruitment
 lineStyle2 = '-';
-figure(5);
-hold on;
-plot(x/24,G,lineStyle2,'Color',[0 0.4470 0.7410],'LineWidth',3);
-plot(x/24,h*P.beta*sum(gamma_fun(tau,h).*I'),lineStyle2,'Color',[0.8500 0.3250 0.0980],'LineWidth',3);
-yline(10^2.4265,'--k','LineWidth',3); % sigmoid half maximum
-yline(10^6,'--k','LineWidth',3);
-ylim([0.01 1000000]);
-%xline(immune_activation,lineStyle2,'Color','k','LineWidth',3);
-yscale log;
-xlim([0 100]);
-legend('Gametocyte abundance','Merozoite recruitment','Interpreter','latex','Location','southeast');
-xlabel('Time since infection (days)','Interpreter','latex');
+% figure(5);
+% hold on;
+% plot(x/24,G,lineStyle2,'Color',[0 0.4470 0.7410],'LineWidth',3);
+% plot(x/24,h*P.beta*sum(gamma_fun(tau,h).*I'),lineStyle2,'Color',[0.8500 0.3250 0.0980],'LineWidth',3);
+% yline(10^2.4265,'--k','LineWidth',3); % sigmoid half maximum
+% yline(10^6,'--k','LineWidth',3);
+% ylim([0.01 1000000]);
+% %xline(immune_activation,lineStyle2,'Color','k','LineWidth',3);
+% yscale log;
+% xlim([0 100]);
+% legend('Gametocyte abundance','Merozoite recruitment','Interpreter','latex','Location','southeast');
+% xlabel('Time since infection (days)','Interpreter','latex');
 %%
 figure(6);
 hold on;
 yyaxis left
 plot(x/24,P.sigma*(1-exp(-P.theta*A))*h.*sum(I,2),lineStyle2,'LineWidth',3); 
 %xline(immune_activation,':k','LineWidth',3);
-xlabel('Time since infection (days)','Interpreter','latex');
+xlabel('Time since infection (days)');
 xlim([0 600]);
-ylabel('$iRBC$ removal rate','Interpreter','latex');
+ylabel('iRBC removal rate');
+set(gca,'TickDir','out');
 
 yyaxis right
 plot(x/24,(1-exp(-P.theta*A)),lineStyle2,'LineWidth',3); 
 ylim([0 1]);
-ylabel('Immune activation','Interpreter','latex');
+ylabel('Immune activation');
+set(gca,'TickDir','out');
 %%
 % figure(7);
 % hold on;
@@ -91,6 +91,22 @@ ylabel('Immune activation','Interpreter','latex');
 % legend('$I(x,0)$','$I(x,0.5)$','$I(x,1)$','$I(x,2)$','$I(x,3)$');
 %axis tight;
 
+%% Strategy plotting
+figure(11);
+hold on;
+plot(x(1:length_infection_out)/24, 100*CC(1:length_infection_out),'LineWidth',3);
+plot(x(length_infection_out:end)/24, 100*CC(length_infection_out:end),'--','LineWidth',3);
+scatter(x(length_infection_out)/24, 100*CC(length_infection_out),100,'k','diamond','filled')
+axis tight;
+xlabel('Time since infection (days)');
+ylabel('Transmission investment');
+title('Optimal Strategies','FontWeight','Normal');
+ytickformat('percentage');
+ylim([0 50]);
+xlim([0 800]);
+set(gca,'TickDir','out');
+box on;
+
 %% 
 % figure(2);
 % plot(x/24,h*sum(I,2),'LineWidth',3); % I(x,tau)
@@ -103,15 +119,20 @@ ylabel('Immune activation','Interpreter','latex');
 
 % Infectiousness plotting
 figure(3);
-plot(x/24,betaHV(G),lineStyle,'LineWidth',3); % Beta_HV(G(x))
 hold on;
-title('Host infectiousness','Interpreter','latex');
+plot(x(1:length_infection_out)/24, betaHV(G(1:length_infection_out)),'LineWidth',3);
+plot(x(length_infection_out:end)/24, betaHV(G(length_infection_out:end)),'--','LineWidth',3);
+scatter(x(length_infection_out)/24, betaHV(G(length_infection_out)),100,'k','diamond','filled')
+title('Host infectiousness','FontWeight','Normal');
 yline(betaHV(1000000000000000),'--k','LineWidth',3);
-yline(betaHV(1000000000000000)/2,':k','LineWidth',3);
-xlim([0 600]);
+%yline(betaHV(1000000000000000)/2,':k','LineWidth',3);
+xlim([0 800]);
 ylim([0 1]);
-xlabel('Time since infection (days)','Interpreter','latex');
+xlabel('Time since infection (days)');
+ylabel('Prop. mosquitoes infected');
 ylim([0 1]);
+set(gca,'TickDir','out');
+box on;
 
 %% Plot cumulative infectiousness for given strategy
 cum_inf1_time = h*cumtrapz(betaHV(G),1)/24;
@@ -121,8 +142,9 @@ plot(x/24,cum_inf1_time,lineStyle,'Color',[0.9290    0.6940    0.1250],'LineWidt
 plot(x/24,h*cumtrapz(betaHV(10^10)*ones(length(x),1),1)/24,'--k','LineWidth',3); % upper bound strategy
 xlim([0 600]);
 ylim([0 300]);
-title('Cumulative Infectiousness ($f_1$)','Interpreter','latex');
-xlabel('Time since infection (days)','Interpreter','latex');
+title('Cumulative Infectiousness','FontWeight','normal');
+xlabel('Time since infection (days)');
 %legend('constant','$c = 25\%$','$c = 45\%$','$c = 60\%$','Interpreter','latex','FontSize',25);
 % legend('$c = 4.4\%$','$c = 25\%$','$c = 45\%$','$c = 60\%$','Interpreter','latex','FontSize',25);
+set(gca,'TickDir','out');
 disp(['Strategy cumulative infectiousness within-host: ',num2str(cum_inf1_time(end))]);

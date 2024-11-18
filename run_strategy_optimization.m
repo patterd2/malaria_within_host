@@ -1,10 +1,11 @@
 %% Script to perform strategy optimization for nonconstant parasite investment
 
+% NB Make sure parameters agree with withinhost_model_optimization.m
 baseline_parameter_set;
 X_max = 280*24; % max time in days
 h = 0.25; % time/age step size in hours, same across all timescales
 x = (0:h:X_max)';
-N = 1;
+N = 1; % number of initial conditions to try
 max_cum_inf = zeros(N,1);
 save_strats = zeros(N,4); % matrix to save optimal weights
 save_init = zeros(N,4); %
@@ -55,5 +56,5 @@ plot(x/24,100*CC,'LineWidth',3);
 ylim([0 100]);
 xlabel('Time since infection (days)','Interpreter','latex');
 ytickformat('percentage');
-legend('best constant strategy','optimal strategy');
+legend('Optimal Strategy');
 
