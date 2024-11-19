@@ -98,14 +98,14 @@ plot(x(1:length_infection_out)/24, 100*CC(1:length_infection_out),'LineWidth',3)
 plot(x(length_infection_out:end)/24, 100*CC(length_infection_out:end),'--','LineWidth',3);
 scatter(x(length_infection_out)/24, 100*CC(length_infection_out),100,'k','diamond','filled')
 axis tight;
-xlabel('Time since infection (days)');
-ylabel('Transmission investment');
-title('Optimal Strategies','FontWeight','Normal');
+xlabel('age of infection (x)');
+ylabel('transmission investment');
+title('A. optimal strategies','FontWeight','Normal','HorizontalAlignment','right');
 ytickformat('percentage');
 ylim([0 50]);
 xlim([0 800]);
 set(gca,'TickDir','out');
-box on;
+box off;
 
 %% 
 % figure(2);
@@ -123,16 +123,16 @@ hold on;
 plot(x(1:length_infection_out)/24, betaHV(G(1:length_infection_out)),'LineWidth',3);
 plot(x(length_infection_out:end)/24, betaHV(G(length_infection_out:end)),'--','LineWidth',3);
 scatter(x(length_infection_out)/24, betaHV(G(length_infection_out)),100,'k','diamond','filled')
-title('Host infectiousness','FontWeight','Normal');
+title('B. host infectiousness','FontWeight','Normal','HorizontalAlignment','right');
 yline(betaHV(1000000000000000),'--k','LineWidth',3);
 %yline(betaHV(1000000000000000)/2,':k','LineWidth',3);
 xlim([0 800]);
 ylim([0 1]);
-xlabel('Time since infection (days)');
-ylabel('Prop. mosquitoes infected');
+xlabel('age of infection (x)');
+ylabel('prop. mosquitoes infected');
 ylim([0 1]);
 set(gca,'TickDir','out');
-box on;
+box off;
 
 %% Plot cumulative infectiousness for given strategy
 cum_inf1_time = h*cumtrapz(betaHV(G),1)/24;

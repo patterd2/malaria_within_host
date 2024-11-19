@@ -4,16 +4,17 @@
 tic
 global P
 set(0,'defaultTextFontName', 'Arial')
-set(0,'defaultaxesfontsize', 25); % 25 for 1X3, 20 for 1X2? 
+set(0,'defaultaxesfontsize', 20); % 25 for 1X3, 20 for 1X2
 %set(0,'defaultLegendInterpreter','latex');
 set(0,'defaultAxesTickLabelInterpreter','none');
 set(0,'defaulttextinterpreter','none');
 set(0,'defaultAxesXGrid','off');
 set(0,'defaultAxesYGrid','off');
 set(0,'defaultAxesTickDir','out');
+set(0,'defaultAxesLineWidth',1.5);
 
-RUN_constant = 1;
-RUN_nonconstant = 0;
+RUN_constant = 0;
+RUN_nonconstant = 1;
 
 %% numerical configuration
 X_max = 1000*24; % max time in days
@@ -21,7 +22,7 @@ tau_max = 20*24; % max 20 days
 T_max = 200*24;
 xV_max = 20*24;
 G_threshold = 1; % gametocyte threshold to end infection (doesn't impact dynamics)
-h = 0.0625*2; % time/age step size in hours, same across all timescales
+h = 0.0625*8; % time/age step size in hours, same across all timescales
 
 x = (0:h:X_max)';
 nx = length(x);
@@ -80,10 +81,10 @@ else
     % w4 = 28.585817571349580;
 
     % % beta = 16 optimal weights
-    w1 = 0.199952113448875;
-    w2 = 0.196344830982411;
-    w3 = -0.818954166334971;
-    w4 = 1.970686551134877;
+    % w1 = 0.199952113448875;
+    % w2 = 0.196344830982411;
+    % w3 = -0.818954166334971;
+    % w4 = 1.970686551134877;
 
     % beta = 17 optimal weights
     % w1 = 0.274112296878810;
