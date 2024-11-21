@@ -11,7 +11,7 @@ figure(1);
 hold on;
 infection_level = h*sum(I,2);
 plot(x/24,infection_level,lineStyle,'LineWidth',3); 
-xlabel('Time since infection (days)');
+xlabel('infection age x (days)');
 immune_activation = h*find(infection_level>P.IT,1,'first')/24;
 if isempty(immune_activation)
     immune_activation = X_max;
@@ -66,7 +66,7 @@ hold on;
 yyaxis left
 plot(x/24,P.sigma*(1-exp(-P.theta*A))*h.*sum(I,2),lineStyle2,'LineWidth',3); 
 %xline(immune_activation,':k','LineWidth',3);
-xlabel('Time since infection (days)');
+xlabel('infection age x (days)');
 xlim([0 600]);
 ylabel('iRBC removal rate');
 set(gca,'TickDir','out');
@@ -76,6 +76,11 @@ plot(x/24,(1-exp(-P.theta*A)),lineStyle2,'LineWidth',3);
 ylim([0 1]);
 ylabel('Immune activation');
 set(gca,'TickDir','out');
+%% Plot A and dA/dx
+% figure;
+% plot(x(1:end-1)/24,diff(A)/h,'LineWidth',3);
+% xlabel('days');
+% ylabel('dA/dx');
 %%
 % figure(7);
 % hold on;
@@ -98,12 +103,14 @@ plot(x(1:length_infection_out)/24, 100*CC(1:length_infection_out),'LineWidth',3)
 plot(x(length_infection_out:end)/24, 100*CC(length_infection_out:end),'--','LineWidth',3);
 scatter(x(length_infection_out)/24, 100*CC(length_infection_out),100,'k','diamond','filled')
 axis tight;
-xlabel('age of infection (x)');
+xlabel('infection age x (days)');
 ylabel('transmission investment');
-title('A. optimal strategies','FontWeight','Normal','HorizontalAlignment','right');
 ytickformat('percentage');
 ylim([0 50]);
 xlim([0 800]);
+LimitsX = xlim; LimitsY = ylim;
+title('A. optimal strategies','FontWeight','Normal',...
+    'HorizontalAlignment','left','position', [LimitsX(1), LimitsY(2)]);
 set(gca,'TickDir','out');
 box off;
 
@@ -123,12 +130,14 @@ hold on;
 plot(x(1:length_infection_out)/24, betaHV(G(1:length_infection_out)),'LineWidth',3);
 plot(x(length_infection_out:end)/24, betaHV(G(length_infection_out:end)),'--','LineWidth',3);
 scatter(x(length_infection_out)/24, betaHV(G(length_infection_out)),100,'k','diamond','filled')
-title('B. host infectiousness','FontWeight','Normal','HorizontalAlignment','right');
+LimitsX = xlim; LimitsY = ylim;
+title('B. host infectiousness','FontWeight','Normal',...
+    'HorizontalAlignment','left','position', [LimitsX(1), LimitsY(2)]);
 yline(betaHV(1000000000000000),'--k','LineWidth',3);
 %yline(betaHV(1000000000000000)/2,':k','LineWidth',3);
 xlim([0 800]);
 ylim([0 1]);
-xlabel('age of infection (x)');
+xlabel('infection age x (days)');
 ylabel('prop. mosquitoes infected');
 ylim([0 1]);
 set(gca,'TickDir','out');
@@ -143,7 +152,7 @@ plot(x/24,h*cumtrapz(betaHV(10^10)*ones(length(x),1),1)/24,'--k','LineWidth',3);
 xlim([0 600]);
 ylim([0 300]);
 title('Cumulative Infectiousness','FontWeight','normal');
-xlabel('Time since infection (days)');
+xlabel('infection age x (days)');
 %legend('constant','$c = 25\%$','$c = 45\%$','$c = 60\%$','Interpreter','latex','FontSize',25);
 % legend('$c = 4.4\%$','$c = 25\%$','$c = 45\%$','$c = 60\%$','Interpreter','latex','FontSize',25);
 set(gca,'TickDir','out');

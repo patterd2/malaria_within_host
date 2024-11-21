@@ -3,7 +3,7 @@ tic
 
 global P
 set(0,'defaultTextFontName', 'Arial')
-set(0,'defaultaxesfontsize', 26); % 26 for 1X3, 20 for 1X2
+set(0,'defaultaxesfontsize', 27); % 27 for 1X3, 20 for 1X2
 set(0,'defaultAxesTickLabelInterpreter','none');
 set(0,'defaulttextinterpreter','none');
 set(0,'defaultAxesXGrid','off');
@@ -12,7 +12,7 @@ set(0,'defaultAxesTickDir','out');
 set(0,'defaultAxesLineWidth',1.5);
 
 %% numerical configuration
-X_max = 800*24; % max time in days
+X_max = 650*24; % max time in days
 tau_max = 20*24; %  (default 20 days)
 T_max = 200*24;
 xV_max = 20*24;
@@ -60,9 +60,9 @@ end
 figure;
 imagesc(x/24,100*invest_vec,betaHV(G_save)'); % Beta_HV(G(x)) heatmap
 LimitsX = xlim; LimitsY = ylim;
-title('A. prop. mosquitoes infected','FontWeight','normal',...
+title('A. host infectiousness','FontWeight','normal',...
     'HorizontalAlignment','left','position', [LimitsX(1), LimitsY(2)]);
-xlabel('age of infection (x)');
+xlabel('infection age x (days)');
 colormap jet;
 colorbar;
 clim([0 1]);
@@ -108,16 +108,16 @@ box off;
 %% Optimal strategy plotting
 ac = floor(280*24/h)+1; % when we only want to integrate up to day ac
 if P.sigma == 0
-    cum_inf1 = h*trapz(betaHV(G_save(1:ac,:)),1)/24;
+    cum_inf1 = trapz(x(1:ac),betaHV(G_save(1:ac,:)))/24;
 else
-    cum_inf1 = h*trapz(betaHV(G_save),1)/24;
+    cum_inf1 = trapz(x,betaHV(G_save))/24;
 end
 figure(4);
 hold on;
 invest = 100*invest_vec;
 plot(invest,cum_inf1,'-','Color',[0 0.4470 0.7410],'LineWidth',4);
 psi = 1/105;
-cum_inf2 = h*trapz(betaHV(G_save(1:ac,:)).*repmat(exp(-psi*x(1:ac)/24),1,length(invest_vec)),1)/24;
+cum_inf2 = simps(x(1:ac),betaHV(G_save(1:ac,:)).*repmat(exp(-psi*x(1:ac)/24),1,length(invest_vec)),1)/24;
 plot(invest,cum_inf2,':','Color',[0 0.4470 0.7410],'LineWidth',4);
 % psi = 1/70;
 % psi = 1/35;
@@ -200,7 +200,7 @@ yline(280,'--','Color',[0 0.4470 0.7410],'LineWidth',4,'Alpha',1);
 yline(1/psi,':','Color',[0 0.4470 0.7410],'LineWidth',4,'Alpha',1);
 temp_duration = x(temp_rec)/24;
 scatter(invest(B),temp_duration(B),200,'filled','k');
-ylabel('age of infection (x)');
+ylabel('infection age x (days)');
 xlabel('transmission investment');
 xlim([0 max(invest)]);
 ylim([0 650]);

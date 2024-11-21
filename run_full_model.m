@@ -13,8 +13,8 @@ set(0,'defaultAxesYGrid','off');
 set(0,'defaultAxesTickDir','out');
 set(0,'defaultAxesLineWidth',1.5);
 
-RUN_constant = 0;
-RUN_nonconstant = 1;
+RUN_constant = 1;
+RUN_nonconstant = 0;
 
 %% numerical configuration
 X_max = 1000*24; % max time in days
@@ -22,7 +22,7 @@ tau_max = 20*24; % max 20 days
 T_max = 200*24;
 xV_max = 20*24;
 G_threshold = 1; % gametocyte threshold to end infection (doesn't impact dynamics)
-h = 0.0625*8; % time/age step size in hours, same across all timescales
+h = 0.0625*2; % time/age step size in hours, same across all timescales
 
 x = (0:h:X_max)';
 nx = length(x);
@@ -61,7 +61,7 @@ else
     % Generate the strategy via a combination of cubic splines
     % * Note that grid must match the splines grid *
 
-    temp1 = importdata('basisMatrixNoKnots_1000_0.5.txt'); % choose from spline files
+    temp1 = importdata('basisMatrixNoKnots_1000_0.125.txt'); % choose from spline files
     CC1 = temp1.data(:,1);
     CC2 = temp1.data(:,2);
     CC3 = temp1.data(:,3);
@@ -80,11 +80,11 @@ else
     % w3 = -6.650902767084378;
     % w4 = 28.585817571349580;
 
-    % % beta = 16 optimal weights
-    % w1 = 0.199952113448875;
-    % w2 = 0.196344830982411;
-    % w3 = -0.818954166334971;
-    % w4 = 1.970686551134877;
+    % % beta = 16 optimal weights, updated Nov 20
+    w1 = 0.197629881402594;
+    w2 = 0.168101173567905;
+    w3 = -0.825428150237733;
+    w4 = 2.193736391754480;
 
     % beta = 17 optimal weights
     % w1 = 0.274112296878810;
@@ -118,10 +118,10 @@ end
 %
 % [HS, HI, VS, VI] = human_vector_model(h, 0, X_max, T_max, xV_max, HS0, HI0, VS0, VI0, G);
 
-%%
-standard_plotting;
+%% Plotting and sim info
 
-%legend('$\beta = 12$','$\beta = 14$','$\beta = 16$','$\beta = 17$','Interpreter','latex');
+standard_plotting;
+disp(['Cumulative infectiousness of the strategy: ',num2str(simps(0:h:X_max,betaHV(G))/24)]);
 
 %% Merozoite reproduction plotting
 % P1 = h*trapz(I(1:length_infection_out,:).*repmat(gamma_fun(tau,h),1,length_infection_out)',2);
