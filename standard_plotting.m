@@ -106,8 +106,8 @@ axis tight;
 xlabel('infection age x (days)');
 ylabel('transmission investment');
 ytickformat('percentage');
-ylim([0 50]);
-xlim([0 800]);
+ylim([0 80]);
+xlim([0 1000]);
 LimitsX = xlim; LimitsY = ylim;
 title('A. optimal strategies','FontWeight','Normal',...
     'HorizontalAlignment','left','position', [LimitsX(1), LimitsY(2)]);
@@ -130,9 +130,6 @@ hold on;
 plot(x(1:length_infection_out)/24, betaHV(G(1:length_infection_out)),'LineWidth',3);
 plot(x(length_infection_out:end)/24, betaHV(G(length_infection_out:end)),'--','LineWidth',3);
 scatter(x(length_infection_out)/24, betaHV(G(length_infection_out)),100,'k','diamond','filled')
-LimitsX = xlim; LimitsY = ylim;
-title('B. host infectiousness','FontWeight','Normal',...
-    'HorizontalAlignment','left','position', [LimitsX(1), LimitsY(2)]);
 yline(betaHV(1000000000000000),'--k','LineWidth',3);
 %yline(betaHV(1000000000000000)/2,':k','LineWidth',3);
 xlim([0 800]);
@@ -140,6 +137,9 @@ ylim([0 1]);
 xlabel('infection age x (days)');
 ylabel('prop. mosquitoes infected');
 ylim([0 1]);
+LimitsX = xlim; LimitsY = ylim;
+title('B. host infectiousness','FontWeight','Normal',...
+    'HorizontalAlignment','left','position', [LimitsX(1), LimitsY(2)]);
 set(gca,'TickDir','out');
 box off;
 

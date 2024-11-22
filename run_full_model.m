@@ -13,8 +13,8 @@ set(0,'defaultAxesYGrid','off');
 set(0,'defaultAxesTickDir','out');
 set(0,'defaultAxesLineWidth',1.5);
 
-RUN_constant = 1;
-RUN_nonconstant = 0;
+RUN_constant = 0;
+RUN_nonconstant = 1;
 
 %% numerical configuration
 X_max = 1000*24; % max time in days
@@ -67,36 +67,30 @@ else
     CC3 = temp1.data(:,3);
     CC4 = temp1.data(:,4);
 
-    % NB these weights calculated on [0,1000] with h = 0.5
+    % NB these weights calculated on [0,1000] with h = 0.125
     % beta = 12 optimal weights
-    % w1 = -0.0947225580423;
-    % w2 = 3.0996502357769;
-    % w3 = -21.0071355096429;
-    % w4 = 112.8119867596252;
+    % w1 = -0.0833658568039;
+    % w2 = 3.7877052964783;
+    % w3 = -34.5839214708051;
+    % w4 = 249.3207851196597;
 
     % beta = 14 optimal weights
-    % w1 = 0.074769474519595;
-    % w2 = 1.139206622742030;
-    % w3 = -6.650902767084378;
-    % w4 = 28.585817571349580;
+    % w1 = 0.072355007196402;
+    % w2 = 1.212774197444973;
+    % w3 = -7.336961107418777;
+    % w4 = 32.746539009377429;
 
-    % % beta = 16 optimal weights, updated Nov 20
-    w1 = 0.197629881402594;
-    w2 = 0.168101173567905;
-    w3 = -0.825428150237733;
-    w4 = 2.193736391754480;
+    % % beta = 16 optimal weights
+    % w1 = 0.197629881402594;
+    % w2 = 0.168101173567905;
+    % w3 = -0.825428150237733;
+    % w4 = 2.193736391754480;
 
     % beta = 17 optimal weights
-    % w1 = 0.274112296878810;
-    % w2 = -0.037541099832533;
-    % w3 = -0.017600836219813;
-    % w4 = 0.060262196076839;
-
-    % % beta = 16 with no immunity optimal weights
-    % w1 = 0.199952113448875;
-    % w2 = 0.196344830982411;
-    % w3 = -0.818954166334971;
-    % w4 = 1.970686551134877;
+    w1 = 0.282994188967995;
+    w2 = -0.051947235680984;
+    w3 = -0.039442966387010;
+    w4 = 0.129188598123592;
 
     CC = min(1,max(0,w1*CC1 + w2*CC2 + w3*CC3 + w4*CC4))';
 end

@@ -1,13 +1,18 @@
 global P
 % values from Greischar et al., need to check units
 %% within-host model parameters
-P.c = 0.044; % parasite investment fraction (baseline parameters 0.044)
+P.c = 0.044; % parasite investment fraction 
+% beta = 12, 0.04453125 optimum
+% beta = 14, 0.04453125 optimum
+% beta = 16, 0.04453125 optimum
+% beta = 17, 0.04453125 optimum
+
 P.mu = (1/120)/24; % 1/120 baseline (daily rate)
 P.lambda = (2*10^(5))/24; % 2*10^(5) baseline (daily rate)
 P.Bstar = 5*10^6; % 5*10^6 baseline
 P.K = P.lambda*(P.Bstar)/(P.lambda - P.mu*P.Bstar);
 P.p = (8.35*10^(-6))/24; % (8.35*10^(-6))/24 baseline
-P.beta = 17; % 16 baseline
+P.beta = 16; % 16 baseline
 P.muM = 200/24; % 200 baseline
 P.muG = 0.5/24; % 0.5 baseline
 P.Bbar = P.lambda/(P.mu + P.lambda/P.K);
