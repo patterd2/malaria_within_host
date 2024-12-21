@@ -132,7 +132,7 @@ plot(x(length_infection_out:end)/24, betaHV(G(length_infection_out:end)),'--','L
 scatter(x(length_infection_out)/24, betaHV(G(length_infection_out)),100,'k','diamond','filled')
 yline(betaHV(1000000000000000),'--k','LineWidth',3);
 %yline(betaHV(1000000000000000)/2,':k','LineWidth',3);
-xlim([0 800]);
+xlim([0 1000]);
 ylim([0 1]);
 xlabel('infection age x (days)');
 ylabel('prop. mosquitoes infected');

@@ -33,13 +33,14 @@ for i = 1:N
     %     -0.777273665960356...
     %     1.622501485277946];
     %v = [(rand()-0.5) (rand()-0.5) (rand()-0.5) (rand()-0.5)];
-    v = 0.05;
-    options = optimset('Display','iter','MaxIter',25);
+    %v = 0.0646875;
+    v = [0.197970608866949 0.277584533586370 -0.690752278014845 0.885191801536105 0.009332779433444];
+    options = optimset('Display','iter','MaxIter',50);
     %options = optimset('MaxIter',100);
     [a, funmax] = fminsearch(@withinhost_model_optimization,v,options);
     %toc
     max_cum_inf(i) = -funmax;
-    save_strats(i,:) = a;
+    save_strats(i,1:length(a)) = a;
 
     output_string = sprintf('Run %d: Optimal cumulative infectiousness %f', i, -funmax);
     disp(output_string); % output optimal weights
@@ -50,19 +51,46 @@ toc;
 
 if isscalar(a)
     CC = a*ones(1,length(x));
+elseif length(a) == 2
+    temp1 = importdata('basisMatrixNoKnots_degree1_1000_0.125.txt'); % choose linear splines
+    %temp1 = importdata('basisMatrixKnot.txt'); % choose from spline files
+    CC1 = temp1.data(:,1);
+    CC2 = temp1.data(:,2);
+    a = save_strats(opt_strat, :);
+    CC = min(1,max(0,a(1)*CC1 + a(2)*CC2));
+    CC_init = min(1,max(0,v(1)*CC1 + v(2)*CC2));
+elseif length(a) == 3
+    temp1 = importdata('basisMatrixNoKnots_degree2_1000_0.125.txt'); % choose linear splines
+    CC1 = temp1.data(:,1);
+    CC2 = temp1.data(:,2);
+    CC3 = temp1.data(:,3);
+    a = save_strats(opt_strat, :);
+    CC = min(1,max(0,a(1)*CC1 + a(2)*CC2 + a(3)*CC3));
+    CC_init = min(1,max(0,v(1)*CC1 + v(2)*CC2 + v(3)*CC3));
 elseif length(a) == 4
     temp1 = importdata('basisMatrixNoKnots_1000_0.125.txt'); % choose from spline files
-    %temp1 = importdata('basisMatrixKnot.txt'); % choose from spline files
     CC1 = temp1.data(:,1);
     CC2 = temp1.data(:,2);
     CC3 = temp1.data(:,3);
     CC4 = temp1.data(:,4);
-    %CC5 = temp1.data(:,5);
     a = save_strats(opt_strat, :);
     CC = min(1,max(0,a(1)*CC1 + a(2)*CC2 +...
         a(3)*CC3 + a(4)*CC4));% + a(5)*CC5);
     CC_init = min(1,max(0,v(1)*CC1 + v(2)*CC2 +...
         v(3)*CC3 + v(4)*CC4)); % + v(5)*CC5);
+elseif length(a) == 5
+    temp1 = importdata('basisMatrixNoKnots_degree4_1000_0.125.txt'); % choose from spline files
+    %temp1 = importdata('basisMatrixKnot.txt'); % choose from spline files
+    CC1 = temp1.data(:,1);
+    CC2 = temp1.data(:,2);
+    CC3 = temp1.data(:,3);
+    CC4 = temp1.data(:,4);
+    CC5 = temp1.data(:,5);
+    a = save_strats(opt_strat, :);
+    CC = min(1,max(0,a(1)*CC1 + a(2)*CC2 +...
+        a(3)*CC3 + a(4)*CC4));% + a(5)*CC5);
+    CC_init = min(1,max(0,v(1)*CC1 + v(2)*CC2 +...
+        v(3)*CC3 + v(4)*CC4+ v(5)*CC5));
 end
 
 %% Plot optimal strategy

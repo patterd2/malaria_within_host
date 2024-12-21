@@ -29,6 +29,17 @@ A0 = 0; % scalar, zero
 %% Set the strategy based on the spline weights
 if isscalar(spline_weights)
     CC = spline_weights*ones(1,nx);
+elseif length(spline_weights) == 2
+    temp1 = importdata('basisMatrixNoKnots_degree1_1000_0.125.txt'); % choose linear splines
+    CC1 = temp1.data(:,1);
+    CC2 = temp1.data(:,2);
+    CC = min(1,max(0,spline_weights(1)*CC1 + spline_weights(2)*CC2));
+elseif length(spline_weights) == 3
+    temp1 = importdata('basisMatrixNoKnots_degree2_1000_0.125.txt'); % choose linear splines
+    CC1 = temp1.data(:,1);
+    CC2 = temp1.data(:,2);
+    CC3 = temp1.data(:,3);
+    CC = min(1,max(0,spline_weights(1)*CC1 + spline_weights(2)*CC2 + spline_weights(3)*CC3));
 elseif length(spline_weights) == 4
     temp1 = importdata('basisMatrixNoKnots_1000_0.125.txt'); % choose from spline files
     CC1 = temp1.data(:,1);
@@ -37,6 +48,15 @@ elseif length(spline_weights) == 4
     CC4 = temp1.data(:,4);
     CC = min(1,max(0,spline_weights(1)*CC1 + spline_weights(2)*CC2 +...
         spline_weights(3)*CC3 + spline_weights(4)*CC4));
+elseif length(spline_weights) == 5
+    temp1 = importdata('basisMatrixNoKnots_degree4_1000_0.125.txt'); % choose linear splines
+    CC1 = temp1.data(:,1);
+    CC2 = temp1.data(:,2);
+    CC3 = temp1.data(:,3);
+    CC4 = temp1.data(:,4);
+    CC5 = temp1.data(:,5);
+    CC = min(1,max(0,spline_weights(1)*CC1 + spline_weights(2)*CC2 +...
+        spline_weights(3)*CC3 + spline_weights(4)*CC4 + spline_weights(5)*CC5));
 end
 
 [~, ~, ~, ~, G, ~] = within_host_model(h, 0, X_max, tau_max, B0, M0, I0, IG0, G0, A0, CC);

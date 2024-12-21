@@ -1,11 +1,12 @@
 global P
 % values from Greischar et al., need to check units
 %% within-host model parameters
-P.c = 0.044; % parasite investment fraction 
-% beta = 12, 0.04453125 optimum
-% beta = 14, 0.04453125 optimum
-% beta = 16, 0.04453125 optimum
-% beta = 17, 0.04453125 optimum
+P.c = 0.04453125; % constant parasite investment fraction 
+% beta = 12, 0.050390625 optimum
+% beta = 13, 0.0646875   optimum
+% beta = 14, 0.05375     optimum
+% beta = 16, 0.04453125  optimum
+% beta = 17, 0.03375     optimum
 
 P.mu = (1/120)/24; % 1/120 baseline (daily rate)
 P.lambda = (2*10^(5))/24; % 2*10^(5) baseline (daily rate)

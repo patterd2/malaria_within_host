@@ -4,7 +4,7 @@
 tic
 global P
 set(0,'defaultTextFontName', 'Arial')
-set(0,'defaultaxesfontsize', 20); % 25 for 1X3, 20 for 1X2
+set(0,'defaultaxesfontsize', 25); % 25 for 1X3, 20 for 1X2 figures
 %set(0,'defaultLegendInterpreter','latex');
 set(0,'defaultAxesTickLabelInterpreter','none');
 set(0,'defaulttextinterpreter','none');
@@ -13,8 +13,11 @@ set(0,'defaultAxesYGrid','off');
 set(0,'defaultAxesTickDir','out');
 set(0,'defaultAxesLineWidth',1.5);
 
+%% Choose constant or nonconstant investment strategy
+
 RUN_constant = 0;
 RUN_nonconstant = 1;
+RUN_degree = 4; % degree of the polynomial spline (1,2,3,4 - 3 baseline)
 
 %% numerical configuration
 X_max = 1000*24; % max time in days
@@ -58,41 +61,76 @@ if RUN_constant
     % vector CC stores the strategy (proportion investmented in onward transmission)
     CC = P.c*ones(1,nx); % set the baseline constant investment strategy
 else
-    % Generate the strategy via a combination of cubic splines
+    % Generate the strategy via a combination of the splines
     % * Note that grid must match the splines grid *
+    if RUN_degree == 1
+        temp1 = importdata('basisMatrixNoKnots_degree1_1000_0.125.txt'); % choose from spline files
+        CC1 = temp1.data(:,1);
+        CC2 = temp1.data(:,2);
+        w1 = 0.094513570615327;
+        w2 = -0.052554393112016;
+        
+        CC = min(1,max(0,w1*CC1 + w2*CC2))';
+    elseif RUN_degree == 2
+        temp1 = importdata('basisMatrixNoKnots_degree2_1000_0.125.txt'); % choose from spline files
+        CC1 = temp1.data(:,1);
+        CC2 = temp1.data(:,2);
+        CC3 = temp1.data(:,3);
+        w1 = 0.299711689528846;
+        w2 = -0.374769344915881;
+        w3 = 0.590730397030689;
+        
+        CC = min(1,max(0,w1*CC1 + w2*CC2 + w3*CC3))';
+    elseif RUN_degree == 3
+        temp1 = importdata('basisMatrixNoKnots_1000_0.125.txt'); % choose from spline files
+        CC1 = temp1.data(:,1);
+        CC2 = temp1.data(:,2);
+        CC3 = temp1.data(:,3);
+        CC4 = temp1.data(:,4);
 
-    temp1 = importdata('basisMatrixNoKnots_1000_0.125.txt'); % choose from spline files
-    CC1 = temp1.data(:,1);
-    CC2 = temp1.data(:,2);
-    CC3 = temp1.data(:,3);
-    CC4 = temp1.data(:,4);
+        % NB these weights calculated on [0,1000] with h = 0.125
+        % beta = 12 optimal weights
+        % w1 = -0.0833658568039;
+        % w2 = 3.7877052964783;
+        % w3 = -34.5839214708051;
+        % w4 = 249.3207851196597;
 
-    % NB these weights calculated on [0,1000] with h = 0.125
-    % beta = 12 optimal weights
-    % w1 = -0.0833658568039;
-    % w2 = 3.7877052964783;
-    % w3 = -34.5839214708051;
-    % w4 = 249.3207851196597;
+        % beta = 14 optimal weights
+        % w1 = 0.072355007196402;
+        % w2 = 1.212774197444973;
+        % w3 = -7.336961107418777;
+        % w4 = 32.746539009377429;
 
-    % beta = 14 optimal weights
-    % w1 = 0.072355007196402;
-    % w2 = 1.212774197444973;
-    % w3 = -7.336961107418777;
-    % w4 = 32.746539009377429;
+        % % beta = 16 optimal weights
+        w1 = 0.197629881402594;
+        w2 = 0.168101173567905;
+        w3 = -0.825428150237733;
+        w4 = 2.193736391754480;
 
-    % % beta = 16 optimal weights
-    % w1 = 0.197629881402594;
-    % w2 = 0.168101173567905;
-    % w3 = -0.825428150237733;
-    % w4 = 2.193736391754480;
+        % beta = 17 optimal weights
+        % w1 = 0.282994188967995;
+        % w2 = -0.051947235680984;
+        % w3 = -0.039442966387010;
+        % w4 = 0.129188598123592;
 
-    % beta = 17 optimal weights
-    w1 = 0.282994188967995;
-    w2 = -0.051947235680984;
-    w3 = -0.039442966387010;
-    w4 = 0.129188598123592;
-
-    CC = min(1,max(0,w1*CC1 + w2*CC2 + w3*CC3 + w4*CC4))';
+        CC = min(1,max(0,w1*CC1 + w2*CC2 + w3*CC3 + w4*CC4))';
+    elseif RUN_degree == 4
+        temp1 = importdata('basisMatrixNoKnots_degree4_1000_0.125.txt'); % choose from spline files
+        CC1 = temp1.data(:,1);
+        CC2 = temp1.data(:,2);
+        CC3 = temp1.data(:,3);
+        CC4 = temp1.data(:,4);
+        CC5 = temp1.data(:,5);
+        w1 = 0.220470836603252;
+        w2 = 0.296449499531031;
+        w3 = -0.790096277376987;
+        w4 = 1.050393368686625;
+        w5 = 0.005878963403393;
+        
+        CC = min(1,max(0,w1*CC1 + w2*CC2 + w3*CC3 + w4*CC4 + w5*CC5))';
+    else
+        CC = P.c*ones(1,nx); % run constant strat if no valid degree
+    end
 end
 
 % uncomment the following lines of code to perturb the given strategy
