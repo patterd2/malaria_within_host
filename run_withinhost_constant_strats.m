@@ -12,7 +12,7 @@ set(0,'defaultAxesTickDir','out');
 set(0,'defaultAxesLineWidth',1.5);
 
 %% numerical configuration
-X_max = 650*24; % max time in days
+X_max = 800*24; % max time in days
 tau_max = 20*24; %  (default 20 days)
 T_max = 200*24;
 xV_max = 20*24;
@@ -42,7 +42,7 @@ IG0 = zeros(1,ntau); % IG(0,tau)
 G0 = 0; % scalar, zero
 A0 = 0; % scalar, zero
 
-invest_vec = 0:0.005:0.6; %  vector of constant strategy percentages
+invest_vec = 0.0025:0.0025:0.6; %  vector of constant strategy percentages
 %invest_vec = 0:0.0005:0.12; 
 G_save = zeros(nx,length(invest_vec));
 %% solve the within-host model for each value of P.c
@@ -71,11 +71,11 @@ xlim([0 650]);
 ytickformat('percentage');
 set(gca,'YDir','normal');
 ylabel('transmission investment');
-ylim([0 60]);
+ylim([0.5 60]);
 grid off;
 set(gca,'TickDir','out');
-yline(4.4,'LineWidth',4,'Color',[1 1 1],'Alpha',1);
-legend('\color{white} optimal strategy','');
+yline(4.4,'LineWidth',4,'Color',[0.5 0.5 0.5],'Alpha',1);
+legend('\color{gray} optimal strategy','Interpreter','tex');
 legend('boxoff') 
 box off;
 
@@ -121,7 +121,7 @@ cum_inf2 = simps(x(1:ac),betaHV(G_save(1:ac,:)).*repmat(exp(-psi*x(1:ac)/24),1,l
 plot(invest,cum_inf2,':','Color',[0 0.4470 0.7410],'LineWidth',4);
 % psi = 1/70;
 % psi = 1/35;
-xlim([0 max(invest)]);
+xlim([0.0 max(invest)]);
 ylim([0 350]);
 xticks([0 20 40 60]);
 yticks([0 100 200 300]);
@@ -202,7 +202,7 @@ temp_duration = x(temp_rec)/24;
 scatter(invest(B),temp_duration(B),200,'filled','k');
 ylabel('infection age x (days)');
 xlabel('transmission investment');
-xlim([0 max(invest)]);
+xlim([0.0 max(invest)]);
 ylim([0 650]);
 %ylim([0 1.1*X_max/24]);
 xticks([0 20 40 60]);

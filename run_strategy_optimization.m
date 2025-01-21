@@ -1,8 +1,8 @@
 %% Script to perform strategy optimization for nonconstant parasite investment
 tic
+
 set(0,'defaultTextFontName', 'Arial')
 set(0,'defaultaxesfontsize', 20); % 25 for 1X3, 20 for 1X2
-%set(0,'defaultLegendInterpreter','latex');
 set(0,'defaultAxesTickLabelInterpreter','none');
 set(0,'defaulttextinterpreter','none');
 set(0,'defaultAxesXGrid','off');
@@ -34,8 +34,13 @@ for i = 1:N
     %     1.622501485277946];
     %v = [(rand()-0.5) (rand()-0.5) (rand()-0.5) (rand()-0.5)];
     %v = 0.0646875;
-    v = [0.197970608866949 0.277584533586370 -0.690752278014845 0.885191801536105 0.009332779433444];
-    options = optimset('Display','iter','MaxIter',50);
+
+    % optimal weights for degree 4 with day 75 knot
+    %v = [-0.221087421864143 0.512198995086951 -0.510947054140931 0.470198208196176 0.027510246532859];
+    %v = [rand()-0.5 rand()-0.5 rand()-0.5 rand()-0.5];
+    v = [0.450074234222680 -0.319763074524261 0.012624735926702 0.899388847475554];
+    options = optimset('Display','iter','MaxIter',100);
+    %options = optimset('Display','iter','MaxIter',50,'PlotFcns','optimplotfval','TolX',1e-7);
     %options = optimset('MaxIter',100);
     [a, funmax] = fminsearch(@withinhost_model_optimization,v,options);
     %toc
@@ -45,7 +50,6 @@ for i = 1:N
     output_string = sprintf('Run %d: Optimal cumulative infectiousness %f', i, -funmax);
     disp(output_string); % output optimal weights
 end
-toc;
 %% plot the optimal strategy versus time
 [~, opt_strat] = max(max_cum_inf); % identify the optimum
 
@@ -68,7 +72,10 @@ elseif length(a) == 3
     CC = min(1,max(0,a(1)*CC1 + a(2)*CC2 + a(3)*CC3));
     CC_init = min(1,max(0,v(1)*CC1 + v(2)*CC2 + v(3)*CC3));
 elseif length(a) == 4
-    temp1 = importdata('basisMatrixNoKnots_1000_0.125.txt'); % choose from spline files
+    %temp1 = importdata('basisMatrixKnot125_degree3_1000_0.125.txt');
+    %temp1 = importdata('basisMatrixKnot25_degree3_1000_0.125.txt'); % with knot
+    %temp1 = importdata('basisMatrixKnot75_degree3_1000_0.125.txt'); % with knot
+    temp1 = importdata('basisMatrixNoKnots_1000_0.125.txt'); % no knot
     CC1 = temp1.data(:,1);
     CC2 = temp1.data(:,2);
     CC3 = temp1.data(:,3);
@@ -79,8 +86,8 @@ elseif length(a) == 4
     CC_init = min(1,max(0,v(1)*CC1 + v(2)*CC2 +...
         v(3)*CC3 + v(4)*CC4)); % + v(5)*CC5);
 elseif length(a) == 5
-    temp1 = importdata('basisMatrixNoKnots_degree4_1000_0.125.txt'); % choose from spline files
-    %temp1 = importdata('basisMatrixKnot.txt'); % choose from spline files
+    temp1 = importdata('basisMatrixKnot75_degree4_1000_0.125.txt'); % with knot
+    %temp1 = importdata('basisMatrixNoKnots_degree4_1000_0.125.txt'); % no knot
     CC1 = temp1.data(:,1);
     CC2 = temp1.data(:,2);
     CC3 = temp1.data(:,3);

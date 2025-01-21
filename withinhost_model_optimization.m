@@ -41,7 +41,10 @@ elseif length(spline_weights) == 3
     CC3 = temp1.data(:,3);
     CC = min(1,max(0,spline_weights(1)*CC1 + spline_weights(2)*CC2 + spline_weights(3)*CC3));
 elseif length(spline_weights) == 4
-    temp1 = importdata('basisMatrixNoKnots_1000_0.125.txt'); % choose from spline files
+    %temp1 = importdata('basisMatrixKnot125_degree3_1000_0.125.txt'); 
+    %temp1 = importdata('basisMatrixKnot25_degree3_1000_0.125.txt'); 
+    %temp1 = importdata('basisMatrixKnot75_degree3_1000_0.125.txt'); 
+    temp1 = importdata('basisMatrixNoKnots_1000_0.125.txt'); % no knot
     CC1 = temp1.data(:,1);
     CC2 = temp1.data(:,2);
     CC3 = temp1.data(:,3);
@@ -49,7 +52,8 @@ elseif length(spline_weights) == 4
     CC = min(1,max(0,spline_weights(1)*CC1 + spline_weights(2)*CC2 +...
         spline_weights(3)*CC3 + spline_weights(4)*CC4));
 elseif length(spline_weights) == 5
-    temp1 = importdata('basisMatrixNoKnots_degree4_1000_0.125.txt'); % choose linear splines
+    temp1 = importdata('basisMatrixKnot75_degree4_1000_0.125.txt'); % choose from spline files
+    %temp1 = importdata('basisMatrixNoKnots_degree4_1000_0.125.txt'); % choose linear splines
     CC1 = temp1.data(:,1);
     CC2 = temp1.data(:,2);
     CC3 = temp1.data(:,3);

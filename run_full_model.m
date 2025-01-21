@@ -3,8 +3,8 @@
 
 tic
 global P
-set(0,'defaultTextFontName', 'Arial')
-set(0,'defaultaxesfontsize', 25); % 25 for 1X3, 20 for 1X2 figures
+set(0,'defaultTextFontName', 'Arial');
+set(0,'defaultaxesfontsize', 20); % 25 for 1X3, 20 for 1X2 figures
 %set(0,'defaultLegendInterpreter','latex');
 set(0,'defaultAxesTickLabelInterpreter','none');
 set(0,'defaulttextinterpreter','none');
@@ -17,7 +17,7 @@ set(0,'defaultAxesLineWidth',1.5);
 
 RUN_constant = 0;
 RUN_nonconstant = 1;
-RUN_degree = 4; % degree of the polynomial spline (1,2,3,4 - 3 baseline)
+RUN_degree = 3; % degree of the polynomial spline (1,2,3,4 - 3 baseline)
 
 %% numerical configuration
 X_max = 1000*24; % max time in days
@@ -69,7 +69,7 @@ else
         CC2 = temp1.data(:,2);
         w1 = 0.094513570615327;
         w2 = -0.052554393112016;
-        
+
         CC = min(1,max(0,w1*CC1 + w2*CC2))';
     elseif RUN_degree == 2
         temp1 = importdata('basisMatrixNoKnots_degree2_1000_0.125.txt'); % choose from spline files
@@ -79,16 +79,37 @@ else
         w1 = 0.299711689528846;
         w2 = -0.374769344915881;
         w3 = 0.590730397030689;
-        
+
         CC = min(1,max(0,w1*CC1 + w2*CC2 + w3*CC3))';
     elseif RUN_degree == 3
-        temp1 = importdata('basisMatrixNoKnots_1000_0.125.txt'); % choose from spline files
+        temp1 = importdata('basisMatrixKnot125_degree3_1000_0.125.txt'); %
+        % knot options: 25, 75, 125
+        %temp1 = importdata('basisMatrixNoKnots_1000_0.125.txt');
+        %standard
         CC1 = temp1.data(:,1);
         CC2 = temp1.data(:,2);
         CC3 = temp1.data(:,3);
         CC4 = temp1.data(:,4);
 
-        % NB these weights calculated on [0,1000] with h = 0.125
+        % optimal weights with a knot at day 25, beta = 16
+        % w1 = -23.842287422949948;
+        % w2 = 0.484265317658271;
+        % w3 = -0.455377758530129;
+        % w4 = 0.400541070683154;
+
+        % optimal weights with a knot at day 75, beta = 16
+        % w1 = -0.222178862091422;
+        % w2 = 0.512486123675708;
+        % w3 = -0.513683492605781;
+        % w4 = 0.478970226894363;
+
+        % optimal weights with a knot at day 125, beta = 16
+        w1 = 0.002665299973821;
+        w2 = 0.390831987276833;
+        w3 = -0.376379753443364;
+        w4 = 0.371610178849970;
+
+        % NB these weights are calculated on [0,1000] with h = 0.125
         % beta = 12 optimal weights
         % w1 = -0.0833658568039;
         % w2 = 3.7877052964783;
@@ -101,11 +122,11 @@ else
         % w3 = -7.336961107418777;
         % w4 = 32.746539009377429;
 
-        % % beta = 16 optimal weights
-        w1 = 0.197629881402594;
-        w2 = 0.168101173567905;
-        w3 = -0.825428150237733;
-        w4 = 2.193736391754480;
+        % beta = 16 optimal weights -> STANDARD
+        % w1 = 0.197629881402594;
+        % w2 = 0.168101173567905;
+        % w3 = -0.825428150237733;
+        % w4 = 2.193736391754480;
 
         % beta = 17 optimal weights
         % w1 = 0.282994188967995;
@@ -115,18 +136,24 @@ else
 
         CC = min(1,max(0,w1*CC1 + w2*CC2 + w3*CC3 + w4*CC4))';
     elseif RUN_degree == 4
-        temp1 = importdata('basisMatrixNoKnots_degree4_1000_0.125.txt'); % choose from spline files
+        temp1 = importdata('basisMatrixKnot75_degree4_1000_0.125.txt');
+        %temp1 = importdata('basisMatrixNoKnots_degree4_1000_0.125.txt'); % choose from spline files
         CC1 = temp1.data(:,1);
         CC2 = temp1.data(:,2);
         CC3 = temp1.data(:,3);
         CC4 = temp1.data(:,4);
         CC5 = temp1.data(:,5);
-        w1 = 0.220470836603252;
-        w2 = 0.296449499531031;
-        w3 = -0.790096277376987;
-        w4 = 1.050393368686625;
-        w5 = 0.005878963403393;
-        
+        % w1 = 0.220470836603252; % weights with no knots
+        % w2 = 0.296449499531031;
+        % w3 = -0.790096277376987;
+        % w4 = 1.050393368686625;
+        % w5 = 0.005878963403393;
+        w1 = -0.221087421864143; % weights with knot at day 75
+        w2 = 0.512198995086951;
+        w3 = -0.510947054140931;
+        w4 = 0.470198208196176;
+        w5 = 0.027510246532859;
+
         CC = min(1,max(0,w1*CC1 + w2*CC2 + w3*CC3 + w4*CC4 + w5*CC5))';
     else
         CC = P.c*ones(1,nx); % run constant strat if no valid degree
@@ -154,21 +181,6 @@ end
 
 standard_plotting;
 disp(['Cumulative infectiousness of the strategy: ',num2str(simps(0:h:X_max,betaHV(G))/24)]);
-
-%% Merozoite reproduction plotting
-% P1 = h*trapz(I(1:length_infection_out,:).*repmat(gamma_fun(tau,h),1,length_infection_out)',2);
-% P2 = h*trapz(I(1:length_infection_out,:),2)*P.mu;
-% P3 = h*trapz(I(1:length_infection_out,:),2).*P.sigma.*(1-exp(-P.theta*A(1:length_infection_out)));
-%
-% R_M = (1-P.c).*P.beta*(P.p*B(1:length_infection_out,:)./(P.p*B(1:length_infection_out,:)+P.muM))...
-%     .*(P1./(P1 + P2 + P3));
-
-% figure(11);
-% hold on;
-% plot(x(1:length_infection_out)/24,R_M,'.-','LineWidth',3);
-% xlabel('Time since infection (days)','Interpreter','latex');
-% title('Effective Merozoite Number','Interpreter','latex');
-% axis tight;
 
 %%
 toc
