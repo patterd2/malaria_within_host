@@ -82,9 +82,9 @@ else
 
         CC = min(1,max(0,w1*CC1 + w2*CC2 + w3*CC3))';
     elseif RUN_degree == 3
-        temp1 = importdata('basisMatrixKnot125_degree3_1000_0.125.txt'); %
+        %temp1 = importdata('basisMatrixKnot125_degree3_1000_0.125.txt'); %
         % knot options: 25, 75, 125
-        %temp1 = importdata('basisMatrixNoKnots_1000_0.125.txt');
+        temp1 = importdata('basisMatrixNoKnots_1000_0.125.txt');
         %standard
         CC1 = temp1.data(:,1);
         CC2 = temp1.data(:,2);
@@ -104,10 +104,10 @@ else
         % w4 = 0.478970226894363;
 
         % optimal weights with a knot at day 125, beta = 16
-        w1 = 0.002665299973821;
-        w2 = 0.390831987276833;
-        w3 = -0.376379753443364;
-        w4 = 0.371610178849970;
+        % w1 = 0.002665299973821;
+        % w2 = 0.390831987276833;
+        % w3 = -0.376379753443364;
+        % w4 = 0.371610178849970;
 
         % NB these weights are calculated on [0,1000] with h = 0.125
         % beta = 12 optimal weights
@@ -123,10 +123,10 @@ else
         % w4 = 32.746539009377429;
 
         % beta = 16 optimal weights -> STANDARD
-        % w1 = 0.197629881402594;
-        % w2 = 0.168101173567905;
-        % w3 = -0.825428150237733;
-        % w4 = 2.193736391754480;
+        w1 = 0.197629881402594;
+        w2 = 0.168101173567905;
+        w3 = -0.825428150237733;
+        w4 = 2.193736391754480;
 
         % beta = 17 optimal weights
         % w1 = 0.282994188967995;
@@ -136,23 +136,23 @@ else
 
         CC = min(1,max(0,w1*CC1 + w2*CC2 + w3*CC3 + w4*CC4))';
     elseif RUN_degree == 4
-        temp1 = importdata('basisMatrixKnot75_degree4_1000_0.125.txt');
-        %temp1 = importdata('basisMatrixNoKnots_degree4_1000_0.125.txt'); % choose from spline files
+        %temp1 = importdata('basisMatrixKnot75_degree4_1000_0.125.txt');
+        temp1 = importdata('basisMatrixNoKnots_degree4_1000_0.125.txt'); % choose from spline files
         CC1 = temp1.data(:,1);
         CC2 = temp1.data(:,2);
         CC3 = temp1.data(:,3);
         CC4 = temp1.data(:,4);
         CC5 = temp1.data(:,5);
-        % w1 = 0.220470836603252; % weights with no knots
-        % w2 = 0.296449499531031;
-        % w3 = -0.790096277376987;
-        % w4 = 1.050393368686625;
-        % w5 = 0.005878963403393;
-        w1 = -0.221087421864143; % weights with knot at day 75
-        w2 = 0.512198995086951;
-        w3 = -0.510947054140931;
-        w4 = 0.470198208196176;
-        w5 = 0.027510246532859;
+        w1 = 0.220470836603252; % weights with no knots
+        w2 = 0.296449499531031;
+        w3 = -0.790096277376987;
+        w4 = 1.050393368686625;
+        w5 = 0.005878963403393;
+        % w1 = -0.221087421864143; % weights with knot at day 75
+        % w2 = 0.512198995086951;
+        % w3 = -0.510947054140931;
+        % w4 = 0.470198208196176;
+        % w5 = 0.027510246532859;
 
         CC = min(1,max(0,w1*CC1 + w2*CC2 + w3*CC3 + w4*CC4 + w5*CC5))';
     else

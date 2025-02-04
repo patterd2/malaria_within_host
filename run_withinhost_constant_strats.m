@@ -35,14 +35,14 @@ B0 = P.Bstar; % scalar, nonzero
 M0 = 0; % scalar, zero
 I0 = ones(1,ntau); % I(0,tau), should be nonzero
 I0(floor(48/h)+1:end) = 0; % I0 should be zero after 48 hours
-initial_innoc = 0.06; % baseline: 0.06
+initial_innoc = 1000; % baseline: 0.06
 I0 = initial_innoc*I0/(h*trapz(I0));
 % I0 uniform from zero to 48 hours approx.
 IG0 = zeros(1,ntau); % IG(0,tau)
 G0 = 0; % scalar, zero
 A0 = 0; % scalar, zero
 
-invest_vec = 0.0025:0.0025:0.6; %  vector of constant strategy percentages
+invest_vec = 0.005:0.005:0.6; %  vector of constant strategy percentages
 %invest_vec = 0:0.0005:0.12; 
 G_save = zeros(nx,length(invest_vec));
 %% solve the within-host model for each value of P.c
@@ -203,7 +203,7 @@ scatter(invest(B),temp_duration(B),200,'filled','k');
 ylabel('infection age x (days)');
 xlabel('transmission investment');
 xlim([0.0 max(invest)]);
-ylim([0 650]);
+ylim([0 800]);
 %ylim([0 1.1*X_max/24]);
 xticks([0 20 40 60]);
 xtickformat('percentage');
