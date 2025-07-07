@@ -38,8 +38,8 @@ for i = 1:N
     % optimal weights for degree 4 with day 75 knot
     %v = [-0.221087421864143 0.512198995086951 -0.510947054140931 0.470198208196176 0.027510246532859];
     %v = [rand()-0.5 rand()-0.5 rand()-0.5 rand()-0.5];
-    v = [0.196445727150117 0.265584556009783 -0.686302097944315 1.202691314671256];
-    options = optimset('Display','iter','MaxIter',200);
+    v = [0.18 0.28 -1.18 3.06];
+    options = optimset('Display','iter','MaxIter',50);
     %options = optimset('Display','iter','MaxIter',50,'PlotFcns','optimplotfval','TolX',1e-7);
     %options = optimset('MaxIter',100);
     [a, funmax] = fminsearch(@withinhost_model_optimization,v,options);

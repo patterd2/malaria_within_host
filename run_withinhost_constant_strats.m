@@ -42,7 +42,7 @@ IG0 = zeros(1,ntau); % IG(0,tau)
 G0 = 0; % scalar, zero
 A0 = 0; % scalar, zero
 
-invest_vec = 0.005:0.01:0.6005; %  vector of constant strategy percentages
+invest_vec = 0.01:0.01:0.15; %  vector of constant strategy percentages
 %invest_vec = 0:0.0005:0.12; 
 G_save = zeros(nx,length(invest_vec));
 %% solve the within-host model for each value of P.c
@@ -70,7 +70,7 @@ set(gca,'ColorScale','linear')
 xlim([0 650]);
 ytickformat('percentage');
 set(gca,'YDir','normal');
-ylabel('transmission investment');
+ylabel('transmission investment (c)');
 ylim([0.5 60]);
 grid off;
 set(gca,'TickDir','out');
@@ -105,8 +105,26 @@ box off;
 % set(gca,'YDir','normal');
 % ylabel('Transmission investment');
 
+%% Recovery time/Length of Infection plotting
+% calculate the last time the gametocyte population is above the threshold
+invest = 100*invest_vec;
+temp_rec = zeros(1,length(invest));
+for jj = 1:length(invest)
+    rec_time = find(G_save(:,jj)>G_threshold,1,'last');
+    if isempty(rec_time)
+        if G_save(:,jj) > G_threshold
+            temp_rec(jj) = X_max;
+        else
+            temp_rec(jj) = 1;
+        end
+    else
+        temp_rec(jj) = rec_time;
+    end
+end
+
+
 %% Optimal strategy plotting
-ac = floor(280*24/h)+1; % when we only want to integrate up to day ac
+ac = floor(280*24/h)+1; % when we only want to integrate up to day ac, i.e. no immunity case
 if P.sigma == 0
     cum_inf1 = trapz(x(1:ac),betaHV(G_save(1:ac,:)))/24;
 else
@@ -114,7 +132,6 @@ else
 end
 figure(4);
 hold on;
-invest = 100*invest_vec;
 plot(invest,cum_inf1,'-','Color',[0 0.4470 0.7410],'LineWidth',4);
 psi = 1/105;
 cum_inf2 = simps(x(1:ac),betaHV(G_save(1:ac,:)).*repmat(exp(-psi*x(1:ac)/24),1,length(invest_vec)),1)/24;
@@ -139,65 +156,13 @@ scatter(invest(B),cum_inf2(B),200,'filled','k');
 %[~, B] = max(cum_inf4);
 %scatter(invest(B),cum_inf4(B),200,'filled','k');
 ylabel('cumulative infectiousness');
-xlabel('transmission investment');
+xlabel('transmission investment (c)');
 set(gca,'TickDir','out');
 box off;
 LimitsX = xlim; LimitsY = ylim;
 title('B. fitness','FontWeight','normal',...
     'HorizontalAlignment','left','position', [LimitsX(1), LimitsY(2)]);
-
-%set(gca,'FontSize',35);
-% legend('$\psi = 0$','$\psi = 1/105$','$\psi = 1/70$','$\psi = 1/35$',...
-%     'Interpreter','latex','FontSize',35);
-%% Optimal strategy versus time
-% %ac = floor(350*24/h)+1;
-% cum_inf1_time = h*cumtrapz(betaHV(G_save),1)/24;
-% figure(6);
-% hold on;
-% invest = 100*invest_vec;
-% %plot(x/24,cum_inf1_time(:,11),'LineWidth',3);
-% plot(x/24,cum_inf1_time(:,B),'LineWidth',3);
-% plot(x/24,cum_inf1_time(:,101),'LineWidth',3);
-% plot(x/24,cum_inf1_time(:,181),'LineWidth',3);
-% plot(x/24,cum_inf1_time(:,end),'LineWidth',3);
-% 
-% %colormap jet;
-% %colorbar;
-% xlim([0 X_max/24]);
-% ylabel('Cumulative Infectiousness ($f_1$)','Interpreter','latex');
-% xlabel('Time since infection (days)','Interpreter','latex');
-% legend('$c = 4.4\%$','$c = 25\%$','$c = 45\%$','$c = 60\%$','Interpreter','latex','FontSize',25);
-
-% % psi = 1/105;
-% % int_range = (0:h:(ac-1)*h)/24;
-% % cum_inf2 = h*sum(betaHV(G_save(1:ac,:)).*repmat(exp(-psi*int_range'),1,131),1)/24;
-% % plot(invest,cum_inf2,'LineWidth',4);
-% % psi = 1/70;
-% % cum_inf3 = h*sum(betaHV(G_save(1:ac,:)).*repmat(exp(-psi*int_range'),1,131),1)/24;
-% % plot(invest,cum_inf3,'LineWidth',4);
-% % psi = 1/35;
-% % cum_inf4 = h*sum(betaHV(G_save(1:ac,:)).*repmat(exp(-psi*int_range'),1,131),1)/24;
-% % plot(invest,cum_inf4,'LineWidth',4);
-% %xlim([0 max(invest)]);
-% %xticks([0 10 20 30 40 50 60]);
-% %xtickformat('percentage');
-% %xtickangle(0);
-%% Recovery time/Length of Infection plotting
-% This plot is based on defining recovery as the last time that there was
-% > 1 gametocyte present in the host
-temp_rec = zeros(1,length(invest));
-for jj = 1:length(invest)
-    rec_time = find(G_save(:,jj)>G_threshold,1,'last');
-    if isempty(rec_time)
-        if G_save(:,jj) > G_threshold
-            temp_rec(jj) = X_max;
-        else
-            temp_rec(jj) = 1;
-        end
-    else
-        temp_rec(jj) = rec_time;
-    end
-end
+%%
 figure(5);
 hold on;
 plot(invest,x(temp_rec)/24,'LineWidth',4);
@@ -206,7 +171,7 @@ plot(invest,x(temp_rec)/24,'LineWidth',4);
 temp_duration = x(temp_rec)/24;
 scatter(invest(B),temp_duration(B),200,'filled','k');
 ylabel('infection duration (days)');
-xlabel('transmission investment');
+xlabel('transmission investment (c)');
 xlim([0.0 max(invest)]);
 ylim([0 600]);
 %ylim([0 1.1*X_max/24]);
@@ -221,6 +186,5 @@ set(gca,'TickDir','out');
 LimitsX = xlim; LimitsY = ylim;
 title('C. duration of infection','FontWeight','normal',...
     'HorizontalAlignment','left','position', [LimitsX(1), LimitsY(2)]);
-
 %%
 toc

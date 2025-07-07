@@ -91,7 +91,7 @@ legend('boxoff');
 %axis tight;
 
 %% Strategy plotting
-figure(11);
+figure(15);
 hold on;
 plot(x(1:length_infection_out)/24, 100*CC(1:length_infection_out),'LineWidth',3);
 %plot(x(length_infection_out:end)/24, 100*CC(length_infection_out:end),'--','LineWidth',3);
@@ -147,20 +147,43 @@ box off;
 % R_M = (1-P.c).*P.beta*(P.p*B(:,:)./(P.p*B(:,:)+P.muM))...
 %     .*(P1./(P1 + P2 + P3)); % slow calculation
 
-% P1 = trapz(I(:,:).*repmat(gamma_fun(tau,h),1,length(x))',2)./trapz(I(:,:),2);
-% P2 = P.mu;
-% P3 = P.sigma.*(1-exp(-P.theta*A(:)));
-% 
-% R_M = (1-P.c).*P.beta*(P.p*B(:,:)./(P.p*B(:,:)+P.muM))...
-%     .*(P1./(P1 + P2 + P3)); % slow calculation
-% 
-% figure(13);
-% hold on;
-% plot(x(:)/24,R_M,'.-','LineWidth',3);
-% scatter(x(length_infection_out)/24, R_M(length_infection_out),100,'k','diamond','filled');
-% xlabel('age of infection (days)');
-% title('Effective Merozoite Number','FontWeight','Normal');
-% axis tight;
+P1 = trapz(I(:,:).*repmat(gamma_fun(tau,h),1,length(x))',2)./trapz(I(:,:),2);
+P2 = P.mu;
+P3 = P.sigma.*(1-exp(-P.theta*A(:)));
+
+P_bursting = (P1./(P1 + P2 + P3)); % slow calculation
+
+E_merozoites = (1-P.c).*P.beta*(P.p*B(:,:)./(P.p*B(:,:)+P.muM));
+
+%%
+figure(12);
+hold on;
+plot(x(1:length_infection_out)/24,E_merozoites(1:length_infection_out),'.-','LineWidth',3);
+%scatter(x(length_infection_out)/24, R_M(length_infection_out),100,'k','diamond','filled');
+xlabel('infection age x (days)');
+ylabel('E[merozoites invading]','FontWeight','Normal');
+set(gca,'TickDir','out');
+ylim([0.6 2.8]);
+xlim([0 600]);
+LimitsX = xlim; LimitsY = ylim;
+title('A. expected merozoites invading','FontWeight','Normal',...
+    'HorizontalAlignment','left','position', [LimitsX(1), LimitsY(2)]);
+%xticks([0 120 240 360 480 600]);
+
+figure(13);
+hold on;
+plot(x(1:length_infection_out)/24,P_bursting(1:length_infection_out),'.-','LineWidth',3);
+%scatter(x(length_infection_out)/24, R_M(length_infection_out),100,'k','diamond','filled');
+xlabel('infection age x (days)');
+ylabel('P[bursting]','FontWeight','Normal');
+set(gca,'TickDir','out');
+ylim([0.34 1.0]);
+xlim([0 600]);
+LimitsX = xlim; LimitsY = ylim;
+title('B. probability of successfully bursting','FontWeight','Normal',...
+    'HorizontalAlignment','left','position', [LimitsX(1), LimitsY(2)]);
+%xticks([0 120 240 360 480 600]);
+
 
 %% Plot cumulative infectiousness for given strategy
 cum_inf1_time = h*cumtrapz(betaHV(G),1)/24;
