@@ -1,7 +1,7 @@
 global P
 % values from Greischar et al., need to check units
 %% within-host model parameters
-P.c = 0.04453125; % constant parasite investment fraction 
+P.c = 0.045; % constant parasite investment fraction 
 % beta = 12, 0.050390625 optimum
 % beta = 13, 0.0646875   optimum
 % beta = 14, 0.05375     optimum

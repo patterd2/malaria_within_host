@@ -39,7 +39,7 @@ for i = 1:N
     %v = [-0.221087421864143 0.512198995086951 -0.510947054140931 0.470198208196176 0.027510246532859];
     %v = [rand()-0.5 rand()-0.5 rand()-0.5 rand()-0.5];
     v = [0.18 0.28 -1.18 3.06];
-    options = optimset('Display','iter','MaxIter',50);
+    options = optimset('Display','iter','MaxIter',5);
     %options = optimset('Display','iter','MaxIter',50,'PlotFcns','optimplotfval','TolX',1e-7);
     %options = optimset('MaxIter',100);
     [a, funmax] = fminsearch(@withinhost_model_optimization,v,options);
@@ -48,7 +48,7 @@ for i = 1:N
     save_strats(i,1:length(a)) = a;
 
     output_string = sprintf('Run %d: Optimal cumulative infectiousness %f', i, -funmax);
-    disp(output_string); % output optimal weights
+    disp(output_string); % output optimal fitness value
 end
 %% plot the optimal strategy versus time
 [~, opt_strat] = max(max_cum_inf); % identify the optimum

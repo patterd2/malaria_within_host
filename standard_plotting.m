@@ -18,7 +18,9 @@ set(gca,'TickDir','out');
 
 plot(x/24,G,lineStyle,'LineWidth',3); 
 length_infection_out = find(G>G_threshold,1,'last');
-disp(['Length of infection within-host: ',num2str(h*length_infection_out/24),' days']);
+disp(['Length of infection within-host: ',...
+    num2str(h*length_infection_out/24),' days']);
+
 set(gca,'TickDir','out');
 title('parasite dynamics','FontWeight','normal');
 legend('iRBC','gametocyte');
@@ -201,8 +203,9 @@ LimitsX = xlim; LimitsY = ylim;
 title('B. host infectiousness','FontWeight','Normal',...
     'HorizontalAlignment','left','position', [LimitsX(1), LimitsY(2)]);
 set(gca,'TickDir','out');
-disp(['Strategy cumulative infectiousness within-host: ',num2str(cum_inf1_time(end))]);
 
+disp(['Cumulative infectiousness (pre-threshold): ',...
+    num2str(cum_inf1_time(length_infection_out))]);
 %% Plot the rate at which max infectiousness is achieved
 cum_inf1_time = h*cumtrapz(betaHV(G),1)/24;
 figure(14);
@@ -220,4 +223,3 @@ LimitsX = xlim; LimitsY = ylim;
 title('B. host infectiousness','FontWeight','Normal',...
     'HorizontalAlignment','left','position', [LimitsX(1), LimitsY(2)]);
 set(gca,'TickDir','out');
-disp(['Strategy cumulative infectiousness within-host: ',num2str(cum_inf1_time(end))]);

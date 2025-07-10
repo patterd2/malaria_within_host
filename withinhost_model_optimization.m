@@ -11,6 +11,8 @@ ntau = length(tau);
 x = (0:h:X_max)';
 nx = length(x);
 
+G_threshold = 1; % gametocyte threshold to end infection for fitness calc
+
 % set model parameters via the baseline file (contains global variables)
 baseline_parameter_set;
 
@@ -65,4 +67,8 @@ end
 
 [~, ~, ~, ~, G, ~] = within_host_model(h, 0, X_max, tau_max, B0, M0, I0, IG0, G0, A0, CC);
 
-b = -simps(0:h:X_max,betaHV(G))/24; % return the cumulative infectiousness
+length_infection = find(G>G_threshold,1,'last');
+if isempty(length_infection)
+    length_infection = length(x);
+end
+b = -simps(x(1:length_infection),betaHV(G(1:length_infection)))/24; % return the cumulative infectiousness

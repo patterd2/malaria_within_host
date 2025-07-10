@@ -181,7 +181,7 @@ end
 %% Plotting and sim info
 
 standard_plotting;
-disp(['Cumulative infectiousness of the strategy: ',num2str(simps(0:h:X_max,betaHV(G))/24)]);
+disp(['Cumulative infectiousness (no threshold): ',num2str(simps(0:h:X_max,betaHV(G))/24)]);
 
 %%
 toc
