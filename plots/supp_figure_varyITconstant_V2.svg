@@ -25,15 +25,15 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:lockguides="false"
-     inkscape:zoom="1.1009789"
-     inkscape:cx="149.86663"
-     inkscape:cy="75.841597"
+     inkscape:zoom="0.78374771"
+     inkscape:cx="543.54226"
+     inkscape:cy="188.19832"
      inkscape:window-width="1920"
      inkscape:window-height="1027"
      inkscape:window-x="0"
      inkscape:window-y="25"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g4229" /><defs
+     inkscape:current-layer="g3836" /><defs
      id="defs2"><clipPath
        clipPathUnits="userSpaceOnUse"
        id="clipPath1"><path
@@ -1866,11 +1866,11 @@
        transform="matrix(0.26458333,0,0,0.26458333,117.83558,144.95117)"
        style="font-style:normal;font-weight:normal;font-size:22px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#262626;fill-opacity:1;stroke:#262626;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g3836"><text
-         x="-131.5"
+         x="-177.5"
          xml:space="preserve"
          y="21"
          style="stroke:none"
-         id="text3834">transmission investment (c)</text></g><line
+         id="text3834">constant transmission investment (c)</text></g><line
        y2="48.817463"
        style="font-style:normal;font-weight:normal;font-size:12px;font-family:Dialog;color-interpolation:linearRGB;fill:none;fill-opacity:1;stroke:#262626;stroke-width:0.396875;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        x1="60.421009"
@@ -2024,11 +2024,19 @@
        transform="matrix(0.26458333,0,0,0.26458333,-18.689347,144.95117)"
        style="font-style:normal;font-weight:normal;font-size:22px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#262626;fill-opacity:1;stroke:#262626;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g4179"><text
-         x="-133.5"
+         x="-177.5"
          xml:space="preserve"
          y="21"
          style="stroke:none"
-         id="text4177">transmission investment (c)</text></g><g
+         id="text4177">constant transmission investment (c)</text></g><g
+       transform="matrix(0.26458333,0,0,0.26458333,19.475164,162.90332)"
+       style="font-style:normal;font-weight:normal;font-size:22px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#262626;fill-opacity:1;stroke:#262626;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
+       id="g4179-6"><text
+         x="-15.250649"
+         xml:space="preserve"
+         y="-378.60416"
+         style="font-size:18.3274px;stroke:none;stroke-width:0.833068"
+         id="text4177-9">(baseline)</text></g><g
        style="font-style:normal;font-weight:normal;font-size:12px;font-family:Dialog;color-interpolation:linearRGB;fill:#262626;fill-opacity:1;stroke:#262626;stroke-width:1.5;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g4197"
        transform="matrix(0.26458333,0,0,0.26458333,-95.418566,40.61538)"><line
@@ -2167,7 +2175,7 @@
        d="m -75.147064,78.866827 1.91381,-15.529242 1.913811,-5.018538 1.913837,-1.903835 1.91381,-0.477891 1.913811,0.292973 1.913837,0.748242 1.913811,1.033119 1.91381,1.220152 1.913837,1.348449 1.913811,1.43727 1.913811,1.493811 1.913837,1.519607 1.91381,1.517545 1.913811,1.496218 1.913837,1.469655 1.913811,1.450366 1.91381,1.445393 1.913837,1.457801 1.913811,1.483333 1.91381,1.509263 1.913837,1.521513 1.913811,1.514131 1.913811,1.479709 1.913837,1.409594 1.91381,1.312624 1.913811,1.211263 1.913837,1.136041 1.913811,1.109504 1.91381,1.133104 1.913837,1.20277 1.913811,1.314926 1.91381,1.462537 1.913837,1.577526 1.913811,1.613032 1.9138107,1.60647 1.9138371,1.524159 1.9138106,1.372769 1.9138106,1.22131 1.91383701,1.03368 1.91381059,0.8714 1.9138106,0.71409 1.9138371,0.59877 1.9138106,0.52467 1.9138106,0.52332 1.9138375,0.62048 1.91381,0.83116 1.913811,1.13771 1.913837,1.47595 1.91381,1.76194 1.913811,1.92259 1.913837,1.9649 1.913811,1.89098 1.91381,1.73252 1.913837,1.50585 1.913811,1.22917 1.913811,0.90117 1.913837,0.50393 1.91381,-0.0189 1.913811,-0.81767"
        style="font-style:normal;font-weight:normal;font-size:12px;font-family:Dialog;color-interpolation:linearRGB;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#004d00;stroke-width:1.05833;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="path4243" /><g
-       transform="matrix(0.26458333,0,0,0.26458333,16.393822,54.527214)"
+       transform="matrix(0.26458333,0,0,0.26458333,2.6354842,54.527214)"
        style="font-style:normal;font-weight:normal;font-size:18px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1884"><text
          x="0"
@@ -2175,7 +2183,7 @@
          y="0"
          style="stroke:none"
          id="text1882">I</text></g><g
-       transform="matrix(0.26458333,0,0,0.26458333,17.716739,56.908464)"
+       transform="matrix(0.26458333,0,0,0.26458333,3.9584006,56.908464)"
        style="font-style:normal;font-weight:normal;font-size:14.4px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1888"><text
          x="0"
@@ -2183,7 +2191,7 @@
          y="0"
          style="stroke:none"
          id="text1886">T</text></g><g
-       transform="matrix(0.26458333,0,0,0.26458333,20.097989,54.527214)"
+       transform="matrix(0.26458333,0,0,0.26458333,6.3396491,54.527214)"
        style="font-style:normal;font-weight:normal;font-size:18px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1892"><text
          x="0"
@@ -2193,7 +2201,7 @@
          id="text1890"> = 0</text></g><g
        style="font-style:normal;font-weight:normal;font-size:12px;font-family:Dialog;color-interpolation:linearRGB;fill:none;fill-opacity:1;stroke:#8ee5ee;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1896"
-       transform="matrix(0.26458333,0,0,0.26458333,-97.641593,38.916794)"><line
+       transform="matrix(0.26458333,0,0,0.26458333,-111.4,38.916794)"><line
          y2="56.5"
          style="fill:none;stroke:#8ee5ee;stroke-opacity:1"
          x1="397.5"
@@ -2202,7 +2210,7 @@
          id="line1894" /></g><g
        style="font-style:normal;font-weight:normal;font-size:12px;font-family:Dialog;color-interpolation:linearRGB;fill:none;fill-opacity:1;stroke:#000000;stroke-width:4.53543;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1896-6"
-       transform="matrix(0.26458333,0,0,0.26458333,-97.898513,47.139984)"><line
+       transform="matrix(0.26458333,0,0,0.26458333,-111.65692,47.139984)"><line
          y2="56.5"
          style="fill:none;stroke:#000000;stroke-width:4.53543"
          x1="397.5"
@@ -2211,14 +2219,14 @@
          id="line1894-5" /></g><g
        style="font-style:normal;font-weight:normal;font-size:12px;font-family:Dialog;color-interpolation:linearRGB;fill:none;fill-opacity:1;stroke:#458b4d;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1896-6-9"
-       transform="matrix(0.26458333,0,0,0.26458333,-97.898513,63.122904)"><line
+       transform="matrix(0.26458333,0,0,0.26458333,-111.65692,63.122904)"><line
          y2="56.5"
          style="fill:none;stroke:#458b4d;stroke-opacity:1"
          x1="397.5"
          x2="427.5"
          y1="56.5"
          id="line1894-5-5" /></g><g
-       transform="matrix(0.26458333,0,0,0.26458333,16.393822,62.729294)"
+       transform="matrix(0.26458333,0,0,0.26458333,2.6354842,62.729294)"
        style="font-style:normal;font-weight:normal;font-size:18px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1900"><text
          x="0"
@@ -2226,7 +2234,7 @@
          y="0"
          style="stroke:none"
          id="text1898">I</text></g><g
-       transform="matrix(0.26458333,0,0,0.26458333,17.716739,65.110544)"
+       transform="matrix(0.26458333,0,0,0.26458333,3.9584006,65.110544)"
        style="font-style:normal;font-weight:normal;font-size:14.4px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1904"><text
          x="0"
@@ -2234,7 +2242,7 @@
          y="0"
          style="stroke:none"
          id="text1902">T</text></g><g
-       transform="matrix(0.26458333,0,0,0.26458333,20.097989,62.729294)"
+       transform="matrix(0.26458333,0,0,0.26458333,6.3396491,62.729294)"
        style="font-style:normal;font-weight:normal;font-size:18px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1908"><text
          x="0"
@@ -2242,7 +2250,7 @@
          y="0"
          style="stroke:none"
          id="text1906"> = 2</text></g><g
-       transform="matrix(0.26458333,0,0,0.26458333,16.393822,70.931384)"
+       transform="matrix(0.26458333,0,0,0.26458333,2.6354842,70.931384)"
        style="font-style:normal;font-weight:normal;font-size:18px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1916"><text
          x="0"
@@ -2250,7 +2258,7 @@
          y="0"
          style="stroke:none"
          id="text1914">I</text></g><g
-       transform="matrix(0.26458333,0,0,0.26458333,17.716739,73.312634)"
+       transform="matrix(0.26458333,0,0,0.26458333,3.9584006,73.312634)"
        style="font-style:normal;font-weight:normal;font-size:14.4px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1920"><text
          x="0"
@@ -2258,7 +2266,7 @@
          y="0"
          style="stroke:none"
          id="text1918">T</text></g><g
-       transform="matrix(0.26458333,0,0,0.26458333,20.097989,70.931384)"
+       transform="matrix(0.26458333,0,0,0.26458333,6.3396491,70.931384)"
        style="font-style:normal;font-weight:normal;font-size:18px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1924"><text
          x="0"
@@ -2268,14 +2276,14 @@
          id="text1922"> = 10</text></g><g
        style="font-style:normal;font-weight:normal;font-size:12px;font-family:Dialog;color-interpolation:linearRGB;fill:#edb120;fill-opacity:1;stroke:#66cdaa;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1928"
-       transform="matrix(0.26458333,0,0,0.26458333,-97.641593,38.916794)"><line
+       transform="matrix(0.26458333,0,0,0.26458333,-111.4,38.916794)"><line
          y2="117.5"
          style="fill:none;stroke:#66cdaa;stroke-opacity:1"
          x1="397.5"
          x2="427.5"
          y1="117.5"
          id="line1926" /></g><g
-       transform="matrix(0.26458333,0,0,0.26458333,16.393822,78.868884)"
+       transform="matrix(0.26458333,0,0,0.26458333,2.6354842,78.868884)"
        style="font-style:normal;font-weight:normal;font-size:18px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1932"><text
          x="0"
@@ -2283,7 +2291,7 @@
          y="0"
          style="stroke:none"
          id="text1930">I</text></g><g
-       transform="matrix(0.26458333,0,0,0.26458333,17.716739,81.250134)"
+       transform="matrix(0.26458333,0,0,0.26458333,3.9584006,81.250134)"
        style="font-style:normal;font-weight:normal;font-size:14.4px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1936"><text
          x="0"
@@ -2291,7 +2299,7 @@
          y="0"
          style="stroke:none"
          id="text1934">T</text></g><g
-       transform="matrix(0.26458333,0,0,0.26458333,20.097989,78.868884)"
+       transform="matrix(0.26458333,0,0,0.26458333,6.3396491,78.868884)"
        style="font-style:normal;font-weight:normal;font-size:18px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1940"><text
          x="0"
@@ -2299,7 +2307,7 @@
          y="0"
          style="stroke:none"
          id="text1938"> = 50</text></g><g
-       transform="matrix(0.26458333,0,0,0.26458333,16.393822,87.070964)"
+       transform="matrix(0.26458333,0,0,0.26458333,2.6354842,87.070964)"
        style="font-style:normal;font-weight:normal;font-size:18px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1948"><text
          x="0"
@@ -2307,7 +2315,7 @@
          y="0"
          style="stroke:none"
          id="text1946">I</text></g><g
-       transform="matrix(0.26458333,0,0,0.26458333,17.716739,89.452214)"
+       transform="matrix(0.26458333,0,0,0.26458333,3.9584006,89.452214)"
        style="font-style:normal;font-weight:normal;font-size:14.4px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1952"><text
          x="0"
@@ -2315,7 +2323,7 @@
          y="0"
          style="stroke:none"
          id="text1950">T</text></g><g
-       transform="matrix(0.26458333,0,0,0.26458333,20.097989,87.070964)"
+       transform="matrix(0.26458333,0,0,0.26458333,6.3396491,87.070964)"
        style="font-style:normal;font-weight:normal;font-size:18px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1956"><text
          x="0"
@@ -2325,7 +2333,7 @@
          id="text1954"> = 100</text></g><g
        style="font-style:normal;font-weight:normal;font-size:12px;font-family:Dialog;color-interpolation:linearRGB;fill:none;fill-opacity:1;stroke:#004d00;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1960"
-       transform="matrix(0.26458333,0,0,0.26458333,-97.641593,38.916794)"><line
+       transform="matrix(0.26458333,0,0,0.26458333,-111.4,38.916794)"><line
          y2="178.5"
          style="fill:none;stroke:#004d00;stroke-opacity:1"
          x1="397.5"

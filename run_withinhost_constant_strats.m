@@ -20,7 +20,7 @@ tau_max = 20*24; %  (default 20 days)
 T_max = 200*24;
 xV_max = 20*24;
 h = 0.0625*2; % time/age step size in hours, same across all timescales, 0.25 default
-G_threshold = 10; % threshold for ending infection, 0.16341545 ~ 1% trans. prob.
+G_threshold = 1; % threshold for ending infection, 0.16341545 ~ 1% trans. prob.
 
 x = (0:h:X_max)';
 nx = length(x);
@@ -45,7 +45,7 @@ IG0 = zeros(1,ntau); % IG(0,tau)
 G0 = 0; % scalar, zero
 A0 = 0; % scalar, zero
 
-invest_vec = 0.1:0.01:0.6; %  vector of constant strategy percentages
+invest_vec = 0.01:0.01:0.6; %  vector of constant strategy percentages
 %invest_vec = 0.005:0.005:0.02; 0.0205:0.005:0.1;
 G_save = zeros(nx,length(invest_vec));
 %% solve the within-host model for each value of P.c

@@ -26,8 +26,8 @@
      showgrid="false"
      inkscape:lockguides="false"
      inkscape:zoom="0.89571167"
-     inkscape:cx="482.29806"
-     inkscape:cy="223.84435"
+     inkscape:cx="483.41449"
+     inkscape:cy="265.15229"
      inkscape:window-width="1920"
      inkscape:window-height="1027"
      inkscape:window-x="0"
@@ -1648,14 +1648,14 @@
          y="7.5"
          style="stroke:none"
          id="text1665">300</text></g><g
-       transform="matrix(0,-0.26458333,0.26458333,0,50.435694,74.334459)"
+       transform="matrix(0,-0.26458333,0.26458333,0,50.435694,73.805292)"
        style="font-style:normal;font-weight:normal;font-size:22px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#262626;fill-opacity:1;stroke:#262626;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1671"><text
-         x="-139"
+         x="-149"
          xml:space="preserve"
          y="-5"
          style="stroke:none"
-         id="text1669">cumulative infectiousness (f)</text></g><g
+         id="text1669">cumulative infectiousness  f(x)</text></g><g
        transform="matrix(0.26458333,0,0,0.26458333,62.961069,31.207429)"
        style="font-style:normal;font-weight:normal;font-size:22px;font-family:'Helvetica Neue';color-interpolation:linearRGB;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1675"><text
@@ -1663,7 +1663,7 @@
          xml:space="preserve"
          y="-5"
          style="stroke:none"
-         id="text1673">B. host infectiousness</text></g><g
+         id="text1673">B. fitness</text></g><g
        style="font-style:normal;font-weight:normal;font-size:12px;font-family:Dialog;color-interpolation:linearRGB;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:optimizeQuality;image-rendering:optimizeQuality;shape-rendering:auto;text-rendering:geometricPrecision"
        id="g1681"
        transform="matrix(0.26458333,0,0,0.26458333,43.646486,23.005346)"><path
