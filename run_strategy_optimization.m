@@ -22,24 +22,15 @@ save_init = zeros(N,4); %
 
 tic;
 for i = 1:N
-    %tic
-    %v = [-0.223 0.506 -0.282 0.153]; % initial weights for cubic splines
-    % v = [0.196667938232422...
-    %     0.184199057006836...
-    %     -0.817027981567383...
-    %     2.049723136901856];
-    % v = [0.227554551505484...
-    %     0.204493107165713...
-    %     -0.777273665960356...
-    %     1.622501485277946];
-    %v = [(rand()-0.5) (rand()-0.5) (rand()-0.5) (rand()-0.5)];
-    %v = 0.0646875;
+    % the dimension of v will set the strategy space
+    % e.g. length(v) = 3 selects for quadratic splines, etc.  
 
-    % optimal weights for degree 4 with day 75 knot
-    %v = [-0.221087421864143 0.512198995086951 -0.510947054140931 0.470198208196176 0.027510246532859];
+    %v = [(rand()-0.5) (rand()-0.5) (rand()-0.5) (rand()-0.5)];
     %v = [rand()-0.5 rand()-0.5 rand()-0.5 rand()-0.5];
-    v = [0.18 0.28 -1.18 3.06];
-    options = optimset('Display','iter','MaxIter',5);
+    %v = [0.18+0.025*(rand()-0.5) 0.28+0.025*(rand()-0.5)...
+    %    -1.18+0.025*(rand()-0.5) 3.06+0.025*(rand()-0.5)];
+    v = [0.167034804064499 0.401071028425863 -1.555412122672692 3.999873446371207];
+    options = optimset('Display','iter','MaxIter',50);
     %options = optimset('Display','iter','MaxIter',50,'PlotFcns','optimplotfval','TolX',1e-7);
     %options = optimset('MaxIter',100);
     [a, funmax] = fminsearch(@withinhost_model_optimization,v,options);
@@ -64,7 +55,7 @@ elseif length(a) == 2
     CC = min(1,max(0,a(1)*CC1 + a(2)*CC2));
     CC_init = min(1,max(0,v(1)*CC1 + v(2)*CC2));
 elseif length(a) == 3
-    temp1 = importdata('basisMatrixNoKnots_degree2_1000_0.125.txt'); % choose linear splines
+    temp1 = importdata('basisMatrixNoKnots_degree2_1000_0.125.txt'); % choose quadratic splines
     CC1 = temp1.data(:,1);
     CC2 = temp1.data(:,2);
     CC3 = temp1.data(:,3);

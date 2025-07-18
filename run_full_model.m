@@ -15,8 +15,8 @@ set(0,'defaultAxesLineWidth',1.5);
 
 %% Choose constant or nonconstant investment strategy
 
-RUN_constant = 1;
-RUN_nonconstant = 0;
+RUN_constant = 0;
+RUN_nonconstant = 1;
 RUN_degree = 3; % degree of the polynomial spline (1,2,3,4 - 3 baseline)
 
 %% numerical configuration
@@ -128,6 +128,11 @@ else
         w2 = 0.282353423180732;
         w3 = -1.184611012802777;
         w4 = 3.062908506523869;
+
+        w1 = 0.167061351199006;
+        w2 = 0.401066392028436;
+        w3 = -1.555469632674011;
+        w4 = 4.000060421096212;
 
         % beta = 17 optimal weights
         % w1 = 0.282994188967995;
