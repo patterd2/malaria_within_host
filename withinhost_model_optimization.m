@@ -10,6 +10,8 @@ tau = (0:h:tau_max)';
 ntau = length(tau);
 x = (0:h:X_max)';
 nx = length(x);
+ac = floor(280*24/h)+1; % for no immune fitness calculations
+psi = 1/105; % constant recovery rate in no immunity case
 
 G_threshold = 1; % gametocyte threshold to end infection for fitness calc
 
@@ -43,10 +45,10 @@ elseif length(spline_weights) == 3
     CC3 = temp1.data(:,3);
     CC = min(1,max(0,spline_weights(1)*CC1 + spline_weights(2)*CC2 + spline_weights(3)*CC3));
 elseif length(spline_weights) == 4
-    %temp1 = importdata('basisMatrixKnot125_degree3_1000_0.125.txt'); 
-    %temp1 = importdata('basisMatrixKnot25_degree3_1000_0.125.txt'); 
-    %temp1 = importdata('basisMatrixKnot75_degree3_1000_0.125.txt'); 
-    temp1 = importdata('basisMatrixNoKnots_1000_0.125.txt'); % no knot
+    %temp1 = importdata('basisMatrixKnot125_degree3_1000_0.125.txt');
+    %temp1 = importdata('basisMatrixKnot25_degree3_1000_0.125.txt');
+    temp1 = importdata('basisMatrixKnot75_degree3_1000_0.125.txt');
+    %temp1 = importdata('basisMatrixNoKnots_1000_0.125.txt'); % no knot
     CC1 = temp1.data(:,1);
     CC2 = temp1.data(:,2);
     CC3 = temp1.data(:,3);
@@ -71,4 +73,10 @@ length_infection = find(G>G_threshold,1,'last');
 if isempty(length_infection)
     length_infection = length(x);
 end
-b = -simps(x(1:length_infection),betaHV(G(1:length_infection)))/24; % return the cumulative infectiousness
+if P.sigma == 0
+    b = -simps(x(1:ac),betaHV(G(1:ac)).*exp(-psi*x(1:ac)/24))/24;
+    % return the cumulative infectiousness in no immunity case, f_prev
+else
+    b = -simps(x(1:length_infection),betaHV(G(1:length_infection)))/24; 
+    % return the cumulative infectiousness/fitness, f
+end
