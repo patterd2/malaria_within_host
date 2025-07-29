@@ -19,7 +19,7 @@ P.muG = 0.5/24; % 0.5 baseline
 P.Bbar = P.lambda/(P.mu + P.lambda/P.K);
 
 % immune activation function parameters
-P.sigma = (0.0/24); % sigma = 0 turns off immune system, 0.55/24 baseline
+P.sigma = (0.55/24); % sigma = 0 turns off immune system, 0.55/24 baseline
 P.IT = 2; % immune activation sigmoid threshold (phi), 2 baseline
 P.s = 1; % immune activation sigmoid slope (phi), Heaviside at zero, baseline 1
 P.theta = (0.00025); % 0.00025 baseline
