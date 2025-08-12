@@ -15,8 +15,8 @@ set(0,'defaultAxesLineWidth',1.5);
 
 %% Choose constant or nonconstant investment strategy
 
-RUN_constant = 0;
-RUN_nonconstant = 1;
+RUN_constant = 1;
+RUN_nonconstant = 0;
 RUN_degree = 3; % degree of the polynomial spline (1,2,3,4 - 3 baseline)
 
 %% numerical configuration

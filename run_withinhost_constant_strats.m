@@ -43,7 +43,7 @@ I0 = initial_innoc*I0/(h*trapz(I0));
 % I0 uniform from zero to 48 hours approx.
 IG0 = zeros(1,ntau); % IG(0,tau)
 G0 = 0; % scalar, zero
-A0 = 0; % scalar, zero
+A0 = 500; % scalar, zero
 
 invest_vec = 0.01:0.01:0.6; %  vector of constant strategy percentages
 %invest_vec = 0.005:0.005:0.02; 0.0205:0.005:0.1;
